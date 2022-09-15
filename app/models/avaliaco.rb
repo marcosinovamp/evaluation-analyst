@@ -1,0 +1,2 @@
+class Avaliaco < ApplicationRecord
+end
