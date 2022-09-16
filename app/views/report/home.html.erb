@@ -1,0 +1,11 @@
+<%=percent(Avaliaco.aprovacao)%>
+<%=nmb_form(Avaliaco.last_posit)%>
+<%=nmb_form(Avaliaco.last_negat)%>
+<%=nmb_form(Avaliaco.last_total)%>
+<%@servicos.select{|sl| sl.total > 999}.sort_by{|i| i.aprovacao*-1}.each do |s|%>
+    <%if s.aprovacao.nil? || s.aprovacao.nan? || s.aprovacao == 0%>
+        <p><%=s.nome%>, <%=s.orgao%> - <%=nmb_form(s.total)%> avaliações no total. Aprovação de 0%</p>
+    <%else%>
+        <p><%=s.nome%>, <%=s.orgao%> - <%=nmb_form(s.total)%> avaliações no total. Aprovação de <%=percent(s.aprovacao)%></p>
+    <%end%>
+<%end%>

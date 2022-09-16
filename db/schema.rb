@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_15_041753) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_16_015450) do
   create_table "avaliacos", force: :cascade do |t|
     t.datetime "data"
     t.integer "positivas"
@@ -21,12 +21,20 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_15_041753) do
     t.index ["servico_id"], name: "index_avaliacos_on_servico_id"
   end
 
+  create_table "orgaos", force: :cascade do |t|
+    t.string "nome"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "servicos", force: :cascade do |t|
     t.integer "api_id"
     t.string "nome"
-    t.string "orgao"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status"
+    t.integer "orgao_id"
+    t.index ["orgao_id"], name: "index_servicos_on_orgao_id"
   end
 
 end

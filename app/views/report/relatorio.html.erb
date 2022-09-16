@@ -1,0 +1,31 @@
+<h3>Portal gov.br - Relatório da avaliação de informações das páginas de serviço: <%=bradate(@data.sort[-2])%> a <%=bradate(@data.sort.last)%></h3>
+<br>
+<p>Durante o período <%=nmb_form(@servicos.select{|s| s.status == "Novo"}.size)%> novas páginas de serviço foram inclusas no Portal e <%=nmb_form(@servicos.select{|s| s.status == "Retirado"}.size)%> páginas foram retiradas, resultando em <%=nmb_form(@servicos.select{|s| s.status == "Novo" || s.status == "Mantido"}.size)%> serviços atualmente na API de serviços.</p>
+<p>Os serviços que entraram no Portal tiveram <%=nmb_form(@pos + @neg)%> avaliações (<%=nmb_form(@pos)%> positivas e <%=nmb_form(@neg)%> negativas) no período. Os serviços que saíram retiraram do Portal <%=nmb_form(@rpos + @rneg)%> avaliações (<%=nmb_form(@rpos)%> positivas x <%=nmb_form(@rneg)%> negativas). Os restantes <%=nmb_form(@servicos.select{|s| s.status == "Mantido"}.size)%> serviços que permaneceram no Portal receberam no período <%=nmb_form(@mpos + @mneg)%> avaliações (<%=nmb_form(@mpos)%> positivas x <%=nmb_form(@mneg)%> negativas). Como resultado, o Portal hoje conta com <%=nmb_form(Avaliaco.last_total)%> avaliações, sendo <%=nmb_form(Avaliaco.last_posit)%> delas positivas e os restantes <%=nmb_form(Avaliaco.last_negat)%> negativas. Neste período, como consequência, houve uma variação de <%=percent(@varap)%> na aprovação média das páginas de serviço do Portal.</p>
+<br>
+<p>Os órgãos que acrescentaram mais serviços no período foram a <%=@mais_novos.first.nome%>, que acrescentou <%=nmb_form(@mais_novos.first.novos_serv)%> novos serviços, <%=@mais_novos.second.nome%> que colocou mais <%=nmb_form(@mais_novos.second.novos_serv)%> serviços e a <%=@mais_novos.third.nome%> com <%=nmb_form(@mais_novos.third.novos_serv)%> novos serviços. Os órgãos que mais retiraram serviços foram a <%=@mais_retira.first.nome%>, que despublicou <%=nmb_form(@mais_retira.first.novos_serv)%> serviços, a <%=@mais_retira.second.nome%>, que tirou <%=nmb_form(@mais_retira.second.novos_serv)%> serviços e a <%=@mais_retira.third.nome%> que retirou <%=nmb_form(@mais_retira.third.novos_serv)%> serviços. O órgão com mais serviços no Portal no momento é <%=@orgaos.sort_by{|o| o.qtd_atual*-1}.first.nome%> (<%=@orgaos.sort_by{|o| o.qtd_atual*-1}.first.qtd_atual%> serviços), seguido pelo <%=@orgaos.sort_by{|o| o.qtd_atual*-1}.second.nome%> (<%=@orgaos.sort_by{|o| o.qtd_atual*-1}.second.qtd_atual%> serviços) e <%=@orgaos.sort_by{|o| o.qtd_atual*-1}.third.nome%> (<%=@orgaos.sort_by{|o| o.qtd_atual*-1}.third.qtd_atual%> serviços).</p>
+
+
+
+A Receita Federal foi mais uma vez o órgão que mais recebeu avaliações no período (4.580 avaliações), seguida pelo Ministério do Trabalho (2.249 avaliações) e do Ministério da Cidadania (1.245 avaliações). Os mesmos órgãos foram aqueles que mais receberam avaliações positivas (1.594, 1.345 e 738 avaliações respectivamente). Os órgãos com o maior número de avaliações negativas foram a Receita Federal (2.986 avaliações), o Ministério do Trabalho (904 avaliações) e o Ministério da Economia (648 avaliações).</p>
+
+
+
+ 
+O maior impacto positivo nas avaliações do período foi do Ministério do Trabalho e Previdência (2,96%). O maior impacto negativo foi da Receita Federal (-9,33%).
+Os órgãos  que tiveram maior incremento na sua média de aprovação foram o Ministério da Economia e a Receita Federal, ambos com aumento de 0,06%, e a Fundação Osório e o Ministério da Justiça, ambos com variação de 0,04%.  Os órgãos que tiveram uma maior diferença positiva no seu desempenho no período em relação ao seu desempenho médio foram a Receita Federal (8,45%), o Ministério da Economia (4,70%) e a ANVISA (4,41%). Aqueles que tiveram a maior diferença negativa foram o Ministério da Relações Exteriores (-11,59%), o Ministério do Trabalho (-11,47%) e o Ministério da Infraestrutura (-6,46%).
+
+
+
+	
+
+
+
+
+
+
+
+	O serviço que mais recebeu avaliações no período foi novamente “Receber o Abono Salarial”, do Ministério do Trabalho e Previdência, com 837 novas avaliações (5,25% do total), seguido por “Atualizar CPF” e “Consultar CPF”, ambos da Receita Federal, com 663 avaliações (4,16% do total) e 646 avaliações (4,05% do total) respectivamente. “Receber o Abono Salarial” e “Consultar CPF” foram também os dois serviços com o maior número de avaliações positivas, com 602 avaliações (8,16%) e 390 avaliações (5,29%) respectivamente. O terceiro serviço com mais avaliações positivas foi “Obter Passaporte” com 269 avaliações positivas (3,65%)
+	Os três serviços que mais receberam avaliações negativas no período são todos da Receita Federal: “Atualizar CPF”, “Emitir certidão de regularidade fiscal” “Consultar CPF” com 399 (5,41%), 394 (5,34%) e 256 (3,47%) avaliações negativas respectivamente.
+Entre os serviços com pelo menos 1.000 avaliações, o melhor avaliado é mais uma vez “Obter Porte de Arma de Fogo para Defesa Pessoal”, da Polícia Federal, com 89,45% (queda de 0,01% em relação ao último relatório) de avaliações positivas, e o pior avaliado também continua sendo “Regularizar cadastro bloqueado de assentado”, do INCRA, com apenas 9,21% das avaliações recebidas sendo positivas (aumento de 0,03% desde o último relatório).
+
