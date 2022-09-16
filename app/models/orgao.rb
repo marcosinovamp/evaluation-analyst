@@ -42,4 +42,26 @@ class Orgao < ApplicationRecord
         self.novos_serv + self.mantidos_serv
     end
 
+    def datas
+        @data = []
+        self.avaliacos.each do |a|
+            if @data.include?(a.data.to_date) == false
+                @data << a.data.to_date
+            end
+        end
+        @data = @data.sort
+    end
+
+    def pos_periodo
+        self.pos_aval(self.datas.last) -  self.pos_aval(self.datas[-2])
+    end
+
+    def neg_periodo
+        self.neg_aval(self.datas.last) -  self.neg_aval(self.datas[-2])
+    end
+
+    def tot_periodo
+        self.pos_periodo + self.neg_periodo
+    end
+
 end

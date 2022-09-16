@@ -45,6 +45,11 @@ class ReportController < ApplicationController
     @varap = Avaliaco.aprovacao - @antapv
     @mais_novos = Orgao.all.sort_by{|o| o.novos_serv*-1}
     @mais_retira = Orgao.all.sort_by{|o| o.retirados_serv*-1}
-  end
+    @mais_aval_per = Orgao.all.sort_by{|o| o.tot_periodo*-1}
+    @mais_pos_per = Orgao.all.sort_by{|o| o.pos_periodo*-1}
+    @mais_neg_per = Orgao.all.sort_by{|o| o.neg_periodo*-1}
 
+
+  end
+   
 end
