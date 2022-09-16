@@ -52,16 +52,24 @@ class Orgao < ApplicationRecord
         @data = @data.sort
     end
 
-    def pos_periodo
-        self.pos_aval(self.datas.last) -  self.pos_aval(self.datas[-2])
+    def pos_periodo(data_inicial, data_final)
+        self.pos_aval(data_final) -  self.pos_aval(data_inicial)
     end
 
-    def neg_periodo
-        self.neg_aval(self.datas.last) -  self.neg_aval(self.datas[-2])
+    def neg_periodo(data_inicial, data_final)
+        self.neg_aval(data_final) -  self.neg_aval(data_inicial)
     end
 
-    def tot_periodo
-        self.pos_periodo + self.neg_periodo
+    def tot_periodo(data_inicial, data_final)
+        self.pos_periodo(data_inicial, data_final) + self.neg_periodo(data_inicial, data_final)
+    end
+    
+    def aprov_periodo(data_inicial, data_final)
+        self.pos_periodo(data_inicial, data_final)/self.tot_periodo(data_inicial, data_final)
+    end
+
+    def impacto_periodo(data_inicial, data_final, total)
+        ((self.tot_periodo(data_inicial, data_final)/total)*self.aprov_periodo(data_inicial, data_final)) -  ((self.tot_periodo(data_inicial, data_final)/total)*(1 - self.aprov_periodo(data_inicial, data_final)))
     end
 
 end

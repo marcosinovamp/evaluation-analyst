@@ -14,6 +14,7 @@ class ReportController < ApplicationController
             @data << a.data.to_date
         end
     end
+    @data = @data.sort
     @pos = 0
     @neg = 0
     @servicos.select{|s| s.status == "Novo"}.each do |novo|
@@ -45,11 +46,24 @@ class ReportController < ApplicationController
     @varap = Avaliaco.aprovacao - @antapv
     @mais_novos = Orgao.all.sort_by{|o| o.novos_serv*-1}
     @mais_retira = Orgao.all.sort_by{|o| o.retirados_serv*-1}
-    @mais_aval_per = Orgao.all.sort_by{|o| o.tot_periodo*-1}
-    @mais_pos_per = Orgao.all.sort_by{|o| o.pos_periodo*-1}
-    @mais_neg_per = Orgao.all.sort_by{|o| o.neg_periodo*-1}
-
-
+    @mais_aval_per = Orgao.all.sort_by{|o| o.tot_periodo(@data[-2], @data.last)*-1}
+    @mais_pos_per = Orgao.all.sort_by{|o| o.pos_periodo(@data[-2], @data.last)*-1}
+    @mais_neg_per = Orgao.all.sort_by{|o| o.neg_periodo(@data[-2], @data.last)*-1}
+    @pos_per = 0
+    @neg_per = 0
+    @tt_periodo = 0
+    Servico.mantidos.each do |s|
+      if s.avaliacos.select{|a| a.data.to_date == @data.last}.nil? == false
+        if  s.avaliacos.select{|a| a.data.to_date == @data[-2]}.nil? || s.avaliacos.select{|a| a.data.to_date == @data[-2]} == 0
+          @pos_per += s.last.positivas
+          @neg_per += s.last.negativas
+        else
+          @pos_per += s.pos_periodo(@data[-2], @data.last)
+          @neg_per += s.neg_periodo(@data[-2], @data.last)
+        end
+      end
+    end
+    @tt_periodo = @pos_per + @neg_per
   end
    
 end

@@ -39,4 +39,32 @@ class Avaliaco < ApplicationRecord
         return ap
     end
 
+    def self.pos_periodo(data_inicial, data_final)
+        @posit_inicial = 0
+        @posit_final = 0
+        Avaliaco.all.select{|a| a.data.to_date == data_inicial.to_date}.each do |ai|
+            @posit_inicial += ai.positivas
+        end
+        Avaliaco.all.select{|a| a.data.to_date == data_final.to_date}.each do |af|
+            @posit_final += af.positivas
+        end
+        return @posit_final - @posit_inicial
+    end
+
+    def self.neg_periodo(data_inicial, data_final)
+        @negat_inicial = 0
+        @negat_final = 0
+        Avaliaco.all.select{|a| a.data.to_date == data_inicial.to_date}.each do |ai|
+            @negat_inicial += ai.negativas
+        end
+        Avaliaco.all.select{|a| a.data.to_date == data_final.to_date}.each do |af|
+            @negat_final += af.negativas
+        end
+        return @negat_final - @negat_inicial
+    end
+
+    def self.tot_periodo(data_inicial, data_final)
+        Avaliaco.pos_periodo(data_inicial, data_final) + Avaliaco.neg_periodo(data_inicial, data_final)
+    end
+
 end
