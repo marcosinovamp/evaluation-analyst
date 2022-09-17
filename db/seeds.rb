@@ -14,6 +14,8 @@ servicos = JSON.parse(rascunho)
 
 ids = []
 orgaos = []
+@data = Data.new(data: Time.now.to_date)
+@data.save
 servicos["resposta"].each do |s|
     if Servico.find_by(api_id: s["id"].gsub("https://servicos.gov.br/api/v1/servicos/", "")).nil?
         @serv = Servico.new(nome: s["nome"], api_id: s["id"].gsub("https://servicos.gov.br/api/v1/servicos/", ""), orgao: s["orgao"]["nomeOrgao"], status: "Novo")
@@ -24,11 +26,11 @@ servicos["resposta"].each do |s|
         @serv.save
     end
     if s["avaliacoes"].nil? == false
-        @aval = Avaliaco.new(data: Time.now, positivas: s["avaliacoes"]["positivas"], negativas: s["avaliacoes"]["negativas"], servico_id: @serv.id)
+        @aval = Avaliaco.new(tempo_id: @data.id, positivas: s["avaliacoes"]["positivas"], negativas: s["avaliacoes"]["negativas"], servico_id: @serv.id, total: s["avaliacoes"]["positivas"] + s["avaliacoes"]["negativas"], aprov: s["avaliacoes"]["positivas"].to_f/(s["avaliacoes"]["positivas"] + s["avaliacoes"]["negativas"]) == 0 ? 1: (s["avaliacoes"]["positivas"] + s["avaliacoes"]["negativas"]))
         @aval.save
     else
         if Avaliaco.find_by(servico_id: @serv.id).nil? || Avaliaco.find_by(servico_id: @serv.id).data.to_date != Time.now.to_date
-            @aval = Avaliaco.new(data: Time.now, positivas: 0, negativas: 0, servico_id: @serv.id)
+            @aval = Avaliaco.new(tempo_id: @data.id, positivas: 0, negativas: 0, servico_id: @serv.id)
             @aval.save
         end
     end
@@ -50,8 +52,6 @@ Servico.all.select{|s| s.status != "Extinto"}.each do |s|
         s.save
     end
 end
-
-
 
 orgaos.each do |o|
     Orgao.create[nome: o]

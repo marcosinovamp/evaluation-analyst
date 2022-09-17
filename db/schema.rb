@@ -10,15 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_16_015450) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_17_041139) do
   create_table "avaliacos", force: :cascade do |t|
-    t.datetime "data"
     t.integer "positivas"
     t.integer "negativas"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "servico_id"
+    t.integer "total"
+    t.float "aprov"
+    t.integer "tempo_id"
     t.index ["servico_id"], name: "index_avaliacos_on_servico_id"
+    t.index ["tempo_id"], name: "index_avaliacos_on_tempo_id"
   end
 
   create_table "orgaos", force: :cascade do |t|
@@ -35,6 +38,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_16_015450) do
     t.string "status"
     t.integer "orgao_id"
     t.index ["orgao_id"], name: "index_servicos_on_orgao_id"
+  end
+
+  create_table "tempos", force: :cascade do |t|
+    t.date "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

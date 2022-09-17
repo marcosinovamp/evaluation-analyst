@@ -1,16 +1,11 @@
 class Avaliaco < ApplicationRecord
+    belongs_to :tempo
     belongs_to :servico
     has_one :orgao, through: :servico
 
     def self.last_posit
         @lastPosit = 0
-        @data = []
-        Avaliaco.all.each do |a|
-            if @data.include?(a.data.to_date) == false
-                @data << a.data.to_date
-            end
-        end
-        Avaliaco.select{|s| s.data.to_date == @data.sort.last}.each do |aval|
+        Avaliaco.select{|s| s.tempo.data == Tempo.cronos.last}.each do |aval|
             @lastPosit += aval.positivas.to_i
         end
         return @lastPosit
@@ -18,34 +13,32 @@ class Avaliaco < ApplicationRecord
 
     def self.last_negat
         @lastNegat = 0
-        @data = []
-        Avaliaco.all.each do |a|
-            if @data.include?(a.data.to_date) == false
-                @data << a.data.to_date
-            end
-        end
-        Avaliaco.select{|s| s.data.to_date == @data.sort.last}.each do |aval|
+        Avaliaco.select{|s| s.tempo.data == Tempo.cronos.last}.each do |aval|
             @lastNegat += aval.negativas.to_i
         end
         return @lastNegat
     end
 
     def self.last_total
-        Avaliaco.last_posit + Avaliaco.last_negat
+        @lastTotal = 0
+        Avaliaco.select{|s| s.tempo.data == Tempo.cronos.last}.each do |aval|
+            @lastTotal += aval.total.to_i
+        end
+        return @lastTotal
     end
 
     def self.aprovacao
-        ap = Avaliaco.last_posit.to_f/Avaliaco.last_total
+        ap = Avaliaco.last_posit.to_f/(Avaliaco.last_total == 0 ? 1 : 0)
         return ap
     end
 
     def self.pos_periodo(data_inicial, data_final)
         @posit_inicial = 0
         @posit_final = 0
-        Avaliaco.all.select{|a| a.data.to_date == data_inicial.to_date}.each do |ai|
+        Avaliaco.all.select{|a| a.tempo.data == data_inicial.to_date}.each do |ai|
             @posit_inicial += ai.positivas
         end
-        Avaliaco.all.select{|a| a.data.to_date == data_final.to_date}.each do |af|
+        Avaliaco.all.select{|a| a.tempo.data == data_final.to_date}.each do |af|
             @posit_final += af.positivas
         end
         return @posit_final - @posit_inicial
@@ -54,10 +47,10 @@ class Avaliaco < ApplicationRecord
     def self.neg_periodo(data_inicial, data_final)
         @negat_inicial = 0
         @negat_final = 0
-        Avaliaco.all.select{|a| a.data.to_date == data_inicial.to_date}.each do |ai|
+        Avaliaco.all.select{|a| a.tempo.data == data_inicial.to_date}.each do |ai|
             @negat_inicial += ai.negativas
         end
-        Avaliaco.all.select{|a| a.data.to_date == data_final.to_date}.each do |af|
+        Avaliaco.all.select{|a| a.tempo.data == data_final.to_date}.each do |af|
             @negat_final += af.negativas
         end
         return @negat_final - @negat_inicial
