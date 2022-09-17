@@ -3,6 +3,9 @@ class Avaliaco < ApplicationRecord
     belongs_to :servico
     has_one :orgao, through: :servico
 
+# CLASS METHODS
+    ## LAST VALUES
+
     def self.last_posit
         @lastPosit = 0
         Avaliaco.select{|s| s.tempo.data == Tempo.cronos.last}.each do |aval|
@@ -32,6 +35,9 @@ class Avaliaco < ApplicationRecord
         return ap
     end
 
+    ## END OF LAST VALUES
+    ## PERIOD VALUES
+
     def self.pos_periodo(data_inicial, data_final)
         @posit_inicial = 0
         @posit_final = 0
@@ -59,5 +65,9 @@ class Avaliaco < ApplicationRecord
     def self.tot_periodo(data_inicial, data_final)
         Avaliaco.pos_periodo(data_inicial, data_final) + Avaliaco.neg_periodo(data_inicial, data_final)
     end
+    
+    ## END OF PERIOD VALUES
+
+# END OF CLASS METHODS
 
 end

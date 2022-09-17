@@ -1,9 +1,12 @@
 class Tempo < ApplicationRecord
     has_many :avaliacos
 
+# CLASS METHODS
     def self.cronos
         Tempo.all.sort_by{|t| t.data}
     end
+# END OF CLASS METHODS
+# OBJECT METHODS
 
     def positivas
         @soma = 0
@@ -29,4 +32,9 @@ class Tempo < ApplicationRecord
         return @soma
     end
 
+    def aprovacao
+        self.positivas/(self.total == 0 ? 1 : self.total)
+    end
+
+# END OF OBJECT METHODS
 end

@@ -9,33 +9,39 @@ class ReportController < ApplicationController
     @avaliacoes = Avaliaco.all
     @orgaos = Orgao.all
     @data = Tempo.cronos
-    @nov_pos_per = 0
-    @nov_neg_per = 0
-    @nov_tot_per = 0
-    @servicos.novos.each do |s|
-      @nov_pos_per += s.pos_periodo(@data[-2].data, @data.last.data)
-      @nov_neg_per += s.neg_periodo(@data[-2].data, @data.last.data)
-      @nov_tot_per += s.tot_periodo(@data[-2].data, @data.last.data)
-    end
-    @ret_pos = 0
-    @ret_neg = 0
-    @ret_tot = 0
-    @servicos.retirados.each do |s|
-      @ret_pos += s.last.positivas
-      @ret_neg += s.last.negativas
-      @ret_tot += s.last.total
-    end
-    @mant_pos_per = 0
-    @mant_neg_per = 0
-    @mant_tot_per = 0
-    @servicos.mantidos.each do |s|
-      @mant_pos_per += s.pos_periodo(@data[-2].data, @data.last.data)
-      @mant_neg_per += s.neg_periodo(@data[-2].data, @data.last.data)
-      @mant_tot_per += s.tot_periodo(@data[-2].data, @data.last.data)
-    end
-    
+    # @nov_pos_per = 0
+    # @nov_neg_per = 0
+    # @nov_tot_per = 0
+    # @servicos.novos.each do |s|
+    #   @nov_pos_per += s.pos_periodo(@data[-2].data, @data.last.data)
+    #   @nov_neg_per += s.neg_periodo(@data[-2].data, @data.last.data)
+    #   @nov_tot_per += s.tot_periodo(@data[-2].data, @data.last.data)
+    # end
+    # @ret_pos = 0
+    # @ret_neg = 0
+    # @ret_tot = 0
+    # @servicos.retirados.each do |s|
+    #   @ret_pos += s.last.positivas
+    #   @ret_neg += s.last.negativas
+    #   @ret_tot += s.last.total
+    # end
+    # @mant_pos_per = 0
+    # @mant_neg_per = 0
+    # @mant_tot_per = 0
+    # @servicos.mantidos.each do |s|
+    #   @mant_pos_per += s.pos_periodo(@data[-2].data, @data.last.data)
+    #   @mant_neg_per += s.neg_periodo(@data[-2].data, @data.last.data)
+    #   @mant_tot_per += s.tot_periodo(@data[-2].data, @data.last.data)
+    # end
+    # @orgs_novo_serv =  @orgaos.sort_by{|o| o.novos_serv*-1}
+    # @orgs_retir_serv =  @orgaos.sort_by{|o| o.retirados_serv*-1}
+    # @orgs_qtd_serv = @orgaos.sort_by{|o| o.qtd_atual*-1}
+    # @orgs_tot_per = @orgaos.sort_by{|o| o.tot_periodo(@data[-2].data, @data.last.data)*-1}
+    # @orgs_pos_per = @orgaos.sort_by{|o| o.pos_periodo(@data[-2].data, @data.last.data)*-1}
+    # @orgs_neg_per = @orgaos.sort_by{|o| o.neg_periodo(@data[-2].data, @data.last.data)*-1}
+    # @orgs_imp_per = @orgaos.sort_by{|o| o.impacto_periodo(@data[-2].data, @data.last.data, (@data.last.total - @data[-2].total))}
+    # @orgs_apv_var = @orgaos.sort_by{|o| (o.pos_aval(@data.last.data)/(o.tot_aval(@data.last.data) == 0 ? 1 : o.tot_aval(@data.last.data)) - (o.pos_aval(@data[-2].data)/(o.tot_aval(@data[-2].data) == 0 ? 1 : o.tot_aval(@data[-2].data))))*-1}
 
-  end
   end
    
 end
