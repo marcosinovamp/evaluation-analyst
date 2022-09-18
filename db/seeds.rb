@@ -14,7 +14,8 @@ servicos = JSON.parse(rascunho)
 
 ids = []
 orgaos = []
-@data = Data.new(data: Time.now.to_date)
+n = Tempo.sort_by{|t| t.order}.last.order
+@data = Tempo.new(data: Time.now.to_date, order: n + 1)
 @data.save
 servicos["resposta"].each do |s|
     if Servico.find_by(api_id: s["id"].gsub("https://servicos.gov.br/api/v1/servicos/", "")).nil?
@@ -27,13 +28,24 @@ servicos["resposta"].each do |s|
     end
     if s["avaliacoes"].nil? == false
         @aval = Avaliaco.new(tempo_id: @data.id, positivas: s["avaliacoes"]["positivas"], negativas: s["avaliacoes"]["negativas"], servico_id: @serv.id, total: s["avaliacoes"]["positivas"] + s["avaliacoes"]["negativas"], aprov: s["avaliacoes"]["positivas"].to_f/(s["avaliacoes"]["positivas"] + s["avaliacoes"]["negativas"]) == 0 ? 1: (s["avaliacoes"]["positivas"] + s["avaliacoes"]["negativas"]))
-        @aval.save
+        @ant = Avaliaco.find_by(servico_id: @serv.id, tempo_id: Tempo.find_by(order: n).id)
+        if @ant.nil?
+            @aval.pos_periodo = s["avaliacoes"]["positivas"]
+            @aval.neg_periodo = s["avaliacoes"]["negativas"]
+            @aval.tot_periodo = s["avaliacoes"]["positivas"] + s["avaliacoes"]["negativas"]
+            @aval.apv_periodo = s["avaliacoes"]["positivas"].to_f/(s["avaliacoes"]["positivas"] + s["avaliacoes"]["negativas"]) == 0 ? 1: (s["avaliacoes"]["positivas"] + s["avaliacoes"]["negativas"])
+        else
+            @aval.pos_periodo = s["avaliacoes"]["positivas"] - @ant.positivas
+            @aval.neg_periodo = s["avaliacoes"]["negativas"] - @ant.negativas
+            @aval.tot_periodo = (s["avaliacoes"]["positivas"] + s["avaliacoes"]["negativas"]) - @ant.total
+            @aval.apv_periodo = @aval.pos_periodo.to_f/(@aval.tot_periodo == 0 ? 1 : @aval.tot_periodo)
+        end
     else
-        if Avaliaco.find_by(servico_id: @serv.id).nil? || Avaliaco.find_by(servico_id: @serv.id).data.to_date != Time.now.to_date
+        if Avaliaco.find_by(servico_id: @serv.id).nil? || s.avaliacos.select{|a| a.tempo.data == Time.now.to_date}.nil?
             @aval = Avaliaco.new(tempo_id: @data.id, positivas: 0, negativas: 0, servico_id: @serv.id)
-            @aval.save
         end
     end
+    @aval.save
     ids << s["id"].gsub("https://servicos.gov.br/api/v1/servicos/", "").to_i
     if orgaos.include?(s["orgao"]["nomeOrgao"]) == false
         orgaos << s["orgao"]["nomeOrgao"]
