@@ -1,26 +1,34 @@
-<h3 style="text-align:center">Portal gov.br - Relatório da avaliação de informações das páginas de serviço: <%=bradate(@data_inicial)%> a <%=bradate(@data_final)%></h3>
+<div class="container">
+    <h3 style="text-align:center">Portal gov.br - Relatório da avaliação de informações das páginas de serviço: <%=bradate(@data_inicial)%> a <%=bradate(@data_final)%></h3>
+    <br>
+    <br>
+
+    <p>Serviços novos: <%=nmb_form(@novos)%></p>
+    <p>Serviços retirados: <%=nmb_form(@retirados)%></p>
+    <p>Serviços mantidos: <%=nmb_form(@mantidos)%></p>
+    <p>Serviços atuais: <%=nmb_form(@atuais)%></p>
 <br>
 <br>
-
-Serviços novos: <%=nmb_form(@novos)%>
-Serviços retirados: <%=nmb_form(@retirados)%>
-Serviços mantidos: <%=nmb_form(@mantidos)%>
-Serviços atuais: <%=nmb_form(@atuais)%>
-
-<%@status.each do |k,y|%>
-    <%="#{k}: #{nmb_form(y)}"%>
-<%end%>
-
-Variação apv: <%=percent(@varapv)%>
-Orgãos novos, retirados e atuais: <%=@mais_servicos[0][0]%>, <%=@mais_novos[0][0]%>, <%=@mais_retirados[0][0]%>
-Mais avaliações período: <%=@mavalper[0][0]%>
-Mais positivas período: <%=@mposper[0][0]%>
-Mais negativas período: <%=@mnegper[0][0]%>
-Maior impacto positivo: <%=@imp_periodo.first.nome%>
-Maior impacto negativo: <%=@imp_periodo.last.nome%>
-Órgãos com maior variação de aprovação: <%=@var_apv[0][0]%>
-Outperformance: <%=@outp.first.nome%>
-Serviço mais avaliado período: <%=@serv_map.first.nome%>
-Serviço mais positivas período: <%=@serv_mpp.first.nome%>
-Serviço mais negativas período: <%=@serv_mnp.first.nome%>
-Serviços melhores avaliados: <%=@serv_best.first.nome%>
+    <div class="row">
+        <div class="col-sm-6">
+            <h3><%=bradate(Tempo.cronos.last.data.to_date)%></h3>
+            <%@status.each do |k, s|%>
+                <%if k == :apv_periodo || k == :aprovacao%>
+                    <p><%=k%>: <%=percent(s)%></p>
+                <%else%>
+                    <p><%=k%>: <%=nmb_form(s)%></p>
+                <%end%>
+            <%end%>
+        </div>
+        <div class="col-sm-6">
+            <h3><%=bradate(Tempo.cronos[-2].data.to_date)%></h3>
+            <%@status_ant.each do |k, s|%>
+                <%if k == :apv_periodo || k == :aprovacao%>
+                    <p><%=k%>: <%=percent(s)%></p>
+                <%else%>
+                    <p><%=k%>: <%=nmb_form(s)%></p>
+                <%end%>
+            <%end%>
+        </div>
+    </div>
+</div>

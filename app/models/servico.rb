@@ -50,7 +50,7 @@ class Servico < ApplicationRecord
     end
     
     def participacao
-        self.total/Tempo.cronos.last.total
+        self.total.to_f/Tempo.cronos.last.status[:total]
     end
     
     def self.melhor_avaliados

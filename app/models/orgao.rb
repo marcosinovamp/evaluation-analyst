@@ -100,7 +100,7 @@ class Orgao < ApplicationRecord
     end
 
     def part_periodo
-        self.tot_periodo.to_f/Tempo.cronos.last.tot_periodo
+        self.tot_periodo.to_f/Tempo.cronos.last.status[:tot_periodo]
     end
 
     def impacto_periodo

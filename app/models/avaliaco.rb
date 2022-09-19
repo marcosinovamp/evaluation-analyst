@@ -4,7 +4,7 @@ class Avaliaco < ApplicationRecord
     has_one :orgao, through: :servico
 
     def participacao
-        self.total.to_f/Tempo.cronos.last.total == 0 ? 1: Tempo.cronos.last.total
+        self.total.to_f/Tempo.cronos.last.status[:total] == 0 ? 1: Tempo.cronos.last.status[:total]
     end
 
     def impacto_pos
@@ -20,7 +20,7 @@ class Avaliaco < ApplicationRecord
     end
 
     def part_periodo
-        self.tot_periodo.to_f/Tempo.cronos.last.total == 0 ? 1: Tempo.cronos.last.total
+        self.tot_periodo.to_f/Tempo.cronos.last.status[:total] == 0 ? 1: Tempo.cronos.last.status[:total]
     end
 
     def imppos_periodo
@@ -34,9 +34,5 @@ class Avaliaco < ApplicationRecord
     def imp_periodo
         self.imppos_periodo - self.impneg_periodo
     end
-
-
-
-
 
 end
