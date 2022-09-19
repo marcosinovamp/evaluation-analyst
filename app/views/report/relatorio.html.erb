@@ -1,46 +1,26 @@
 <h3 style="text-align:center">Portal gov.br - Relatório da avaliação de informações das páginas de serviço: <%=bradate(@data_inicial)%> a <%=bradate(@data_final)%></h3>
 <br>
 <br>
-<p>Durante o período <%=nmb_form(@servicos.novos.size)%> novas páginas de serviço foram inclusas no Portal e <%=nmb_form(@servicos.retirados.size)%> páginas foram retiradas, resultando em <%=nmb_form(@servicos.atuais.size)%> serviços atualmente na API de serviços.</p>
-<br>
-<p>Novos: <%=nmb_form(@total_novos)%> (<%=nmb_form(@posit_novos)%> positivas x <%=nmb_form(@negat_novos)%> negativas)</p>
-<p>Retirados: <%=nmb_form(@total_mantidos)%> (<%=nmb_form(@posit_mantidos)%> positivas x <%=nmb_form(@negat_mantidos)%> negativas)</p>
-<p>Mantidos: <%=nmb_form(@total_retirados)%> (<%=nmb_form(@posit_retirados)%> positivas x <%=nmb_form(@negat_retirados)%> negativas)</p>
-<p>Atual: <%=nmb_form(@datas.last.total)%> (<%=nmb_form(@datas.last.positivas)%> positivas x <%=nmb_form(@datas.last.negativas)%> negativas)</p>
-<p>Variação de Aprovação: <%=percent(@datas.last.aprovacao - @datas[-2].aprovacao)%></p>
-<p>Órgãos que mais acrescentaram serviços:</p>
-<ol>
-    <li><%=@mais_novos.first.nome%> - <%=@mais_novos.first.novos_serv%></li>
-    <li><%=@mais_novos.second.nome%> - <%=@mais_novos.second.novos_serv%></li>
-    <li><%=@mais_novos.third.nome%> - <%=@mais_novos.third.novos_serv%></li>
-</ol>
-<p>Órgãos que mais retiraram serviços:</p>
-<ol>
-    <li><%=@mais_retirados.first.nome%> - <%=@mais_retirados.first.retirados_serv%></li>
-    <li><%=@mais_retirados.second.nome%> - <%=@mais_retirados.second.retirados_serv%></li>
-    <li><%=@mais_retirados.third.nome%> - <%=@mais_retirados.third.retirados_serv%></li>
-</ol>
-<p>Órgãos com mais serviços:</p>
-<ol>
-    <li><%=@mais_servicos.first.nome%> - <%=@mais_servicos.first.servicos.size%></li>
-    <li><%=@mais_servicos.second.nome%> - <%=@mais_servicos.second.servicos.size%></li>
-    <li><%=@mais_servicos.third.nome%> - <%=@mais_servicos.third.servicos.size%></li>
-</ol>
-<p>Órgãos com mais avaliações no período:</p>
-<ol>
-    <li><%=@mais_avaliacoes.first.nome%> - <%=nmb_form(@mais_avaliacoes.first.tot_periodo)%></li>
-    <li><%=@mais_avaliacoes.second.nome%> - <%=nmb_form(@mais_avaliacoes.second.tot_periodo)%></li>
-    <li><%=@mais_avaliacoes.third.nome%> - <%=nmb_form(@mais_avaliacoes.third.tot_periodo)%></li>
-</ol>
-<p>Órgãos com mais positivas no período:</p>
-<ol>
-    <li><%=@mais_positivas.first.nome%> - <%=nmb_form(@mais_positivas.first.pos_periodo)%></li>
-    <li><%=@mais_positivas.second.nome%> - <%=nmb_form(@mais_positivas.second.pos_periodo)%></li>
-    <li><%=@mais_positivas.third.nome%> - <%=nmb_form(@mais_positivas.third.pos_periodo)%></li>
-</ol>
-<p>Órgãos com mais negativas no período:</p>
-<ol>
-    <li><%=@mais_negativas.first.nome%> - <%=nmb_form(@mais_negativas.first.neg_periodo)%></li>
-    <li><%=@mais_negativas.second.nome%> - <%=nmb_form(@mais_negativas.second.neg_periodo)%></li>
-    <li><%=@mais_negativas.third.nome%> - <%=nmb_form(@mais_negativas.third.neg_periodo)%></li>
-</ol>
+
+Serviços novos: <%=nmb_form(@novos)%>
+Serviços retirados: <%=nmb_form(@retirados)%>
+Serviços mantidos: <%=nmb_form(@mantidos)%>
+Serviços atuais: <%=nmb_form(@atuais)%>
+
+<%@status.each do |k,y|%>
+    <%="#{k}: #{nmb_form(y)}"%>
+<%end%>
+
+Variação apv: <%=percent(@varapv)%>
+Orgãos novos, retirados e atuais: <%=@mais_servicos[0][0]%>, <%=@mais_novos[0][0]%>, <%=@mais_retirados[0][0]%>
+Mais avaliações período: <%=@mavalper[0][0]%>
+Mais positivas período: <%=@mposper[0][0]%>
+Mais negativas período: <%=@mnegper[0][0]%>
+Maior impacto positivo: <%=@imp_periodo.first.nome%>
+Maior impacto negativo: <%=@imp_periodo.last.nome%>
+Órgãos com maior variação de aprovação: <%=@var_apv[0][0]%>
+Outperformance: <%=@outp.first.nome%>
+Serviço mais avaliado período: <%=@serv_map.first.nome%>
+Serviço mais positivas período: <%=@serv_mpp.first.nome%>
+Serviço mais negativas período: <%=@serv_mnp.first.nome%>
+Serviços melhores avaliados: <%=@serv_best.first.nome%>
