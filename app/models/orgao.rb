@@ -4,19 +4,19 @@ class Orgao < ApplicationRecord
     has_many :tempos, through: :avaliacos
 
     def self.total
-        @total_memo ||= Orgao.all.size
+        @total_memo ||= Orgao.all..pluck(:id).size
     end
 
     def novos_serv
-        self.servicos.select{|s| s.status=="Novo"}.size
+        self.servicos.select{|s| s.status=="Novo"}.pluck(:status).size
     end
 
     def mantidos_serv
-        self.servicos.select{|s| s.status=="Mantido"}.size
+        self.servicos.select{|s| s.status=="Mantido"}.pluck(:status).size
     end
 
     def retirados_serv
-        self.servicos.select{|s| s.status=="Retirado"}.size
+        self.servicos.select{|s| s.status=="Retirado"}.pluck(:status).size
     end
 
     def qtd_atual
@@ -108,15 +108,15 @@ class Orgao < ApplicationRecord
     end
 
     def self.mais_novos
-        @mais_novos_memo ||= @grupo = Orgao.all.sort_by{|o| o.novos_serv*-1}
+        @mais_novos_memo ||= @grupo = Orgao.all.sort_by{|o| o.novos_serv*-1}[0..2]
     end
 
     def self.mais_retirados
-        @mais_retirados_memo ||= @grupo = Orgao.all.sort_by{|o| o.retirados_serv*-1}
+        @mais_retirados_memo ||= @grupo = Orgao.all.sort_by{|o| o.retirados_serv*-1}[0..2]
     end
 
     def self.mais_servicos
-        @mais_servicos_memo ||= @grupo = Orgao.all.sort_by{|o| o.qtd_atual*-1}
+        @mais_servicos_memo ||= @grupo = Orgao.all.sort_by{|o| o.qtd_atual*-1}[0..2]
     end
 
     def self.mais_aval_periodo

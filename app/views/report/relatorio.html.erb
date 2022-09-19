@@ -7,11 +7,29 @@
     <p>Serviços retirados: <%=nmb_form(@retirados)%></p>
     <p>Serviços mantidos: <%=nmb_form(@mantidos)%></p>
     <p>Serviços atuais: <%=nmb_form(@atuais)%></p>
+    <p>Variação Aprovação: <%=percent(@varapv)%></p>
+    <div class="row">
+        <div class="col-sm-4">
+            <%@mais_novos.each do |n|%>
+                <p><%=n.nome_fantasia%>: <%=n.novos_serv%> serviços novos.</p>
+            <%end%>
+        </div>
+        <div class="col-sm-4">
+            <%@mais_retirados.each do |n|%>
+                <p><%=n.nome_fantasia%>: <%=n.retirados_serv%> serviços retirados.</p>
+            <%end%>
+        </div>
+        <div class="col-sm-4">
+            <%@quantidade_atual.each do |n|%>
+                <p><%=n.nome_fantasia%>: <%=n.qtd_atual%> serviços.</p>
+            <%end%>
+        </div>
+    </div>
 <br>
 <br>
     <div class="row">
         <div class="col-sm-6">
-            <h3><%=bradate(Tempo.cronos.last.data.to_date)%></h3>
+            <h3><%=bradate(@data_final)%></h3>
             <%@status.each do |k, s|%>
                 <%if k == :apv_periodo || k == :aprovacao%>
                     <p><%=k%>: <%=percent(s)%></p>
@@ -21,7 +39,7 @@
             <%end%>
         </div>
         <div class="col-sm-6">
-            <h3><%=bradate(Tempo.cronos[-2].data.to_date)%></h3>
+            <h3><%=bradate(@data_inicial)%></h3>
             <%@status_ant.each do |k, s|%>
                 <%if k == :apv_periodo || k == :aprovacao%>
                     <p><%=k%>: <%=percent(s)%></p>

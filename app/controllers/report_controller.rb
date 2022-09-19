@@ -14,8 +14,13 @@ class ReportController < ApplicationController
     @data_final = Tempo.cronos.last.data
     @status = Tempo.cronos.last.status
     @status_ant =Tempo.cronos[-2].status
-    # @varapv = @status[:aprovacao] - @status_ant[:aprovacao]
-    # @mais_novos = Orgao.mais_novos
+    @varapv = @status[:aprovacao] - @status_ant[:aprovacao]
+    @mais_novos = Orgao.mais_novos
+    @mais_retirados = Orgao.mais_retirados
+    @quantidade_atual = Orgao.mais_servicos
+
+    # @mais_novos = Orgao.includes(:servicos).mais_novos.pluck(:nome, :servicos)
+    # Membership.includes(:user,:business).all.pluck("businesses.name", "users.email")
     # @mais_retirados = Orgao.mais_retirados
     # @mais_servicos = Orgao.mais_servicos
     # @mavalper = Orgao.mais_aval_periodo
@@ -33,7 +38,7 @@ class ReportController < ApplicationController
   private
 
   def basics
-    @orgaos = Orgao.all.includes(:servicos)
+   @servicos = Servico.includes(:orgao, :avaliacos).all
     @datas = Tempo.all.includes(:avaliacos)
   end
 
