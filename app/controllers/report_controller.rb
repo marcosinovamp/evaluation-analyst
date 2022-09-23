@@ -1,45 +1,33 @@
 class ReportController < ApplicationController
 
   def home
-    basics
   end
 
   def relatorio
-    basics
-    @novos = Servico.novos.size
-    @retirados = Servico.retirados.size
-    @mantidos = Servico.mantidos.size
-    @atuais = Servico.atuais.size
-    @data_inicial = Tempo.cronos[-2].data
-    @data_final = Tempo.cronos.last.data
-    @status = Tempo.cronos.last.status
-    @status_ant =Tempo.cronos[-2].status
-    @varapv = @status[:aprovacao] - @status_ant[:aprovacao]
-    @mais_novos = Orgao.mais_novos
-    @mais_retirados = Orgao.mais_retirados
-    @quantidade_atual = Orgao.mais_servicos
+    @varapvmedia = Tempo.cronos.last.aprovacao_media - Tempo.cronos[-2].aprovacao_media
+    @atuais = Servico.atuais
+    @serv_mag = @atuais.sort_by{|s| s.qtd_avaliacoes*-1}
+    @serv_map = @atuais.sort_by{|s| s.qtd_avaliacoes_periodo*-1}
+    @serv_mpg = @atuais.sort_by{|s| s.qtd_positivas*-1}
+    @serv_mpp = @atuais.sort_by{|s| s.qtd_positivas_periodo*-1}
+    @serv_mng = @atuais.sort_by{|s| s.qtd_negativas*-1}
+    @serv_mnp = @atuais.sort_by{|s| s.qtd_negativas_periodo*-1}
+    @serv_mapvg = Servico.mais1000.sort_by{|s| s.aprovacao_geral*-1}
+    @serv_mapvp = Servico.mais10.sort_by{|s| s.aprovacao_periodo*-1}
+    @serv_mig = @atuais.sort_by{|s| s.impacto_geral*-1}
+    @serv_mip = @atuais.sort_by{|s| s.impacto_periodo*-1}
+    @orgaos = Orgao.all.includes(:servicos, :avaliacos, :derivados)
+    @org_msn = @orgaos.sort_by{|o| o.novos*-1}
+    @org_msr = @orgaos.sort_by{|o| o.retirados*-1}
+    @org_msa = @orgaos.sort_by{|o| o.atuais*-1}
+    @org_mag = @orgaos.sort_by{|o| o.fotografia_geral[0]*-1}
+    @org_map = @orgaos.sort_by{|o| o.fotografia_periodo[0]*-1}
+    @org_mpg = @orgaos.sort_by{|o| o.fotografia_geral[1]*-1}
+    @org_mpp = @orgaos.sort_by{|o| o.fotografia_periodo[1]*-1}
+    @org_mng = @orgaos.sort_by{|o| o.fotografia_geral[2]*-1}
+    @org_mnp = @orgaos.sort_by{|o| o.fotografia_periodo[2]*-1}
 
-    # @mais_novos = Orgao.includes(:servicos).mais_novos.pluck(:nome, :servicos)
-    # Membership.includes(:user,:business).all.pluck("businesses.name", "users.email")
-    # @mais_retirados = Orgao.mais_retirados
-    # @mais_servicos = Orgao.mais_servicos
-    # @mavalper = Orgao.mais_aval_periodo
-    # @mposper = Orgao.mais_pos_periodo
-    # @mnegper = Orgao.mais_neg_periodo
-    # @imp_periodo = Orgao.mais_imp_per
-    # @var_apv = Orgao.var_aprovacao
-    # @outp = Orgao.mais_outperf
-    # @serv_map = Servico.mais_aval_periodo
-    # @serv_mpp = Servico.mais_pos_periodo
-    # @serv_mnp = Servico.mais_neg_periodo
-    # @serv_best = Servico.melhor_avaliados
-  end
 
-  private
-
-  def basics
-   @servicos = Servico.includes(:orgao, :avaliacos).all
-    @datas = Tempo.all.includes(:avaliacos)
   end
 
 end

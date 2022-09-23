@@ -1,52 +1,216 @@
 <div class="container">
-    <h3 style="text-align:center">Portal gov.br - Relatório da avaliação de informações das páginas de serviço: <%=bradate(@data_inicial)%> a <%=bradate(@data_final)%></h3>
+    <h5>Data: <%=bradate(Tempo.cronos.last.data)%></h5>
     <br>
+    <h6>Situação Geral Atual:</h6>
+    <div class="single">
+        <p><%=nmb_form(Servico.atuais.size)%> serviços, <%=nmb_form(Orgao.all.size)%> órgãos, <%=nmb_form(Tempo.cronos.last.fotografia_geral[0])%> avaliações (<%=nmb_form(Tempo.cronos.last.fotografia_geral[1])%> positivas x <%=nmb_form(Tempo.cronos.last.fotografia_geral[2])%> negativas), aprovação média de <%=percent(Tempo.cronos.last.aprovacao_media)%>.</p>
+    </div>
     <br>
-
-    <p>Serviços novos: <%=nmb_form(@novos)%></p>
-    <p>Serviços retirados: <%=nmb_form(@retirados)%></p>
-    <p>Serviços mantidos: <%=nmb_form(@mantidos)%></p>
-    <p>Serviços atuais: <%=nmb_form(@atuais)%></p>
-    <p>Variação Aprovação: <%=percent(@varapv)%></p>
-    <div class="row">
-        <div class="col-sm-4">
-            <%@mais_novos.each do |n|%>
-                <p><%=n.nome_fantasia%>: <%=n.novos_serv%> serviços novos.</p>
-            <%end%>
-        </div>
-        <div class="col-sm-4">
-            <%@mais_retirados.each do |n|%>
-                <p><%=n.nome_fantasia%>: <%=n.retirados_serv%> serviços retirados.</p>
-            <%end%>
-        </div>
-        <div class="col-sm-4">
-            <%@quantidade_atual.each do |n|%>
-                <p><%=n.nome_fantasia%>: <%=n.qtd_atual%> serviços.</p>
-            <%end%>
-        </div>
+    <h6>Modificações Gerais no Último Período:</h6>
+    <div class="single">
+        <ul style="margin:0">
+            <li>Foram acrescentados <%=nmb_form(Servico.novos.size)%> serviços, que receberam <%=nmb_form(Servico.aval_novos[0])%> avaliações no período (<%=nmb_form(Servico.aval_novos[1])%> positivas x <%=nmb_form(Servico.aval_novos[2])%> negativas).</li>
+            <li>Foram retirados <%=nmb_form(Servico.retirados.size)%> serviços, que tiraram do Portal <%=nmb_form(Servico.aval_retirados[0])%> avaliações (<%=nmb_form(Servico.aval_retirados[1])%> positivas x <%=nmb_form(Servico.aval_retirados[2])%> negativas).</li>
+            <li>Os restantes <%=nmb_form(Servico.mantidos.size)%> serviços foram mantidos, e tiveram no período <%=nmb_form(Servico.aval_mantidos[0])%> avaliações (<%=nmb_form(Servico.aval_mantidos[1])%> positivas x <%=nmb_form(Servico.aval_mantidos[2])%> negativas).</li>
+            <li>A aprovação no período foi de <%=percent(Tempo.cronos.last.aprovacao_periodo)%>.</li>
+            <li>Houve uma variação de <%=percent(@varapvmedia)%> na aprovação média como consequência do período.</li>
+        </ul>
     </div>
-<br>
-<br>
-    <div class="row">
-        <div class="col-sm-6">
-            <h3><%=bradate(@data_final)%></h3>
-            <%@status.each do |k, s|%>
-                <%if k == :apv_periodo || k == :aprovacao%>
-                    <p><%=k%>: <%=percent(s)%></p>
-                <%else%>
-                    <p><%=k%>: <%=nmb_form(s)%></p>
-                <%end%>
-            <%end%>
+    <br>
+    <h6>Serviços:</h6>
+    <ul>
+        <div class="row">
+            <div class="col-sm-6 margined">
+                <li>Maior quantidade de Avaliações (Geral):</li>
+                <ol>
+                    <li><%=@serv_mag.first.nome%> - <%=nmb_form(@serv_mag.first.qtd_avaliacoes)%> avaliações (<%=percent(@serv_mag.first.qtd_avaliacoes.to_f/Tempo.cronos.last.fotografia_geral[0])%> das avaliações.)</li>
+                    <li><%=@serv_mag.second.nome%> - <%=nmb_form(@serv_mag.second.qtd_avaliacoes)%> avaliações (<%=percent(@serv_mag.second.qtd_avaliacoes.to_f/Tempo.cronos.last.fotografia_geral[0])%> das avaliações.)</li>
+                    <li><%=@serv_mag.third.nome%> - <%=nmb_form(@serv_mag.third.qtd_avaliacoes)%> avaliações (<%=percent(@serv_mag.third.qtd_avaliacoes.to_f/Tempo.cronos.last.fotografia_geral[0])%> das avaliações.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Maior quantidade de Avaliações (Período):</li>
+                <ol>
+                    <li><%=@serv_map.first.nome%> - <%=nmb_form(@serv_map.first.qtd_avaliacoes_periodo)%> avaliações (<%=percent(@serv_map.first.qtd_avaliacoes_periodo.to_f/Tempo.cronos.last.fotografia_periodo[0])%> das avaliações no período.)</li>
+                    <li><%=@serv_map.second.nome%> - <%=nmb_form(@serv_map.second.qtd_avaliacoes_periodo)%> avaliações (<%=percent(@serv_map.second.qtd_avaliacoes_periodo.to_f/Tempo.cronos.last.fotografia_periodo[0])%> das avaliações no período.)</li>
+                    <li><%=@serv_map.third.nome%> - <%=nmb_form(@serv_map.third.qtd_avaliacoes_periodo)%> avaliações (<%=percent(@serv_map.third.qtd_avaliacoes_periodo.to_f/Tempo.cronos.last.fotografia_periodo[0])%> das avaliações no período.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Maior quantidade de Avaliações Positivas (Geral):</li>
+                <ol>
+                    <li><%=@serv_mpg.first.nome%> - <%=nmb_form(@serv_mpg.first.qtd_positivas)%> avaliações (<%=percent(@serv_mpg.first.qtd_positivas.to_f/Tempo.cronos.last.fotografia_geral[1])%> das avaliações positivas.)</li>
+                    <li><%=@serv_mpg.second.nome%> - <%=nmb_form(@serv_mpg.second.qtd_positivas)%> avaliações (<%=percent(@serv_mpg.second.qtd_positivas.to_f/Tempo.cronos.last.fotografia_geral[1])%> das avaliações positivas.)</li>
+                    <li><%=@serv_mpg.third.nome%> - <%=nmb_form(@serv_mpg.third.qtd_positivas)%> avaliações (<%=percent(@serv_mpg.third.qtd_positivas.to_f/Tempo.cronos.last.fotografia_geral[1])%> das avaliações positivas.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Maior quantidade de Avaliações Positivas(Período):</li>
+                <ol>
+                    <li><%=@serv_mpp.first.nome%> - <%=nmb_form(@serv_mpp.first.qtd_positivas_periodo)%> avaliações (<%=percent(@serv_mpp.first.qtd_positivas_periodo.to_f/Tempo.cronos.last.fotografia_periodo[1])%> das avaliações positivas no período.)</li>
+                    <li><%=@serv_mpp.second.nome%> - <%=nmb_form(@serv_mpp.second.qtd_positivas_periodo)%> avaliações (<%=percent(@serv_mpp.second.qtd_positivas_periodo.to_f/Tempo.cronos.last.fotografia_periodo[1])%> das avaliações positivas no período.)</li></li>
+                    <li><%=@serv_mpp.third.nome%> - <%=nmb_form(@serv_mpp.third.qtd_positivas_periodo)%> avaliações (<%=percent(@serv_mpp.third.qtd_positivas_periodo.to_f/Tempo.cronos.last.fotografia_periodo[1])%> das avaliações positivas no período.)</li></li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Maior quantidade de Avaliações Negativas (Geral):</li>
+                <ol>
+                    <li><%=@serv_mng.first.nome%> - <%=nmb_form(@serv_mng.first.qtd_negativas)%> avaliações (<%=percent(@serv_mng.first.qtd_negativas.to_f/Tempo.cronos.last.fotografia_geral[2])%> das avaliações negativas.)</li>
+                    <li><%=@serv_mng.second.nome%> - <%=nmb_form(@serv_mng.second.qtd_negativas)%> avaliações (<%=percent(@serv_mng.second.qtd_negativas.to_f/Tempo.cronos.last.fotografia_geral[2])%> das avaliações negativas.)</li>
+                    <li><%=@serv_mng.third.nome%> - <%=nmb_form(@serv_mng.third.qtd_negativas)%> avaliações (<%=percent(@serv_mng.third.qtd_negativas.to_f/Tempo.cronos.last.fotografia_geral[2])%> das avaliações negativas.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Maior quantidade de Avaliações Negativas(Período):</li>
+                <ol>
+                    <li><%=@serv_mnp.first.nome%> - <%=nmb_form(@serv_mnp.first.qtd_negativas_periodo)%> avaliações (<%=percent(@serv_mnp.first.qtd_negativas_periodo.to_f/Tempo.cronos.last.fotografia_periodo[2])%> das avaliações negativas do período.)</li>
+                    <li><%=@serv_mnp.second.nome%> - <%=nmb_form(@serv_mnp.second.qtd_negativas_periodo)%> avaliações (<%=percent(@serv_mnp.second.qtd_negativas_periodo.to_f/Tempo.cronos.last.fotografia_periodo[2])%> das avaliações negativas do período.)</li>
+                    <li><%=@serv_mnp.third.nome%> - <%=nmb_form(@serv_mnp.third.qtd_negativas_periodo)%> avaliações (<%=percent(@serv_mnp.third.qtd_negativas_periodo.to_f/Tempo.cronos.last.fotografia_periodo[2])%> das avaliações negativas do período.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Melhor avaliados (Geral):</li>
+                <ol>
+                    <li><%=@serv_mapvg.first.nome%> - <%=percent(@serv_mapvg.first.aprovacao_geral)%> de aprovação (<%=percent(@serv_mapvg.first.aprovacao_geral - Tempo.cronos.last.aprovacao_media)%> acima da média)</li>
+                    <li><%=@serv_mapvg.second.nome%> - <%=percent(@serv_mapvg.second.aprovacao_geral)%> de aprovação (<%=percent(@serv_mapvg.second.aprovacao_geral - Tempo.cronos.last.aprovacao_media)%> acima da média)</li>
+                    <li><%=@serv_mapvg.third.nome%> - <%=percent(@serv_mapvg.third.aprovacao_geral)%> de aprovação (<%=percent(@serv_mapvg.third.aprovacao_geral - Tempo.cronos.last.aprovacao_media)%> acima da média)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Melhor avaliados (Periodo):</li>
+                <ol>
+                    <li><%=@serv_mapvp.first.nome%> - <%=percent(@serv_mapvp.first.aprovacao_periodo)%> de aprovação (<%=percent(@serv_mapvp.first.aprovacao_periodo - Tempo.cronos.last.aprovacao_periodo)%> acima da média)</li>
+                    <li><%=@serv_mapvp.second.nome%> - <%=percent(@serv_mapvp.second.aprovacao_periodo)%> de aprovação (<%=percent(@serv_mapvp.second.aprovacao_periodo - Tempo.cronos.last.aprovacao_periodo)%> acima da média)</li>
+                    <li><%=@serv_mapvp.third.nome%> - <%=percent(@serv_mapvp.third.aprovacao_periodo)%> de aprovação (<%=percent(@serv_mapvp.third.aprovacao_periodo - Tempo.cronos.last.aprovacao_periodo)%> acima da média)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Pior avaliados (Geral):</li>
+                <ol>
+                    <li><%=@serv_mapvg.reverse.first.nome%> - <%=percent(@serv_mapvg.reverse.first.aprovacao_geral)%> de aprovação (<%=percent(@serv_mapvg.reverse.first.aprovacao_geral - Tempo.cronos.last.aprovacao_media)%> abaixo da média)</li>
+                    <li><%=@serv_mapvg.reverse.second.nome%> - <%=percent(@serv_mapvg.reverse.second.aprovacao_geral)%> de aprovação (<%=percent(@serv_mapvg.reverse.second.aprovacao_geral - Tempo.cronos.last.aprovacao_media)%> abaixo da média)</li>
+                    <li><%=@serv_mapvg.reverse.third.nome%> - <%=percent(@serv_mapvg.reverse.third.aprovacao_geral)%> de aprovação (<%=percent(@serv_mapvg.reverse.third.aprovacao_geral - Tempo.cronos.last.aprovacao_media)%> abaixo da média)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Pior avaliados (Periodo):</li>
+                <ol>
+                    <li><%=@serv_mapvp.reverse.first.nome%> - <%=percent(@serv_mapvp.reverse.first.aprovacao_periodo)%> de aprovação (<%=percent(@serv_mapvp.reverse.first.aprovacao_periodo - Tempo.cronos.last.aprovacao_periodo)%> abaixo da média)</li>
+                    <li><%=@serv_mapvp.reverse.second.nome%> - <%=percent(@serv_mapvp.reverse.second.aprovacao_periodo)%> de aprovação (<%=percent(@serv_mapvp.reverse.second.aprovacao_periodo - Tempo.cronos.last.aprovacao_periodo)%> abaixo da média)</li>
+                    <li><%=@serv_mapvp.reverse.third.nome%> - <%=percent(@serv_mapvp.reverse.third.aprovacao_periodo)%> de aprovação (<%=percent(@serv_mapvp.reverse.third.aprovacao_periodo - Tempo.cronos.last.aprovacao_periodo)%> abaixo da média)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Maior Impacto Positivo (Geral):</li>
+                <ol>
+                    <li><%=@serv_mig.first.nome%> - <%=percent(@serv_mig.first.impacto_geral)%> do desempenho.</li>
+                    <li><%=@serv_mig.second.nome%> - <%=percent(@serv_mig.second.impacto_geral)%> do desempenho.</li>
+                    <li><%=@serv_mig.third.nome%> - <%=percent(@serv_mig.third.impacto_geral)%> do desempenho.</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Maior Impacto Positivo (Período):</li>
+                <ol>
+                    <li><%=@serv_mip.first.nome%> - <%=percent(@serv_mip.first.impacto_periodo)%> do desempenho.</li>
+                    <li><%=@serv_mip.second.nome%> - <%=percent(@serv_mip.second.impacto_periodo)%> do desempenho.</li>
+                    <li><%=@serv_mip.third.nome%> - <%=percent(@serv_mip.third.impacto_periodo)%> do desempenho.</li>
+                </ol>
+            </div>
+             <div class="col-sm-6 margined">
+                <li>Maior Impacto Negativo (Geral):</li>
+                <ol>
+                    <li><%=@serv_mig.reverse.first.nome%> - <%=percent(@serv_mig.reverse.first.impacto_geral)%> do desempenho.</li>
+                    <li><%=@serv_mig.reverse.second.nome%> - <%=percent(@serv_mig.reverse.second.impacto_geral)%> do desempenho.</li>
+                    <li><%=@serv_mig.reverse.third.nome%> - <%=percent(@serv_mig.reverse.third.impacto_geral)%> do desempenho.</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Maior Impacto Negativo (Período):</li>
+                <ol>
+                    <li><%=@serv_mip.reverse.first.nome%> - <%=percent(@serv_mip.reverse.first.impacto_periodo)%> do desempenho.</li>
+                    <li><%=@serv_mip.reverse.second.nome%> - <%=percent(@serv_mip.reverse.second.impacto_periodo)%> do desempenho.</li>
+                    <li><%=@serv_mip.reverse.third.nome%> - <%=percent(@serv_mip.reverse.third.impacto_periodo)%> do desempenho.</li>
+                </ol>
+            </div>
         </div>
-        <div class="col-sm-6">
-            <h3><%=bradate(@data_inicial)%></h3>
-            <%@status_ant.each do |k, s|%>
-                <%if k == :apv_periodo || k == :aprovacao%>
-                    <p><%=k%>: <%=percent(s)%></p>
-                <%else%>
-                    <p><%=k%>: <%=nmb_form(s)%></p>
-                <%end%>
-            <%end%>
-        </div>
+    </ul>
+    <h6>Orgãos:</h6>
+    <div class="single">
+    <p style="text-align:center">Orgãos com mais serviços no Portal no momento:</p>
+        <ol>
+            <li><%=@org_msa.first.nome%> - <%=nmb_form(@org_msa.first.atuais)%> (<%=percent(@org_msa.first.atuais.to_f/Servico.atuais.size)%> dos serviços hoje no Portal.)</li>
+            <li><%=@org_msa.second.nome%> - <%=nmb_form(@org_msa.second.atuais)%> (<%=percent(@org_msa.second.atuais.to_f/Servico.atuais.size)%> dos serviços hoje no Portal.)</li>
+            <li><%=@org_msa.third.nome%> - <%=nmb_form(@org_msa.third.atuais)%> (<%=percent(@org_msa.third.atuais.to_f/Servico.atuais.size)%> dos serviços hoje no Portal.)</li>
+        </ol>
     </div>
+    <ul>
+        <div class="row">
+            <div class="col-sm-6 margined">
+                    <li>Orgãos que mais acrescentaram serviços no período:</li>
+                    <ol>
+                        <li><%=@org_msn.first.nome%> - <%=nmb_form(@org_msn.first.novos)%> serviços (<%=percent(@org_msn.first.novos.to_f/(Servico.novos.size == 0 ? 1 : Servico.novos.size))%> dos serviços novos.)</li>
+                        <li><%=@org_msn.second.nome%> - <%=nmb_form(@org_msn.second.novos)%> serviços (<%=percent(@org_msn.second.novos.to_f/(Servico.novos.size == 0 ? 1 : Servico.novos.size))%> dos serviços novos.)</li>
+                        <li><%=@org_msn.third.nome%> - <%=nmb_form(@org_msn.third.novos)%> serviços (<%=percent(@org_msn.third.novos.to_f/(Servico.novos.size == 0 ? 1 : Servico.novos.size))%> dos serviços novos.)</li>
+                    </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos que mais retiraram serviços no período:</li>
+                <ol>
+                    <li><%=@org_msr.first.nome%> - <%=nmb_form(@org_msr.first.retirados)%> serviços (<%=percent(@org_msr.first.retirados.to_f/(Servico.retirados.size == 0 ? 1 : Servico.retirados.size))%> dos serviços retirados.)</li>
+                    <li><%=@org_msr.second.nome%> - <%=nmb_form(@org_msr.second.retirados)%> serviços (<%=percent(@org_msr.second.retirados.to_f/(Servico.retirados.size == 0 ? 1 : Servico.retirados.size))%> dos serviços retirados.)</li>
+                    <li><%=@org_msr.third.nome%> - <%=nmb_form(@org_msr.third.retirados)%> serviços (<%=percent(@org_msr.third.retirados.to_f/(Servico.retirados.size == 0 ? 1 : Servico.retirados.size))%> dos serviços retirados.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com mais avaliações no Portal hoje:</li>
+                <ol>
+                    <li><%=@org_mag.first.nome%> - <%=nmb_form(@org_mag.first.fotografia_geral[0])%> (<%=percent(@org_mag.first.fotografia_geral[0].to_f/Tempo.cronos.last.fotografia_geral[0])%> das avaliações feitas até hoje.)</li>
+                    <li><%=@org_mag.second.nome%> - <%=nmb_form(@org_mag.second.fotografia_geral[0])%> (<%=percent(@org_mag.second.fotografia_geral[0].to_f/Tempo.cronos.last.fotografia_geral[0])%> das avaliações feitas até hoje.)</li>
+                    <li><%=@org_mag.third.nome%> - <%=nmb_form(@org_mag.third.fotografia_geral[0])%> (<%=percent(@org_mag.third.fotografia_geral[0].to_f/Tempo.cronos.last.fotografia_geral[0])%> das avaliações feitas até hoje.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com mais avaliações no período:</li>
+                <ol>
+                    <li><%=@org_map.first.nome%> - <%=nmb_form(@org_map.first.fotografia_periodo[0])%> (<%=percent(@org_map.first.fotografia_periodo[0].to_f/Tempo.cronos.last.fotografia_periodo[0])%> das avaliações feitas no período.)</li>
+                    <li><%=@org_map.second.nome%> - <%=nmb_form(@org_map.second.fotografia_periodo[0])%> (<%=percent(@org_map.second.fotografia_periodo[0].to_f/Tempo.cronos.last.fotografia_periodo[0])%> das avaliações feitas no período.)</li>
+                    <li><%=@org_map.third.nome%> - <%=nmb_form(@org_map.third.fotografia_periodo[0])%> (<%=percent(@org_map.third.fotografia_periodo[0].to_f/Tempo.cronos.last.fotografia_periodo[0])%> das avaliações feitas no período.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com mais avaliações positivas hoje:</li>
+                <ol>
+                    <li><%=@org_mpg.first.nome%> - <%=nmb_form(@org_mpg.first.fotografia_geral[1])%> (<%=percent(@org_mpg.first.fotografia_geral[1].to_f/Tempo.cronos.last.fotografia_geral[1])%> das avaliações positivas feitas até hoje.)</li>
+                    <li><%=@org_mpg.second.nome%> - <%=nmb_form(@org_mpg.second.fotografia_geral[1])%> (<%=percent(@org_mpg.second.fotografia_geral[1].to_f/Tempo.cronos.last.fotografia_geral[1])%> das avaliações positivas feitas até hoje.)</li>
+                    <li><%=@org_mpg.third.nome%> - <%=nmb_form(@org_mpg.third.fotografia_geral[1])%> (<%=percent(@org_mpg.third.fotografia_geral[1].to_f/Tempo.cronos.last.fotografia_geral[1])%> das avaliações positivas feitas até hoje.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com mais avaliações positivas no período:</li>
+                <ol>
+                    <li><%=@org_mpp.first.nome%> - <%=nmb_form(@org_mpp.first.fotografia_periodo[1])%> (<%=percent(@org_mpp.first.fotografia_periodo[1].to_f/Tempo.cronos.last.fotografia_periodo[1])%> das avaliações positivas feitas no período.)</li>
+                    <li><%=@org_mpp.second.nome%> - <%=nmb_form(@org_mpp.second.fotografia_periodo[1])%> (<%=percent(@org_mpp.second.fotografia_periodo[1].to_f/Tempo.cronos.last.fotografia_periodo[1])%> das avaliações positivas feitas no período.)</li>
+                    <li><%=@org_mpp.third.nome%> - <%=nmb_form(@org_mpp.third.fotografia_periodo[1])%> (<%=percent(@org_mpp.third.fotografia_periodo[1].to_f/Tempo.cronos.last.fotografia_periodo[1])%> das avaliações positivas feitas no período.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com mais avaliações negativas hoje:</li>
+                <ol>
+                    <li><%=@org_mng.first.nome%> - <%=nmb_form(@org_mng.first.fotografia_geral[2])%> (<%=percent(@org_mng.first.fotografia_geral[2].to_f/Tempo.cronos.last.fotografia_geral[2])%> das avaliações negativas feitas até hoje.)</li>
+                    <li><%=@org_mng.second.nome%> - <%=nmb_form(@org_mng.second.fotografia_geral[2])%> (<%=percent(@org_mng.second.fotografia_geral[2].to_f/Tempo.cronos.last.fotografia_geral[2])%> das avaliações negativas feitas até hoje.)</li>
+                    <li><%=@org_mng.third.nome%> - <%=nmb_form(@org_mng.third.fotografia_geral[2])%> (<%=percent(@org_mng.third.fotografia_geral[2].to_f/Tempo.cronos.last.fotografia_geral[2])%> das avaliações negativas feitas até hoje.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com mais avaliações positivas no período:</li>
+                <ol>
+                    <li><%=@org_mnp.first.nome%> - <%=nmb_form(@org_mnp.first.fotografia_periodo[2])%> (<%=percent(@org_mnp.first.fotografia_periodo[2].to_f/Tempo.cronos.last.fotografia_periodo[2])%> das avaliações negativas feitas no período.)</li>
+                    <li><%=@org_mnp.second.nome%> - <%=nmb_form(@org_mnp.second.fotografia_periodo[2])%> (<%=percent(@org_mnp.second.fotografia_periodo[2].to_f/Tempo.cronos.last.fotografia_periodo[2])%> das avaliações negativas feitas no período.)</li>
+                    <li><%=@org_mnp.third.nome%> - <%=nmb_form(@org_mnp.third.fotografia_periodo[2])%> (<%=percent(@org_mnp.third.fotografia_periodo[2].to_f/Tempo.cronos.last.fotografia_periodo[2])%> das avaliações negativas feitas no período.)</li>
+                </ol>
+            </div>
+        </div>
+    </ul>
+    <br>
+    <p>Serviços extintos: <%=nmb_form(Servico.extintos.size)%></p>
 </div>

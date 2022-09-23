@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  aprovacao: 1.5
+  participacao: 1.5
+  impacto: 1.5
+  aprov_periodo: 1.5
+  part_periodo: 1.5
+  imp_periodo: 1.5
+
+two:
+  aprovacao: 1.5
+  participacao: 1.5
+  impacto: 1.5
+  aprov_periodo: 1.5
+  part_periodo: 1.5
+  imp_periodo: 1.5

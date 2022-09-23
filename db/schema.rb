@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_18_032724) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_20_122134) do
   create_table "avaliacos", force: :cascade do |t|
     t.integer "positivas"
     t.integer "negativas"
@@ -18,14 +18,31 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_032724) do
     t.datetime "updated_at", null: false
     t.integer "servico_id"
     t.integer "total"
-    t.float "aprov"
     t.integer "tempo_id"
     t.integer "pos_periodo"
     t.integer "neg_periodo"
     t.integer "tot_periodo"
-    t.float "apv_periodo"
     t.index ["servico_id"], name: "index_avaliacos_on_servico_id"
     t.index ["tempo_id"], name: "index_avaliacos_on_tempo_id"
+  end
+
+  create_table "derivados", force: :cascade do |t|
+    t.float "aprovacao"
+    t.float "participacao"
+    t.float "impacto"
+    t.float "aprov_periodo"
+    t.float "part_periodo"
+    t.float "imp_periodo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "avaliaco_id"
+    t.integer "servico_id"
+    t.integer "orgao_id"
+    t.integer "tempo_id"
+    t.index ["avaliaco_id"], name: "index_derivados_on_avaliaco_id"
+    t.index ["orgao_id"], name: "index_derivados_on_orgao_id"
+    t.index ["servico_id"], name: "index_derivados_on_servico_id"
+    t.index ["tempo_id"], name: "index_derivados_on_tempo_id"
   end
 
   create_table "orgaos", force: :cascade do |t|
@@ -33,6 +50,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_032724) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "nome_fantasia"
+    t.string "artigo"
   end
 
   create_table "servicos", force: :cascade do |t|
