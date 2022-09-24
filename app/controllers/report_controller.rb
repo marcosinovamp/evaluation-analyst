@@ -17,17 +17,23 @@ class ReportController < ApplicationController
     @serv_mig = @atuais.sort_by{|s| s.impacto_geral*-1}
     @serv_mip = @atuais.sort_by{|s| s.impacto_periodo*-1}
     @orgaos = Orgao.all.includes(:servicos, :avaliacos, :derivados)
-    @org_msn = @orgaos.sort_by{|o| o.novos*-1}
-    @org_msr = @orgaos.sort_by{|o| o.retirados*-1}
-    @org_msa = @orgaos.sort_by{|o| o.atuais*-1}
+    @org_msn = @orgaos.sort_by{|o| o.novos.size*-1}
+    @org_msr = @orgaos.sort_by{|o| o.retirados.size*-1}
+    @org_msa = @orgaos.sort_by{|o| o.atuais.size*-1}
     @org_mag = @orgaos.sort_by{|o| o.fotografia_geral[0]*-1}
     @org_map = @orgaos.sort_by{|o| o.fotografia_periodo[0]*-1}
     @org_mpg = @orgaos.sort_by{|o| o.fotografia_geral[1]*-1}
     @org_mpp = @orgaos.sort_by{|o| o.fotografia_periodo[1]*-1}
     @org_mng = @orgaos.sort_by{|o| o.fotografia_geral[2]*-1}
     @org_mnp = @orgaos.sort_by{|o| o.fotografia_periodo[2]*-1}
-
-
+    @org_mapvg = Orgao.mais1000.sort_by{|o| o.aprovacao_media*-1}
+    @org_mapvp = Orgao.mais100.sort_by{|o| o.aprovacao_periodo*-1}
+    @org_mparg = @orgaos.sort_by{|o| o.participacao_media*-1}
+    @org_mparp = @orgaos.sort_by{|o| o.participacao_periodo*-1}
+    @org_mimpg = @orgaos.sort_by{|o| o.impacto_medio*-1}
+    @org_mimpp =  @orgaos.sort_by{|o| o.impacto_periodo*-1}
+    @org_difap = Orgao.mais1000.sort_by{|o| o.var_aprovacao_media*-1}
+    @org_outp = Orgao.mais1000.sort_by{|o| o.outperformance*-1}
   end
 
 end

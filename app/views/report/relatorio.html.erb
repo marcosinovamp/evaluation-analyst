@@ -138,9 +138,9 @@
     <div class="single">
     <p style="text-align:center">Orgãos com mais serviços no Portal no momento:</p>
         <ol>
-            <li><%=@org_msa.first.nome%> - <%=nmb_form(@org_msa.first.atuais)%> (<%=percent(@org_msa.first.atuais.to_f/Servico.atuais.size)%> dos serviços hoje no Portal.)</li>
-            <li><%=@org_msa.second.nome%> - <%=nmb_form(@org_msa.second.atuais)%> (<%=percent(@org_msa.second.atuais.to_f/Servico.atuais.size)%> dos serviços hoje no Portal.)</li>
-            <li><%=@org_msa.third.nome%> - <%=nmb_form(@org_msa.third.atuais)%> (<%=percent(@org_msa.third.atuais.to_f/Servico.atuais.size)%> dos serviços hoje no Portal.)</li>
+            <li><%=@org_msa.first.nome%> - <%=nmb_form(@org_msa.first.atuais.size)%> (<%=percent(@org_msa.first.atuais.size.to_f/Servico.atuais.size)%> dos serviços hoje no Portal.)</li>
+            <li><%=@org_msa.second.nome%> - <%=nmb_form(@org_msa.second.atuais.size)%> (<%=percent(@org_msa.second.atuais.size.to_f/Servico.atuais.size)%> dos serviços hoje no Portal.)</li>
+            <li><%=@org_msa.third.nome%> - <%=nmb_form(@org_msa.third.atuais.size)%> (<%=percent(@org_msa.third.atuais.size.to_f/Servico.atuais.size)%> dos serviços hoje no Portal.)</li>
         </ol>
     </div>
     <ul>
@@ -148,17 +148,17 @@
             <div class="col-sm-6 margined">
                     <li>Orgãos que mais acrescentaram serviços no período:</li>
                     <ol>
-                        <li><%=@org_msn.first.nome%> - <%=nmb_form(@org_msn.first.novos)%> serviços (<%=percent(@org_msn.first.novos.to_f/(Servico.novos.size == 0 ? 1 : Servico.novos.size))%> dos serviços novos.)</li>
-                        <li><%=@org_msn.second.nome%> - <%=nmb_form(@org_msn.second.novos)%> serviços (<%=percent(@org_msn.second.novos.to_f/(Servico.novos.size == 0 ? 1 : Servico.novos.size))%> dos serviços novos.)</li>
-                        <li><%=@org_msn.third.nome%> - <%=nmb_form(@org_msn.third.novos)%> serviços (<%=percent(@org_msn.third.novos.to_f/(Servico.novos.size == 0 ? 1 : Servico.novos.size))%> dos serviços novos.)</li>
+                        <li><%=@org_msn.first.nome%> - <%=nmb_form(@org_msn.first.novos.size)%> serviços (<%=percent(@org_msn.first.novos.size.to_f/(Servico.novos.size == 0 ? 1 : Servico.novos.size))%> dos serviços novos.)</li>
+                        <li><%=@org_msn.second.nome%> - <%=nmb_form(@org_msn.second.novos.size)%> serviços (<%=percent(@org_msn.second.novos.size.to_f/(Servico.novos.size == 0 ? 1 : Servico.novos.size))%> dos serviços novos.)</li>
+                        <li><%=@org_msn.third.nome%> - <%=nmb_form(@org_msn.third.novos.size)%> serviços (<%=percent(@org_msn.third.novos.size.to_f/(Servico.novos.size == 0 ? 1 : Servico.novos.size))%> dos serviços novos.)</li>
                     </ol>
             </div>
             <div class="col-sm-6 margined">
                 <li>Orgãos que mais retiraram serviços no período:</li>
                 <ol>
-                    <li><%=@org_msr.first.nome%> - <%=nmb_form(@org_msr.first.retirados)%> serviços (<%=percent(@org_msr.first.retirados.to_f/(Servico.retirados.size == 0 ? 1 : Servico.retirados.size))%> dos serviços retirados.)</li>
-                    <li><%=@org_msr.second.nome%> - <%=nmb_form(@org_msr.second.retirados)%> serviços (<%=percent(@org_msr.second.retirados.to_f/(Servico.retirados.size == 0 ? 1 : Servico.retirados.size))%> dos serviços retirados.)</li>
-                    <li><%=@org_msr.third.nome%> - <%=nmb_form(@org_msr.third.retirados)%> serviços (<%=percent(@org_msr.third.retirados.to_f/(Servico.retirados.size == 0 ? 1 : Servico.retirados.size))%> dos serviços retirados.)</li>
+                    <li><%=@org_msr.first.nome%> - <%=nmb_form(@org_msr.first.retirados.size)%> serviços (<%=percent(@org_msr.first.retirados.size.to_f/(Servico.retirados.size == 0 ? 1 : Servico.retirados.size))%> dos serviços retirados.)</li>
+                    <li><%=@org_msr.second.nome%> - <%=nmb_form(@org_msr.second.retirados.size)%> serviços (<%=percent(@org_msr.second.retirados.size.to_f/(Servico.retirados.size == 0 ? 1 : Servico.retirados.size))%> dos serviços retirados.)</li>
+                    <li><%=@org_msr.third.nome%> - <%=nmb_form(@org_msr.third.retirados.size)%> serviços (<%=percent(@org_msr.third.retirados.size.to_f/(Servico.retirados.size == 0 ? 1 : Servico.retirados.size))%> dos serviços retirados.)</li>
                 </ol>
             </div>
             <div class="col-sm-6 margined">
@@ -202,11 +202,107 @@
                 </ol>
             </div>
             <div class="col-sm-6 margined">
-                <li>Orgãos com mais avaliações positivas no período:</li>
+                <li>Orgãos com mais avaliações negativas no período:</li>
                 <ol>
                     <li><%=@org_mnp.first.nome%> - <%=nmb_form(@org_mnp.first.fotografia_periodo[2])%> (<%=percent(@org_mnp.first.fotografia_periodo[2].to_f/Tempo.cronos.last.fotografia_periodo[2])%> das avaliações negativas feitas no período.)</li>
                     <li><%=@org_mnp.second.nome%> - <%=nmb_form(@org_mnp.second.fotografia_periodo[2])%> (<%=percent(@org_mnp.second.fotografia_periodo[2].to_f/Tempo.cronos.last.fotografia_periodo[2])%> das avaliações negativas feitas no período.)</li>
                     <li><%=@org_mnp.third.nome%> - <%=nmb_form(@org_mnp.third.fotografia_periodo[2])%> (<%=percent(@org_mnp.third.fotografia_periodo[2].to_f/Tempo.cronos.last.fotografia_periodo[2])%> das avaliações negativas feitas no período.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com maior aprovação no Portal:</li>
+                <ol>
+                    <li><%=@org_mapvg.first.nome%> - <%=percent(@org_mapvg.first.aprovacao_media)%> (<%=percent(@org_mapvg.first.aprovacao_media - Tempo.cronos.last.aprovacao_media)%> acima da média.)</li>
+                    <li><%=@org_mapvg.second.nome%> - <%=percent(@org_mapvg.second.aprovacao_media)%> (<%=percent(@org_mapvg.second.aprovacao_media - Tempo.cronos.last.aprovacao_media)%> acima da média.)</li>
+                    <li><%=@org_mapvg.third.nome%> - <%=percent(@org_mapvg.third.aprovacao_media)%> (<%=percent(@org_mapvg.third.aprovacao_media - Tempo.cronos.last.aprovacao_media)%> acima da média.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com maior aprovação no período:</li>
+                <ol>
+                    <li><%=@org_mapvp.first.nome%> - <%=percent(@org_mapvp.first.aprovacao_periodo)%> (<%=percent(@org_mapvp.first.aprovacao_periodo - Tempo.cronos.last.aprovacao_periodo)%> acima da média.)</li>
+                    <li><%=@org_mapvp.second.nome%> - <%=percent(@org_mapvp.second.aprovacao_periodo)%> (<%=percent(@org_mapvp.second.aprovacao_periodo - Tempo.cronos.last.aprovacao_periodo)%> acima da média.)</li>
+                    <li><%=@org_mapvp.third.nome%> - <%=percent(@org_mapvp.third.aprovacao_periodo)%> (<%=percent(@org_mapvp.third.aprovacao_periodo - Tempo.cronos.last.aprovacao_periodo)%> acima da média.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com menor aprovação no Portal:</li>
+                <ol>
+                    <li><%=@org_mapvg.reverse.first.nome%> - <%=percent(@org_mapvg.reverse.first.aprovacao_media)%> (<%=percent(@org_mapvg.reverse.first.aprovacao_media - Tempo.cronos.last.aprovacao_media)%> abaixo da média.)</li>
+                    <li><%=@org_mapvg.reverse.second.nome%> - <%=percent(@org_mapvg.reverse.second.aprovacao_media)%> (<%=percent(@org_mapvg.reverse.second.aprovacao_media - Tempo.cronos.last.aprovacao_media)%> abaixo da média.)</li>
+                    <li><%=@org_mapvg.reverse.third.nome%> - <%=percent(@org_mapvg.reverse.third.aprovacao_media)%> (<%=percent(@org_mapvg.reverse.third.aprovacao_media - Tempo.cronos.last.aprovacao_media)%> abaixo da média.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com menor aprovação no período:</li>
+                <ol>
+                    <li><%=@org_mapvp.reverse.first.nome%> - <%=percent(@org_mapvp.reverse.first.aprovacao_periodo)%> (<%=percent(@org_mapvp.reverse.first.aprovacao_periodo - Tempo.cronos.last.aprovacao_periodo)%> abaixo da média.)</li>
+                    <li><%=@org_mapvp.reverse.second.nome%> - <%=percent(@org_mapvp.reverse.second.aprovacao_periodo)%> (<%=percent(@org_mapvp.reverse.second.aprovacao_periodo - Tempo.cronos.last.aprovacao_periodo)%> abaixo da média.)</li>
+                    <li><%=@org_mapvp.reverse.third.nome%> - <%=percent(@org_mapvp.reverse.third.aprovacao_periodo)%> (<%=percent(@org_mapvp.reverse.third.aprovacao_periodo - Tempo.cronos.last.aprovacao_periodo)%> abaixo da média.)</li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com maior participação nas avaliações do Portal:</li>
+                <ol>
+                    <li><%=@org_mparg.first.nome%> - <%=percent(@org_mparg.first.participacao_media)%></li>
+                    <li><%=@org_mparg.second.nome%> - <%=percent(@org_mparg.second.participacao_media)%></li>
+                    <li><%=@org_mparg.third.nome%> - <%=percent(@org_mparg.third.participacao_media)%></li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com maior participação nas avaliações do período:</li>
+                <ol>
+                    <li><%=@org_mparp.first.nome%> - <%=percent(@org_mparp.first.participacao_periodo)%></li>
+                    <li><%=@org_mparp.second.nome%> - <%=percent(@org_mparp.second.participacao_periodo)%></li>
+                    <li><%=@org_mparp.third.nome%> - <%=percent(@org_mparp.third.participacao_periodo)%></li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com maior impacto nas avaliações do Portal:</li>
+                <ol>
+                    <li><%=@org_mimpg.first.nome%> - <%=percent(@org_mimpg.first.impacto_medio)%></li>
+                    <li><%=@org_mimpg.second.nome%> - <%=percent(@org_mimpg.second.impacto_medio)%></li>
+                    <li><%=@org_mimpg.third.nome%> - <%=percent(@org_mimpg.third.impacto_medio)%></li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com maior impacto nas avaliações do período:</li>
+                <ol>
+                    <li><%=@org_mimpp.first.nome%> - <%=percent(@org_mimpp.first.impacto_periodo)%></li>
+                    <li><%=@org_mimpp.second.nome%> - <%=percent(@org_mimpp.second.impacto_periodo)%></li>
+                    <li><%=@org_mimpp.third.nome%> - <%=percent(@org_mimpp.third.impacto_periodo)%></li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com maior variação positiva da aprovação média no período:</li>
+                <ol>
+                    <li><%=@org_difap.first.nome%> - <%=percent(@org_difap.first.var_aprovacao_media)%></li>
+                    <li><%=@org_difap.second.nome%> - <%=percent(@org_difap.second.var_aprovacao_media)%></li>
+                    <li><%=@org_difap.third.nome%> - <%=percent(@org_difap.third.var_aprovacao_media)%></li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com maior variação negativa da aprovação média no período:</li>
+                <ol>
+                    <li><%=@org_difap.reverse.first.nome%> - <%=percent(@org_difap.reverse.first.var_aprovacao_media)%></li>
+                    <li><%=@org_difap.reverse.second.nome%> - <%=percent(@org_difap.reverse.second.var_aprovacao_media)%></li>
+                    <li><%=@org_difap.reverse.third.nome%> - <%=percent(@org_difap.reverse.third.var_aprovacao_media)%></li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com maior diferença positiva entre a aprovação no período e a aprovação média anterior (outperformance):</li>
+                <ol>
+                    <li><%=@org_outp.first.nome%> - <%=percent(@org_outp.first.outperformance)%></li>
+                    <li><%=@org_outp.second.nome%> - <%=percent(@org_outp.second.outperformance)%></li>
+                    <li><%=@org_outp.third.nome%> - <%=percent(@org_outp.third.outperformance)%></li>
+                </ol>
+            </div>
+            <div class="col-sm-6 margined">
+                <li>Orgãos com maior diferença negativa entre a aprovação no período e a aprovação média anterior (outperformance):</li>
+                <ol>
+                    <li><%=@org_outp.reverse.first.nome%> - <%=percent(@org_outp.reverse.first.outperformance)%></li>
+                    <li><%=@org_outp.reverse.second.nome%> - <%=percent(@org_outp.reverse.second.outperformance)%></li>
+                    <li><%=@org_outp.reverse.third.nome%> - <%=percent(@org_outp.reverse.third.outperformance)%></li>
                 </ol>
             </div>
         </div>
