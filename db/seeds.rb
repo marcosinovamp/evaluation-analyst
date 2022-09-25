@@ -23,7 +23,7 @@ if Orgao.all.size == 0
     filepath2 = "db/orgaos.csv"
 
     CSV.foreach(filepath2) do |row|
-        Orgao.create({nome:row[1].gsub("$§", ","), nome_fantasia:row[2].gsub("$§", ","), artigo:row[3] })
+        Orgao.create({nome:row[1].gsub("1w1", ","), nome_fantasia:row[2].gsub("1w1", ","), artigo:row[3], siorg:row[4] })
     end
 end
 if Servico.all.size == 0
@@ -73,8 +73,8 @@ n = Tempo.all.sort_by{|t| t.order}.last.order
 @data = Tempo.new(data: Time.now.to_date, order: n + 1)
 @data.save
 servicos["resposta"].each do |s|
-    if Orgao.find_by(nome:s["orgao"]["nomeOrgao"]).nil?
-        @org = Orgao.new({nome:s["orgao"]["nomeOrgao"], nome_fantasia:s["orgao"]["nomeOrgao"]})
+    if Orgao.find_by(siorg:s["orgao"]["id"].gsub("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/", "")).nil?
+        @org = Orgao.new({nome:s["orgao"]["nomeOrgao"], nome_fantasia:s["orgao"]["nomeOrgao"], siorg:s["orgao"]["id"].gsub("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/", "")})
         artigos.each do |k, e|
             if s["orgao"]["nomeOrgao"].start_with?(k.to_s)
                 @org.artigo = e.to_s
@@ -130,5 +130,25 @@ Servico.all.select{|s| s.status != "Extinto"}.each do |s|
     if ids.include?(s.api_id) == false
         s.status = "Retirado"
         s.save
+    end
+end
+
+Avaliaco.all.each do |a|
+    if Servico.find(a.servico_id).status == "Retirado" || Servico.find(a.servico_id).status == "Extinto"
+        a.atual = false
+        a.save
+    else
+        a.atual = true
+        a.save
+    end
+end
+
+Derivado.all.each do |d|
+    if Servico.find(d.servico_id).status == "Retirado" || Servico.find(d.servico_id).status == "Extinto"
+        d.atual = false
+        d.save
+    else
+        d.atual = true
+        d.save
     end
 end

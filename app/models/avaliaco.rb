@@ -5,11 +5,7 @@ class Avaliaco < ApplicationRecord
     has_one :derivado
 
     def atual?
-        if Servico.find(self.servico_id).status == "Novo" || Servico.find(self.servico_id).status == "Mantido"
-            return true
-        else
-            return false
-        end
+        return self.atual
     end
-    
+
 end

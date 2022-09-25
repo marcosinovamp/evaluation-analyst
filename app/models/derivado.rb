@@ -5,11 +5,7 @@ class Derivado < ApplicationRecord
     belongs_to :tempo
 
     def atual?
-        if Servico.find(self.servico_id).status == "Novo" || Servico.find(self.servico_id).status == "Mantido"
-            return true
-        else
-            return false
-        end
+        return self.atual
     end
 
 end

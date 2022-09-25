@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_20_122134) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_24_053626) do
   create_table "avaliacos", force: :cascade do |t|
     t.integer "positivas"
     t.integer "negativas"
@@ -22,6 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_20_122134) do
     t.integer "pos_periodo"
     t.integer "neg_periodo"
     t.integer "tot_periodo"
+    t.boolean "atual"
     t.index ["servico_id"], name: "index_avaliacos_on_servico_id"
     t.index ["tempo_id"], name: "index_avaliacos_on_tempo_id"
   end
@@ -39,6 +40,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_20_122134) do
     t.integer "servico_id"
     t.integer "orgao_id"
     t.integer "tempo_id"
+    t.boolean "atual"
     t.index ["avaliaco_id"], name: "index_derivados_on_avaliaco_id"
     t.index ["orgao_id"], name: "index_derivados_on_orgao_id"
     t.index ["servico_id"], name: "index_derivados_on_servico_id"
@@ -51,6 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_20_122134) do
     t.datetime "updated_at", null: false
     t.string "nome_fantasia"
     t.string "artigo"
+    t.integer "siorg"
   end
 
   create_table "servicos", force: :cascade do |t|
