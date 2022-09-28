@@ -63,6 +63,28 @@ class Orgao < ApplicationRecord
         return @aval
     end
 
+    def fotografia_antiga(data_id)
+        @pos = 0
+        @neg = 0
+        @tot = 0
+        @pos_per = 0
+        @neg_per = 0
+        @tot_per = 0
+        @apv_med = 0
+        @apv_per = 0
+        self.avaliacos.select{|a| a.tempo_id == data_id}.each do |av|
+            @pos += av.positivas
+            @neg += av.negativas
+            @tot += av.total
+            @pos_per += av.pos_periodo
+            @neg_per += av.neg_periodo
+            @tot_per += av.tot_periodo
+        end
+        @apv_med = @pos.to_f/(@tot == 0 ? 1 : @tot)
+        @apv_per = @pos_per.to_f/(@tot_per == 0 ? 1 : @tot_per)
+        return [@pos, @neg, @tot, @pos_per, @neg_per, @tot_per, @apv_med, @apv_per]
+    end
+
     def participacao_media
         @soma = 0
         self.derivados.select{|dev| dev.tempo_id == Tempo.cronos.last.id && dev.atual?}.pluck(:participacao).each do |d|

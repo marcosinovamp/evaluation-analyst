@@ -2,9 +2,33 @@
     <h4 class="title">Data: <%=bradate(@cronos.last.data)%></h4>
     <br>
     <h5 class="subtitle">Situação Geral Atual:</h5>
-    <div class="single">
-        <p><span><%=nmb_form(@atuais.size)%></span> serviços, <span><%=nmb_form(@orgaos.size)%></span> órgãos, <span><%=nmb_form(@cronos_fot_geral[0])%></span> avaliações (<span><%=nmb_form(@cronos_fot_geral[1])%></span> positivas x <span><%=nmb_form(@cronos_fot_geral[2])%></span> negativas), aprovação média de <span><%=percent(@cronos_last.aprovacao_media)%></span>.</p>
+    <div class="row">
+        <div class ="col-sm-2">
+            <div class="two-column-card little-box">
+                <h6>Serviços:</h6>
+                <div class="gran-num"><span><%=nmb_form(@atuais.size)%></span></div>
+            </div>
+        </div>
+        <div class ="col-sm-2">
+            <div class="two-column-card little-box">
+                <h6>Órgãos:</h6>
+                <div class="gran-num"><span><%=nmb_form(@orgaos.size)%></span></div>
+            </div>
+        </div>
+        <div class ="col-sm-6">
+            <div class="two-column-card little-box">
+                <h6>Avaliações:</h6>
+                <div class="gran-num"><span><%=nmb_form(@cronos_fot_geral[0])%></span> avaliações (<span><%=nmb_form(@cronos_fot_geral[1])%></span> positivas x <span><%=nmb_form(@cronos_fot_geral[2])%></span> negativas)</div>
+            </div>
+        </div>
+        <div class ="col-sm-2">
+            <div class="two-column-card little-box">
+                <h6>Aprovação Média:</h6>
+                <div class="gran-num"><span><%=percent(@cronos_last.aprovacao_media)%></span></div>
+            </div>
+        </div>
     </div>
+    <br>
     <div class="card one-column-card">
         <h5>Modificações Gerais no Último Período:</h5>
         <div class="single">
@@ -258,10 +282,10 @@
                         <p>Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Qtd.</p>
+                        <p>Apv.</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Dif. da média</p>
+                        <p>Dif. média</p>
                     </div>
                 </div>
                 <br>
@@ -277,7 +301,7 @@
                             <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                          <div class="col-sm-2">
-                            <p style="text-align:center"><span><%=nmb_form(g.aprovacao_geral)%></span></p>
+                            <p style="text-align:center"><span><%=percent(g.aprovacao_geral)%></span></p>
                         </div>
                         <div class="col-sm-2">
                             <p style="text-align:center"><%=percent(g.aprovacao_geral - @cronos_last.aprovacao_media)%></p>
@@ -287,63 +311,249 @@
             </div>
         </div>
         <div class="col-sm-6 margined">
-            <li>Melhor avaliados (Periodo):</li>
-            <ol>
-                <li><%=@serv_mapvp.first.nome%> - <%=percent(@serv_mapvp.first.aprovacao_periodo)%> de aprovação (<%=percent(@serv_mapvp.first.aprovacao_periodo - @cronos_last.aprovacao_periodo)%> acima da média)</li>
-                <li><%=@serv_mapvp.second.nome%> - <%=percent(@serv_mapvp.second.aprovacao_periodo)%> de aprovação (<%=percent(@serv_mapvp.second.aprovacao_periodo - @cronos_last.aprovacao_periodo)%> acima da média)</li>
-                <li><%=@serv_mapvp.third.nome%> - <%=percent(@serv_mapvp.third.aprovacao_periodo)%> de aprovação (<%=percent(@serv_mapvp.third.aprovacao_periodo - @cronos_last.aprovacao_periodo)%> acima da média)</li>
-            </ol>
+            <div class="two-column-card-pos">
+                <h6>Melhor avaliados (Periodo):</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-7">
+                        <p>Serviço(<cite>Órgão</cite>)</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <p>Apv.</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <p>Dif. média</p>
+                    </div>
+                </div>
+                <br>
+                <%@group8 = @serv_mapvp[0..2]%>
+                <%n8 = 0%>
+                <%@group8.each do |g|%>
+                    <%n8 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n8%>º</p>
+                        </div>
+                        <div class="col-sm-7">
+                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                        </div>
+                         <div class="col-sm-2">
+                            <p style="text-align:center"><span><%=percent(g.aprovacao_periodo)%></span></p>
+                        </div>
+                        <div class="col-sm-2">
+                            <p style="text-align:center"><%=percent(g.aprovacao_periodo - @cronos_last.aprovacao_periodo)%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
         </div>
         <div class="col-sm-6 margined">
-            <li>Pior avaliados (Geral):</li>
-            <ol>
-                <li><%=@serv_mapvg.reverse.first.nome%> - <%=percent(@serv_mapvg.reverse.first.aprovacao_geral)%> de aprovação (<%=percent(@serv_mapvg.reverse.first.aprovacao_geral - @cronos_last.aprovacao_media)%> abaixo da média)</li>
-                <li><%=@serv_mapvg.reverse.second.nome%> - <%=percent(@serv_mapvg.reverse.second.aprovacao_geral)%> de aprovação (<%=percent(@serv_mapvg.reverse.second.aprovacao_geral - @cronos_last.aprovacao_media)%> abaixo da média)</li>
-                <li><%=@serv_mapvg.reverse.third.nome%> - <%=percent(@serv_mapvg.reverse.third.aprovacao_geral)%> de aprovação (<%=percent(@serv_mapvg.reverse.third.aprovacao_geral - @cronos_last.aprovacao_media)%> abaixo da média)</li>
-            </ol>
+            <div class="two-column-card-neg">
+                <h6>Pior avaliados (Geral):</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-7">
+                        <p>Serviço(<cite>Órgão</cite>)</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <p>Apv.</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <p>Dif. média</p>
+                    </div>
+                </div>
+                <br>
+                <%@group9 = @serv_mapvg.reverse[0..2]%>
+                <%n9 = 0%>
+                <%@group9.each do |g|%>
+                    <%n9 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n9%>º</p>
+                        </div>
+                        <div class="col-sm-7">
+                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                        </div>
+                         <div class="col-sm-2">
+                            <p style="text-align:center"><span><%=percent(g.aprovacao_geral)%></span></p>
+                        </div>
+                        <div class="col-sm-2">
+                            <p style="text-align:center"><%=percent(g.aprovacao_geral - @cronos_last.aprovacao_media)%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
         </div>
         <div class="col-sm-6 margined">
-            <li>Pior avaliados (Periodo):</li>
-            <ol>
-                <li><%=@serv_mapvp.reverse.first.nome%> - <%=percent(@serv_mapvp.reverse.first.aprovacao_periodo)%> de aprovação (<%=percent(@serv_mapvp.reverse.first.aprovacao_periodo - @cronos_last.aprovacao_periodo)%> abaixo da média)</li>
-                <li><%=@serv_mapvp.reverse.second.nome%> - <%=percent(@serv_mapvp.reverse.second.aprovacao_periodo)%> de aprovação (<%=percent(@serv_mapvp.reverse.second.aprovacao_periodo - @cronos_last.aprovacao_periodo)%> abaixo da média)</li>
-                <li><%=@serv_mapvp.reverse.third.nome%> - <%=percent(@serv_mapvp.reverse.third.aprovacao_periodo)%> de aprovação (<%=percent(@serv_mapvp.reverse.third.aprovacao_periodo - @cronos_last.aprovacao_periodo)%> abaixo da média)</li>
-            </ol>
+            <div class="two-column-card-neg">
+                <h6>Pior avaliados (Periodo):</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-7">
+                        <p>Serviço(<cite>Órgão</cite>)</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <p>Apv.</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <p>Dif. média</p>
+                    </div>
+                </div>
+                <br>
+                <%@group10 = @serv_mapvp.reverse[0..2]%>
+                <%n10 = 0%>
+                <%@group10.each do |g|%>
+                    <%n10 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n10%>º</p>
+                        </div>
+                        <div class="col-sm-7">
+                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                        </div>
+                         <div class="col-sm-2">
+                            <p style="text-align:center"><span><%=percent(g.aprovacao_periodo)%></span></p>
+                        </div>
+                        <div class="col-sm-2">
+                            <p style="text-align:center"><%=percent(g.aprovacao_periodo - @cronos_last.aprovacao_periodo)%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
         </div>
         <div class="col-sm-6 margined">
-            <li>Maior Impacto Positivo (Geral):</li>
-            <ol>
-                <li><%=@serv_mig.first.nome%> - <%=percent(@serv_mig.first.impacto_geral)%> do desempenho.</li>
-                <li><%=@serv_mig.second.nome%> - <%=percent(@serv_mig.second.impacto_geral)%> do desempenho.</li>
-                <li><%=@serv_mig.third.nome%> - <%=percent(@serv_mig.third.impacto_geral)%> do desempenho.</li>
-            </ol>
+           <div class="two-column-card-pos">
+                <h6>Maior Impacto Positivo (Geral):</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-8">
+                        <p>Serviço(<cite>Órgão</cite>)</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Impacto</p>
+                    </div>
+                </div>
+                <br>
+                <%@group11 = @serv_mig[0..2]%>
+                <%n11 = 0%>
+                <%@group11.each do |g|%>
+                    <%n11 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n11%>º</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                        </div>
+                         <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=percent(g.impacto_geral)%></span></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
         </div>
         <div class="col-sm-6 margined">
-            <li>Maior Impacto Positivo (Período):</li>
-            <ol>
-                <li><%=@serv_mip.first.nome%> - <%=percent(@serv_mip.first.impacto_periodo)%> do desempenho.</li>
-                <li><%=@serv_mip.second.nome%> - <%=percent(@serv_mip.second.impacto_periodo)%> do desempenho.</li>
-                <li><%=@serv_mip.third.nome%> - <%=percent(@serv_mip.third.impacto_periodo)%> do desempenho.</li>
-            </ol>
-        </div>
-            <div class="col-sm-6 margined">
-            <li>Maior Impacto Negativo (Geral):</li>
-            <ol>
-                <li><%=@serv_mig.reverse.first.nome%> - <%=percent(@serv_mig.reverse.first.impacto_geral)%> do desempenho.</li>
-                <li><%=@serv_mig.reverse.second.nome%> - <%=percent(@serv_mig.reverse.second.impacto_geral)%> do desempenho.</li>
-                <li><%=@serv_mig.reverse.third.nome%> - <%=percent(@serv_mig.reverse.third.impacto_geral)%> do desempenho.</li>
-            </ol>
+            <div class="two-column-card-pos">
+                <h6>Maior Impacto Positivo (Período):</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-8">
+                        <p>Serviço(<cite>Órgão</cite>)</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Impacto</p>
+                    </div>
+                </div>
+                <br>
+                <%@group12 = @serv_mip[0..2]%>
+                <%n12 = 0%>
+                <%@group12.each do |g|%>
+                    <%n12 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n12%>º</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                        </div>
+                         <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=percent(g.impacto_periodo)%></span></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
         </div>
         <div class="col-sm-6 margined">
-            <li>Maior Impacto Negativo (Período):</li>
-            <ol>
-                <li><%=@serv_mip.reverse.first.nome%> - <%=percent(@serv_mip.reverse.first.impacto_periodo)%> do desempenho.</li>
-                <li><%=@serv_mip.reverse.second.nome%> - <%=percent(@serv_mip.reverse.second.impacto_periodo)%> do desempenho.</li>
-                <li><%=@serv_mip.reverse.third.nome%> - <%=percent(@serv_mip.reverse.third.impacto_periodo)%> do desempenho.</li>
-            </ol>
+            <div class="two-column-card-neg">
+                <h6>Maior Impacto Negativo (Geral):</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-8">
+                        <p>Serviço(<cite>Órgão</cite>)</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Impacto</p>
+                    </div>
+                </div>
+                <br>
+                <%@group13 = @serv_mig.reverse[0..2]%>
+                <%n13 = 0%>
+                <%@group13.each do |g|%>
+                    <%n13 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n13%>º</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                        </div>
+                         <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=percent(g.impacto_geral)%></span></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+           <div class="two-column-card-neg">
+                <h6>Maior Impacto Negativo (Período):</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-8">
+                        <p>Serviço(<cite>Órgão</cite>)</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Impacto</p>
+                    </div>
+                </div>
+                <br>
+                <%@group14 = @serv_mip.reverse[0..2]%>
+                <%n14 = 0%>
+                <%@group14.each do |g|%>
+                    <%n14 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n14%>º</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                        </div>
+                         <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=percent(g.impacto_periodo)%></span></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
         </div>
     </div>
-    </ul>
+    <br>
     <h5 class="subtitle">Orgãos:</h5>
     <div class="card one-column-card">  
         <h6>Orgãos com mais serviços no Portal no momento:</h6>
@@ -353,173 +563,744 @@
             <li><%=@org_msa.third.nome_fantasia%> - <span><%=nmb_form(@org_msa.third.atuais.size)%></span> (<cite><%=percent(@org_msa.third.atuais.size.to_f/@atuais.size)%> dos serviços hoje no Portal</cite>)</li>
         </ol>
     </div>
-    <ul>
-        <div class="row">
-            <div class="col-sm-6 margined">
-                <div class="two-column-card-pos">
-                    <h6>Orgãos que mais acrescentaram serviços no período:</h6>
-                    <ol>
-                        <li><%=@org_msn.first.nome_fantasia%> - <%=nmb_form(@org_msn.first.novos.size)%> serviços (<cite><%=percent(@org_msn.first.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%> dos serviços novos</cite>)</li>
-                        <li><%=@org_msn.second.nome_fantasia%> - <%=nmb_form(@org_msn.second.novos.size)%> serviços (<cite><%=percent(@org_msn.second.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%> dos serviços novos</cite>)</li>
-                        <li><%=@org_msn.third.nome_fantasia%> - <%=nmb_form(@org_msn.third.novos.size)%> serviços (<cite><%=percent(@org_msn.third.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%> dos serviços novos</cite>)</li>
-                    </ol>
+    <div class="row">
+        <div class="col-sm-6 margined">
+            <div class="two-column-card-pos">
+                <h6>Orgãos que mais acrescentaram serviços no período:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Qtd.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>% do total</p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-6 margined">
-                <div class="two-column-card-neg">
-                    <h6>Orgãos que mais retiraram serviços no período:</h6>
-                    <ol>
-                        <li><%=@org_msr.first.nome_fantasia%> - <%=nmb_form(@org_msr.first.retirados.size)%> serviços (<cite><%=percent(@org_msr.first.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%> dos serviços retirados</cite>)</li>
-                        <li><%=@org_msr.second.nome_fantasia%> - <%=nmb_form(@org_msr.second.retirados.size)%> serviços (<cite><%=percent(@org_msr.second.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%> dos serviços retirados</cite>)</li>
-                        <li><%=@org_msr.third.nome_fantasia%> - <%=nmb_form(@org_msr.third.retirados.size)%> serviços (<cite><%=percent(@org_msr.third.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%> dos serviços retirados</cite>)</li>
-                    </ol>
-                </div>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com mais avaliações no Portal hoje:</li>
-                <ol>
-                    <li><%=@org_mag.first.nome_fantasia%> - <%=nmb_form(@org_mag.first.fotografia_geral[0])%> (<%=percent(@org_mag.first.fotografia_geral[0].to_f/@cronos_fot_geral[0])%> das avaliações feitas até hoje.)</li>
-                    <li><%=@org_mag.second.nome_fantasia%> - <%=nmb_form(@org_mag.second.fotografia_geral[0])%> (<%=percent(@org_mag.second.fotografia_geral[0].to_f/@cronos_fot_geral[0])%> das avaliações feitas até hoje.)</li>
-                    <li><%=@org_mag.third.nome_fantasia%> - <%=nmb_form(@org_mag.third.fotografia_geral[0])%> (<%=percent(@org_mag.third.fotografia_geral[0].to_f/@cronos_fot_geral[0])%> das avaliações feitas até hoje.)</li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com mais avaliações no período:</li>
-                <ol>
-                    <li><%=@org_map.first.nome_fantasia%> - <%=nmb_form(@org_map.first.fotografia_periodo[0])%> (<%=percent(@org_map.first.fotografia_periodo[0].to_f/@cronos_fot_periodo[0])%> das avaliações feitas no período.)</li>
-                    <li><%=@org_map.second.nome_fantasia%> - <%=nmb_form(@org_map.second.fotografia_periodo[0])%> (<%=percent(@org_map.second.fotografia_periodo[0].to_f/@cronos_fot_periodo[0])%> das avaliações feitas no período.)</li>
-                    <li><%=@org_map.third.nome_fantasia%> - <%=nmb_form(@org_map.third.fotografia_periodo[0])%> (<%=percent(@org_map.third.fotografia_periodo[0].to_f/@cronos_fot_periodo[0])%> das avaliações feitas no período.)</li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com mais avaliações positivas hoje:</li>
-                <ol>
-                    <li><%=@org_mpg.first.nome_fantasia%> - <%=nmb_form(@org_mpg.first.fotografia_geral[1])%> (<%=percent(@org_mpg.first.fotografia_geral[1].to_f/@cronos_fot_geral[1])%> das avaliações positivas feitas até hoje.)</li>
-                    <li><%=@org_mpg.second.nome_fantasia%> - <%=nmb_form(@org_mpg.second.fotografia_geral[1])%> (<%=percent(@org_mpg.second.fotografia_geral[1].to_f/@cronos_fot_geral[1])%> das avaliações positivas feitas até hoje.)</li>
-                    <li><%=@org_mpg.third.nome_fantasia%> - <%=nmb_form(@org_mpg.third.fotografia_geral[1])%> (<%=percent(@org_mpg.third.fotografia_geral[1].to_f/@cronos_fot_geral[1])%> das avaliações positivas feitas até hoje.)</li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com mais avaliações positivas no período:</li>
-                <ol>
-                    <li><%=@org_mpp.first.nome_fantasia%> - <%=nmb_form(@org_mpp.first.fotografia_periodo[1])%> (<%=percent(@org_mpp.first.fotografia_periodo[1].to_f/@cronos_fot_periodo[1])%> das avaliações positivas feitas no período.)</li>
-                    <li><%=@org_mpp.second.nome_fantasia%> - <%=nmb_form(@org_mpp.second.fotografia_periodo[1])%> (<%=percent(@org_mpp.second.fotografia_periodo[1].to_f/@cronos_fot_periodo[1])%> das avaliações positivas feitas no período.)</li>
-                    <li><%=@org_mpp.third.nome_fantasia%> - <%=nmb_form(@org_mpp.third.fotografia_periodo[1])%> (<%=percent(@org_mpp.third.fotografia_periodo[1].to_f/@cronos_fot_periodo[1])%> das avaliações positivas feitas no período.)</li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com mais avaliações negativas hoje:</li>
-                <ol>
-                    <li><%=@org_mng.first.nome_fantasia%> - <%=nmb_form(@org_mng.first.fotografia_geral[2])%> (<%=percent(@org_mng.first.fotografia_geral[2].to_f/@cronos_fot_geral[2])%> das avaliações negativas feitas até hoje.)</li>
-                    <li><%=@org_mng.second.nome_fantasia%> - <%=nmb_form(@org_mng.second.fotografia_geral[2])%> (<%=percent(@org_mng.second.fotografia_geral[2].to_f/@cronos_fot_geral[2])%> das avaliações negativas feitas até hoje.)</li>
-                    <li><%=@org_mng.third.nome_fantasia%> - <%=nmb_form(@org_mng.third.fotografia_geral[2])%> (<%=percent(@org_mng.third.fotografia_geral[2].to_f/@cronos_fot_geral[2])%> das avaliações negativas feitas até hoje.)</li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com mais avaliações negativas no período:</li>
-                <ol>
-                    <li><%=@org_mnp.first.nome_fantasia%> - <%=nmb_form(@org_mnp.first.fotografia_periodo[2])%> (<%=percent(@org_mnp.first.fotografia_periodo[2].to_f/@cronos_fot_periodo[2])%> das avaliações negativas feitas no período.)</li>
-                    <li><%=@org_mnp.second.nome_fantasia%> - <%=nmb_form(@org_mnp.second.fotografia_periodo[2])%> (<%=percent(@org_mnp.second.fotografia_periodo[2].to_f/@cronos_fot_periodo[2])%> das avaliações negativas feitas no período.)</li>
-                    <li><%=@org_mnp.third.nome_fantasia%> - <%=nmb_form(@org_mnp.third.fotografia_periodo[2])%> (<%=percent(@org_mnp.third.fotografia_periodo[2].to_f/@cronos_fot_periodo[2])%> das avaliações negativas feitas no período.)</li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com maior aprovação no Portal:</li>
-                <ol>
-                    <li><%=@org_mapvg.first.nome_fantasia%> - <%=percent(@org_mapvg.first.aprovacao_media)%> (<%=percent(@org_mapvg.first.aprovacao_media - @cronos_last.aprovacao_media)%> acima da média.)</li>
-                    <li><%=@org_mapvg.second.nome_fantasia%> - <%=percent(@org_mapvg.second.aprovacao_media)%> (<%=percent(@org_mapvg.second.aprovacao_media - @cronos_last.aprovacao_media)%> acima da média.)</li>
-                    <li><%=@org_mapvg.third.nome_fantasia%> - <%=percent(@org_mapvg.third.aprovacao_media)%> (<%=percent(@org_mapvg.third.aprovacao_media - @cronos_last.aprovacao_media)%> acima da média.)</li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com maior aprovação no período:</li>
-                <ol>
-                    <li><%=@org_mapvp.first.nome_fantasia%> - <%=percent(@org_mapvp.first.aprovacao_periodo)%> (<%=percent(@org_mapvp.first.aprovacao_periodo - @cronos_last.aprovacao_periodo)%> acima da média.)</li>
-                    <li><%=@org_mapvp.second.nome_fantasia%> - <%=percent(@org_mapvp.second.aprovacao_periodo)%> (<%=percent(@org_mapvp.second.aprovacao_periodo - @cronos_last.aprovacao_periodo)%> acima da média.)</li>
-                    <li><%=@org_mapvp.third.nome_fantasia%> - <%=percent(@org_mapvp.third.aprovacao_periodo)%> (<%=percent(@org_mapvp.third.aprovacao_periodo - @cronos_last.aprovacao_periodo)%> acima da média.)</li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com menor aprovação no Portal:</li>
-                <ol>
-                    <li><%=@org_mapvg.reverse.first.nome_fantasia%> - <%=percent(@org_mapvg.reverse.first.aprovacao_media)%> (<%=percent(@org_mapvg.reverse.first.aprovacao_media - @cronos_last.aprovacao_media)%> abaixo da média.)</li>
-                    <li><%=@org_mapvg.reverse.second.nome_fantasia%> - <%=percent(@org_mapvg.reverse.second.aprovacao_media)%> (<%=percent(@org_mapvg.reverse.second.aprovacao_media - @cronos_last.aprovacao_media)%> abaixo da média.)</li>
-                    <li><%=@org_mapvg.reverse.third.nome_fantasia%> - <%=percent(@org_mapvg.reverse.third.aprovacao_media)%> (<%=percent(@org_mapvg.reverse.third.aprovacao_media - @cronos_last.aprovacao_media)%> abaixo da média.)</li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com menor aprovação no período:</li>
-                <ol>
-                    <li><%=@org_mapvp.reverse.first.nome_fantasia%> - <%=percent(@org_mapvp.reverse.first.aprovacao_periodo)%> (<%=percent(@org_mapvp.reverse.first.aprovacao_periodo - @cronos_last.aprovacao_periodo)%> abaixo da média.)</li>
-                    <li><%=@org_mapvp.reverse.second.nome_fantasia%> - <%=percent(@org_mapvp.reverse.second.aprovacao_periodo)%> (<%=percent(@org_mapvp.reverse.second.aprovacao_periodo - @cronos_last.aprovacao_periodo)%> abaixo da média.)</li>
-                    <li><%=@org_mapvp.reverse.third.nome_fantasia%> - <%=percent(@org_mapvp.reverse.third.aprovacao_periodo)%> (<%=percent(@org_mapvp.reverse.third.aprovacao_periodo - @cronos_last.aprovacao_periodo)%> abaixo da média.)</li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com maior participação nas avaliações do Portal:</li>
-                <ol>
-                    <li><%=@org_mparg.first.nome_fantasia%> - <%=percent(@org_mparg.first.participacao_media)%></li>
-                    <li><%=@org_mparg.second.nome_fantasia%> - <%=percent(@org_mparg.second.participacao_media)%></li>
-                    <li><%=@org_mparg.third.nome_fantasia%> - <%=percent(@org_mparg.third.participacao_media)%></li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com maior participação nas avaliações do período:</li>
-                <ol>
-                    <li><%=@org_mparp.first.nome_fantasia%> - <%=percent(@org_mparp.first.participacao_periodo)%></li>
-                    <li><%=@org_mparp.second.nome_fantasia%> - <%=percent(@org_mparp.second.participacao_periodo)%></li>
-                    <li><%=@org_mparp.third.nome_fantasia%> - <%=percent(@org_mparp.third.participacao_periodo)%></li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com maior impacto nas avaliações do Portal:</li>
-                <ol>
-                    <li><%=@org_mimpg.first.nome_fantasia%> - <%=percent(@org_mimpg.first.impacto_medio)%></li>
-                    <li><%=@org_mimpg.second.nome_fantasia%> - <%=percent(@org_mimpg.second.impacto_medio)%></li>
-                    <li><%=@org_mimpg.third.nome_fantasia%> - <%=percent(@org_mimpg.third.impacto_medio)%></li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com maior impacto nas avaliações do período:</li>
-                <ol>
-                    <li><%=@org_mimpp.first.nome_fantasia%> - <%=percent(@org_mimpp.first.impacto_periodo)%></li>
-                    <li><%=@org_mimpp.second.nome_fantasia%> - <%=percent(@org_mimpp.second.impacto_periodo)%></li>
-                    <li><%=@org_mimpp.third.nome_fantasia%> - <%=percent(@org_mimpp.third.impacto_periodo)%></li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com maior variação positiva da aprovação média no período:</li>
-                <ol>
-                    <li><%=@org_difap.first.nome_fantasia%> - <%=percent(@org_difap.first.var_aprovacao_media)%></li>
-                    <li><%=@org_difap.second.nome_fantasia%> - <%=percent(@org_difap.second.var_aprovacao_media)%></li>
-                    <li><%=@org_difap.third.nome_fantasia%> - <%=percent(@org_difap.third.var_aprovacao_media)%></li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com maior variação negativa da aprovação média no período:</li>
-                <ol>
-                    <li><%=@org_difap.reverse.first.nome_fantasia%> - <%=percent(@org_difap.reverse.first.var_aprovacao_media)%></li>
-                    <li><%=@org_difap.reverse.second.nome_fantasia%> - <%=percent(@org_difap.reverse.second.var_aprovacao_media)%></li>
-                    <li><%=@org_difap.reverse.third.nome_fantasia%> - <%=percent(@org_difap.reverse.third.var_aprovacao_media)%></li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com maior diferença positiva entre a aprovação no período e a aprovação média anterior (outperformance):</li>
-                <ol>
-                    <li><%=@org_outp.first.nome_fantasia%> - <%=percent(@org_outp.first.outperformance)%></li>
-                    <li><%=@org_outp.second.nome_fantasia%> - <%=percent(@org_outp.second.outperformance)%></li>
-                    <li><%=@org_outp.third.nome_fantasia%> - <%=percent(@org_outp.third.outperformance)%></li>
-                </ol>
-            </div>
-            <div class="col-sm-6 margined">
-                <li>Orgãos com maior diferença negativa entre a aprovação no período e a aprovação média anterior (underperformance):</li>
-                <ol>
-                    <li><%=@org_outp.reverse.first.nome_fantasia%> - <%=percent(@org_outp.reverse.first.outperformance)%></li>
-                    <li><%=@org_outp.reverse.second.nome_fantasia%> - <%=percent(@org_outp.reverse.second.outperformance)%></li>
-                    <li><%=@org_outp.reverse.third.nome_fantasia%> - <%=percent(@org_outp.reverse.third.outperformance)%></li>
-                </ol>
+                <br>
+                <%@group15 = @org_msn[0..2]%>
+                <%n15 = 0%>
+                <%@group15.each do |g|%>
+                    <%n15 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n15%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=nmb_form(g.novos.size)%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%></p>
+                        </div>
+                    </div>
+                <%end%>
             </div>
         </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card-neg">
+                <h6>Orgãos que mais retiraram serviços no período:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Qtd.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>% do total</p>
+                    </div>
+                </div>
+                <br>
+                <%@group16 = @org_msr[0..2]%>
+                <%n16 = 0%>
+                <%@group16.each do |g|%>
+                    <%n16 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n16%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=nmb_form(g.retirados.size)%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card">
+                <h6>Orgãos com mais avaliações no Portal hoje:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Qtd.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>% do total</p>
+                    </div>
+                </div>
+                <br>
+                <%@group17 = @org_mag[0..2]%>
+                <%n17 = 0%>
+                <%@group17.each do |g|%>
+                    <%n17 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n17%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=nmb_form(g.fotografia_geral[0])%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.fotografia_geral[0].to_f/@cronos_fot_geral[0])%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card">
+                <h6>Orgãos com mais avaliações no período:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Qtd.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>% do total</p>
+                    </div>
+                </div>
+                <br>
+                <%@group18 = @org_map[0..2]%>
+                <%n18 = 0%>
+                <%@group18.each do |g|%>
+                    <%n18 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n18%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=nmb_form(g.fotografia_periodo[0])%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.fotografia_periodo[0].to_f/@cronos_fot_periodo[0])%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card-pos">
+                <h6>Orgãos com mais avaliações positivas hoje:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Qtd.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>% do total</p>
+                    </div>
+                </div>
+                <br>
+                <%@group19 = @org_mpg[0..2]%>
+                <%n19 = 0%>
+                <%@group19.each do |g|%>
+                    <%n19 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n19%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=nmb_form(g.fotografia_geral[1])%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.fotografia_geral[1].to_f/@cronos_fot_geral[1])%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card-pos">
+                <h6>Orgãos com mais avaliações positivas no período:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Qtd.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>% do total</p>
+                    </div>
+                </div>
+                <br>
+                <%@group20 = @org_mpp[0..2]%>
+                <%n20 = 0%>
+                <%@group20.each do |g|%>
+                    <%n20+= 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n20%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=nmb_form(g.fotografia_periodo[1])%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.fotografia_periodo[1].to_f/@cronos_fot_periodo[1])%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card-neg">
+                <h6>Orgãos com mais avaliações negativas hoje:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Qtd.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>% do total</p>
+                    </div>
+                </div>
+                <br>
+                <%@group21 = @org_mng[0..2]%>
+                <%n21 = 0%>
+                <%@group21.each do |g|%>
+                    <%n21+= 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n21%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=nmb_form(g.fotografia_geral[2])%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.fotografia_geral[2].to_f/@cronos_fot_geral[2])%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card-neg">
+                <h6>Orgãos com mais avaliações negativas no período:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Qtd.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>% do total</p>
+                    </div>
+                </div>
+                <br>
+                <%@group22 = @org_mnp[0..2]%>
+                <%n22 = 0%>
+                <%@group22.each do |g|%>
+                    <%n22+= 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n22%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=nmb_form(g.fotografia_periodo[2])%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.fotografia_periodo[2].to_f/@cronos_fot_periodo[2])%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card-pos">
+                <h6>Orgãos com maior aprovação no Portal:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Apv.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Dif. média</p>
+                    </div>
+                </div>
+                <br>
+                <%@group23 = @org_mapvg[0..2]%>
+                <%n23 = 0%>
+                <%@group23.each do |g|%>
+                    <%n23+= 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n23%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=percent(g.aprovacao_media)%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.aprovacao_media - @cronos_last.aprovacao_media)%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card-pos">
+                <h6>Orgãos com maior aprovação no período:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Apv.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Dif. média</p>
+                    </div>
+                </div>
+                <br>
+                <%@group24 = @org_mapvp[0..2]%>
+                <%n24 = 0%>
+                <%@group24.each do |g|%>
+                    <%n24 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n24%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=percent(g.aprovacao_periodo)%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.aprovacao_periodo - @cronos_last.aprovacao_periodo)%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card-neg">
+                <h6>Orgãos com menor aprovação no Portal:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Apv.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Dif. média</p>
+                    </div>
+                </div>
+                <br>
+                <%@group25 = @org_mapvg.reverse[0..2]%>
+                <%n25 = 0%>
+                <%@group25.each do |g|%>
+                    <%n25 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n25%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=percent(g.aprovacao_media)%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.aprovacao_media - @cronos_last.aprovacao_media)%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card-neg">
+                <h6>Orgãos com menor aprovação no período:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Apv.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Dif. média</p>
+                    </div>
+                </div>
+                <br>
+                <%@group26 = @org_mapvp.reverse[0..2]%>
+                <%n26 = 0%>
+                <%@group26.each do |g|%>
+                    <%n26 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n26%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=percent(g.aprovacao_periodo)%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.aprovacao_periodo - @cronos_last.aprovacao_periodo)%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card">
+                <h6>Orgãos com maior participação nas avaliações do Portal:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Part.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Dif. média</p>
+                    </div>
+                </div>
+                <br>
+                <%@group27 = @org_mparg[0..2]%>
+                <%n27 = 0%>
+                <%@group27.each do |g|%>
+                    <%n27 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n27%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=percent(g.participacao_media)%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.participacao_media - (@cronos_last.fotografia_geral[0].to_f/@orgaos.size))%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card">
+                <h6>Orgãos com maior participação nas avaliações do período:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Part.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Dif. média</p>
+                    </div>
+                </div>
+                <br>
+                <%@group28 = @org_mparp[0..2]%>
+                <%n28 = 0%>
+                <%@group28.each do |g|%>
+                    <%n28 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n28%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=percent(g.participacao_periodo)%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.participacao_periodo - (@cronos_last.fotografia_periodo[0].to_f/@orgaos.size))%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card">
+                <h6>Orgãos com maior impacto nas avaliações do Portal:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Imp.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Dif. média</p>
+                    </div>
+                </div>
+                <br>
+                <%@group29 = @org_mimpg[0..2]%>
+                <%n29 = 0%>
+                <%@group29.each do |g|%>
+                    <%n29 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n29%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=percent(g.impacto_medio)%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.impacto_medio - (1.to_f/@orgaos.size))%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card">
+                <h6>Orgãos com maior impacto nas avaliações do período:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Imp.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Dif. média</p>
+                    </div>
+                </div>
+                <br>
+                <%@group30 = @org_mimpp[0..2]%>
+                <%n30 = 0%>
+                <%@group30.each do |g|%>
+                    <%n30 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p style="text-align:right"><%=n30%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><span><%=percent(g.impacto_periodo)%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p style="text-align:center"><%=percent(g.impacto_periodo - (1.to_f/@orgaos.size))%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card-pos">
+                <h6>Orgãos com maior variação positiva da aprovação média no período:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-2">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-5">
+                        <p>Variação</p>
+                    </div>
+                </div>
+                <br>
+                <%@group31 = @org_difap[0..2]%>
+                <%n31 = 0%>
+                <%@group31.each do |g|%>
+                    <%n31 += 1%>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <p style="text-align:right"><%=n31%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:center"><span><%=percent(g.var_aprovacao_media)%></span></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+            <div class="col-sm-6 margined">
+            <div class="two-column-card-neg">
+                <h6>Orgãos com maior variação negativa da aprovação média no período:</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-2">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-5">
+                        <p>Variação</p>
+                    </div>
+                </div>
+                <br>
+                <%@group32 = @org_difap.reverse[0..2]%>
+                <%n32 = 0%>
+                <%@group32.each do |g|%>
+                    <%n32 += 1%>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <p style="text-align:right"><%=n32%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:center"><span><%=percent(g.var_aprovacao_media)%></span></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card-pos">
+                <h6>Orgãos com maior diferença positiva entre a aprovação no período e a aprovação média anterior (outperformance):</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-2">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-5">
+                        <p>Outperformance</p>
+                    </div>
+                </div>
+                <br>
+                <%@group33 = @org_outp[0..2]%>
+                <%n33 = 0%>
+                <%@group33.each do |g|%>
+                    <%n33 += 1%>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <p style="text-align:right"><%=n33%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:center"><span><%=percent(g.outperformance)%></span></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6 margined">
+            <div class="two-column-card-neg">
+                <h6>Orgãos com maior diferença negativa entre a aprovação no período e a aprovação média anterior (outperformance):</h6>
+                <div class="row tab-head">
+                    <div class="col-sm-2">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="text-align:left !important">Órgão</p>
+                    </div>
+                    <div class="col-sm-5">
+                        <p>Outperformance</p>
+                    </div>
+                </div>
+                <br>
+                <%@group34 = @org_outp.reverse[0..2]%>
+                <%n34 = 0%>
+                <%@group34.each do |g|%>
+                    <%n34 += 1%>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <p style="text-align:right"><%=n34%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p style="text-align:center"><span><%=percent(g.outperformance)%></span></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+    </div>
     <br>
-    <p>Serviços extintos: <%=nmb_form(Servico.extintos.size)%></p>
+    <br>
 </div>

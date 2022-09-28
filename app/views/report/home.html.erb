@@ -1,0 +1,40 @@
+<div class="container">
+    <h1>Análise das Avaliações do Portal</h1>
+    <br>
+    <div class="indice">
+        <h5><a href="/relatorio">1 - Grandes Números</a></h5>
+        <h5><a href="/documento">2 - Relatório Semanal</a></h5>
+        <br>
+        <h5>3 - Orgãos e Serviços:</h5>
+        <br>
+        <%nmb1 = 0%>
+        <%lvl2 = 1%>
+        <%@orgaos.sort_by{|o| o.nome}.each do |a|%>
+            <div id="accordion<%=nmb1%>">
+                <div class="card">
+                    <div class="card-header" id="<%="heading#{nmb1}"%>">
+                        <h5 class="mb-0"><a href="/orgao/<%=a.id%>">3.<%=lvl2%> - <%=a.nome%></a>
+                            <button class="btn btn-link" data-toggle="collapse" data-target="<%="#collapse#{nmb1}"%>" aria-expanded="true" aria-controls="<%="#collapse#{nmb1}"%>">
+                                <%=a.servicos.size%> Serviços &equiv;
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="<%="collapse#{nmb1}"%>" class="collapse" aria-labelledby="<%="heading#{nmb1}"%>" data-parent="#accordion<%=nmb1%>">
+                        <div class="card-body">
+                            <%lvl3 = 0%>
+                            <%a.servicos.sort_by{|serv| serv.nome}.each do |s|%>
+                                <%lvl3 += 1%>
+                                <p><a href="/servico/<%=s.id%>">3.<%=lvl2%>.<%=lvl3%> - <%=s.nome%></a></h6>
+                            <%end%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%lvl2 += 1%>
+            <%nmb1 += 1%>
+        <%end%>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

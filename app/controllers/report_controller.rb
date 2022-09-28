@@ -1,6 +1,7 @@
 class ReportController < ApplicationController
-
+  
   def home
+    @orgaos = Orgao.all.includes(:servicos, :avaliacos, :derivados)
   end
   
   def documento
@@ -10,6 +11,34 @@ class ReportController < ApplicationController
   def relatorio
    data
    data_comp
+  end
+
+  def orgao
+    @orgao = Orgao.find(params[:id])
+    @servicos = @orgao.servicos
+    @avaliacos = @orgao.avaliacos.includes(:derivados, :tempo)
+    @mais_aval = @servicos.sort_by{|s| s.qtd_avaliacoes*-1}
+    @mais_posit = @servicos.sort_by{|s| s.qtd_positivas*-1}
+    @mais_negat = @servicos.sort_by{|s| s.qtd_negativas*-1}
+    @mais_aprov = @servicos.select{|s| s.qtd_avaliacoes > 10}.sort_by{|s| s.aprovacao_geral*-1}
+    @menos_aprov = @servicos.select{|s| s.qtd_avaliacoes > 10}.sort_by{|s| s.aprovacao_geral}
+    @avaliados = @servicos.select{|s| s.qtd_avaliacoes > 0}
+    @data_chart = []
+    @data_per = []
+    @aprov = []
+    Tempo.all.each do |t|
+        @data_chart << [t.data.to_s, @orgao.fotografia_antiga(t.id)[2], @orgao.fotografia_antiga(t.id)[0], @orgao.fotografia_antiga(t.id)[1]]
+        @data_per << [t.data.to_s, @orgao.fotografia_antiga(t.id)[5], @orgao.fotografia_antiga(t.id)[3], @orgao.fotografia_antiga(t.id)[4]]
+        @aprov << [ t.data, @orgao.fotografia_antiga(t.id)[6], @orgao.fotografia_antiga(t.id)[7]]
+    end
+    @data_per.shift(2)
+    @last = @data_chart.pop
+    @lst_per = @data_per.pop
+    @lst_apv = @aprov.pop
+  end
+
+  def servico
+    @servico = Servico.find(params[:id])
   end
 
 
@@ -40,7 +69,7 @@ class ReportController < ApplicationController
     @org_map = @orgaos.sort_by{|o| o.fotografia_periodo[0]*-1} # r d
     @org_mpp = @orgaos.sort_by{|o| o.fotografia_periodo[1]*-1} # r d
     @org_mnp = @orgaos.sort_by{|o| o.fotografia_periodo[2]*-1} # r d
-    @org_mimpp =  @orgaos.sort_by{|o| o.impacto_periodo*-1} # r d
+    @org_mimpp =  @orgaos.sort_by{|o| o.impacto_periodo.abs*-1} # r d
     @org_difap = @orgaos1000.sort_by{|o| o.var_aprovacao_media*-1} # r d
     @org_outp = @orgaos1000.sort_by{|o| o.outperformance*-1} # r d
   end
@@ -59,7 +88,7 @@ class ReportController < ApplicationController
     @org_mapvp = Orgao.mais100.sort_by{|o| o.aprovacao_periodo*-1} # r
     @org_mparg = @orgaos.sort_by{|o| o.participacao_media*-1} # r
     @org_mparp = @orgaos.sort_by{|o| o.participacao_periodo*-1} # r
-    @org_mimpg = @orgaos.sort_by{|o| o.impacto_medio*-1} # r
+    @org_mimpg = @orgaos.sort_by{|o| o.impacto_medio.abs*-1} # r
   end
 
 end

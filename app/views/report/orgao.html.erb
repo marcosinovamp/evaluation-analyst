@@ -1,0 +1,403 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart'], 'language': 'pt'});
+    google.charts.setOnLoadCallback(avalCumul);
+    google.charts.setOnLoadCallback(avalAbs);
+    google.charts.setOnLoadCallback(evolAprovs);
+
+    function avalCumul() {
+        var data = google.visualization.arrayToDataTable([
+            ['Data', 'Total de Avaliações', 'Avaliações Positivas', 'Avaliações Negativas'],
+        <%@data_chart.each do |t|%>
+            [new Date(<%=t[0][0..3].to_i%>, <%=t[0][5..6].to_i-1%>, <%=t[0][8..9].to_i%>), <%=t[1].to_i%>, <%=t[2].to_i%>, <%=t[3].to_i%>],
+        <%end%>
+        [new Date(<%=@last[0][0..3].to_i%>, <%=@last[0][5..6].to_i-1%>, <%=@last[0][8..9].to_i%>), <%=@last[1].to_i%>, <%=@last[2].to_i%>, <%=@last[3].to_i%>]
+    ]);
+
+    var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1, {
+            calc: 'stringify',
+        sourceColumn: 1,
+        type: 'string',
+        role: 'annotation'
+    }, 2, {
+        calc: 'stringify',
+        sourceColumn: 2,
+        type: 'string',
+        role: 'annotation'
+    }, 3, {
+        calc: 'stringify',
+        sourceColumn: 3,
+        type: 'string',
+        role: 'annotation'
+    }
+    ]);
+
+    var options = {
+        titlePosition:'none',
+        backgroundColor: 'transparent',
+        curveType: 'none',
+        legend: 'none',
+        point: {visibility: true},
+        pointSize: 5,
+        colors: ['navy', 'darkgreen', 'darkred'],
+        annotations: {
+            textStyle: {
+                fontSize: 12,
+                //color: 'black',
+                bold: true,
+                auraColor: 'white'
+            },
+            stem: {
+                color:'transparent'
+            }
+        },
+        vAxis: {
+            gridlines: {
+                color: 'lightgrey'
+                //interval: 0.5
+            }
+            // viewWindowMode:'explicit',
+            // viewWindow: {
+            //     min:200,
+            //     max:2000
+            //}    
+        },
+        hAxis: {
+            gridlines: {
+                color:'lightgrey',
+            }
+        }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('aval_cumul'));
+
+    chart.draw(view, options);
+    }
+
+    function avalAbs() {
+        var data = google.visualization.arrayToDataTable([
+            ['Data', 'Total de Avaliações', 'Avaliações Positivas', 'Avaliações Negativas'],
+        <%@data_per.each do |t|%>
+            [new Date(<%=t[0][0..3].to_i%>, <%=t[0][5..6].to_i-1%>, <%=t[0][8..9].to_i%>), <%=t[1].to_i%>, <%=t[2].to_i%>, <%=t[3].to_i%>],
+        <%end%>
+        [new Date(<%=@lst_per[0][0..3].to_i%>, <%=@lst_per[0][5..6].to_i-1%>, <%=@lst_per[0][8..9].to_i%>), <%=@lst_per[1].to_i%>, <%=@lst_per[2].to_i%>, <%=@lst_per[3].to_i%>]
+    ]);
+
+    var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1, {
+            calc: 'stringify',
+        sourceColumn: 1,
+        type: 'string',
+        role: 'annotation'
+    }, 2, {
+        calc: 'stringify',
+        sourceColumn: 2,
+        type: 'string',
+        role: 'annotation'
+    }, 3, {
+        calc: 'stringify',
+        sourceColumn: 3,
+        type: 'string',
+        role: 'annotation'
+    }
+    ]);
+
+    var options = {
+        titlePosition:'none',
+        backgroundColor: 'transparent',
+        curveType: 'none',
+        legend: 'none',
+        point: {visibility: true},
+        pointSize: 5,
+        colors: ['navy', 'darkgreen', 'darkred'],
+        annotations: {
+            textStyle: {
+                fontSize: 12,
+                //color: 'black',
+                bold: true,
+                auraColor: 'white'
+            },
+            stem: {
+                color:'transparent',
+                length: 2
+            }
+        },
+        vAxis: {
+            gridlines: {
+                color: 'lightgrey',
+            },
+        },
+        hAxis: {
+            gridlines: {
+                color:'lightgrey',
+            }
+        }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('aval_abs'));
+
+    chart.draw(view, options);
+    }
+
+    function evolAprovs() {
+    var data = google.visualization.arrayToDataTable([
+        ["Medida", "Aprovação Média", "Aprovação no Período"],
+        <%@aprov.each do |t|%>
+            ["<%=date_mask(t[0])%>", <%=t[1]%>, <%=t[2]%>],
+        <%end%>
+        ["<%=date_mask(@lst_apv[0])%>", <%=@lst_apv[1]%>, <%=@lst_apv[2]%>]
+    ]);
+
+    var formatter = new google.visualization.NumberFormat({
+        pattern: '#.##%',
+        fractionDigits:4
+    });
+    formatter.format(data, 1);
+    formatter.format(data, 2);
+
+    var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1, {
+        calc: 'stringify',
+        sourceColumn: 1,
+        type: 'string',
+        role: 'annotation'
+    }, 2, {
+        calc: 'stringify',
+        sourceColumn: 2,
+        type: 'string',
+        role: 'annotation'
+    }
+        ]);
+
+        var options = {
+            backgroundColor: 'transparent',
+            vAxis: {
+            minValue: 0,
+            maxValue: 0.43,
+            format: '#%'
+            },
+            bars: 'vertical',
+            annotations: {
+                textStyle: {
+                    fontSize:10
+                },
+                stem: {
+                    color:'transparent'
+                }
+            },
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('evol_aprov'));
+
+        chart.draw(view, options);
+      }
+</script>
+
+
+<div class="container">
+    <h1><%=@orgao.nome%></h1>
+    <br>
+    <h3 class="org-title">Situação Atual</h3>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="placa numbers">
+                <h6>Nº de avaliações:</h6> 
+                <p><%=nmb_form(@orgao.fotografia_geral[0])%></p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="placa posit">
+                <h6>Positivas:</h6> 
+                <p><%=nmb_form(@orgao.fotografia_geral[1])%></p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="placa negat">
+                <h6>Negativas:</h6> 
+                <p><%=nmb_form(@orgao.fotografia_geral[2])%></p>
+            </div>
+        </div>
+         <div class="col-sm-4">
+            <div class="placa numbers">
+                <h6>Aprovação média:</h6> 
+                <p><%=percent(@orgao.aprovacao_media)%></p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="placa numbers">
+                <h6>Participação no total de avaliações:</h6> 
+                <p><%=percent(@orgao.participacao_media)%></p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="placa numbers">
+                <h6>Impacto na Aprovação Geral do Portal:</h6> 
+                <p><%=percent(@orgao.impacto_medio > -0.00009999999 && @orgao.impacto_medio < 0.00009999999 ? 0 : @orgao.impacto_medio.to_f)%></p>
+            </div>
+        </div>
+    </div>
+    <h2>Serviços</h2>
+    <br>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="placa numbers">
+                <h6>Nº de serviços:</h6> 
+                <p><%=nmb_form(@orgao.servicos.size)%></p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="placa numbers">
+                <h6>Nº de serviços avaliados:</h6> 
+                <p><%=@avaliados.size%> (<%=percent(@avaliados.size.to_f/@servicos.size)%>)</p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="placa negat">
+                <h6>Nº de serviços atualmente reprovados:</h6> 
+                <p><%=@avaliados.select{|s| s.aprovacao_geral < 0.5}.size%> (<%=percent(@avaliados.select{|s| s.aprovacao_geral < 0.5}.size.to_f/@servicos.size)%>)</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="placa serv-card numbers">
+                <h6>Serviço com mais avaliações:</h6> 
+                <p><%=@mais_aval.first.nome%></p>
+                <p><%=nmb_form(@mais_aval.first.qtd_avaliacoes)%> avaliações</p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="placa serv-card posit">
+                <h6>Serviço com mais avaliações positivas:</h6> 
+                <p><%=@mais_posit.first.nome%></p>
+                <p><%=nmb_form(@mais_posit.first.qtd_positivas)%> avaliações positivas</p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="placa serv-card negat">
+                <h6>Serviço com mais avaliações negativas:</h6> 
+                <p><%=@mais_negat.first.nome%></p>
+                <p><%=nmb_form(@mais_negat.first.qtd_negativas)%> avaliações negativas</p>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="placa serv-card posit">
+                <h6>Serviço com maior aprovação:</h6> 
+                <p><%=@mais_aprov.first.nome%></p>
+                <p><%=percent(@mais_aprov.first.aprovacao_geral)%> de aprovação</p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="placa serv-card negat">
+                <h6>Serviço com menor aprovação:</h6> 
+                <p><%=@menos_aprov.first.nome%></p>
+                <p><%=percent(@menos_aprov.first.aprovacao_geral)%> de aprovação</p>
+            </div>
+        </div>
+    </div>
+    <br>
+        <div style="background-color:white;margin:auto;width:70%;padding:10px;padding-bottom:3px;border-radius:5px">
+        <h6 style="margin-bottom:0;margin-top:20px;padding-bottom:0">Evolução Cumulativa das Avaliações</h6>
+        <div class="row">
+            <div class="col-sm-9">
+                <div id="aval_cumul" style="width: 700px; height: 400px; margin:auto; margin-top:-50px"></div>
+            </div>
+            <div class="col-sm-3">
+                <div style="heigth:auto;width:auto;margin:100px 0px">
+                    <div class="row">
+                        <div class="col-sm-1">
+                        </div>
+                        <div class="col-sm-1">
+                            <div style="background-color:navy;border: 1px solid navy;height:10px;width:10px;margin-bottom:-10px"></div>
+                        </div>
+                        <div class="col-sm-9">
+                            <p style="margin-top:-5px;text-align:left">Total de Avaliações</p>
+                        </div>
+                        <div class="col-sm-1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                        </div>
+                        <div class="col-sm-1">
+                            <div style="background-color:darkgreen;border: 1px solid darkgreen;height:10px;width:10px;margin-bottom:-10px"></div>
+                        </div>
+                        <div class="col-sm-9">
+                            <p style="margin-top:-5px;text-align:left">Avaliações Positivas</p>
+                        </div>
+                        <div class="col-sm-1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                        </div>
+                        <div class="col-sm-1">
+                            <div style="background-color:darkred;border: 1px solid darkred;height:10px;width:10px;margin-bottom:-10px"></div>
+                        </div>
+                        <div class="col-sm-9">
+                            <p style="margin-top:-5px;text-align:left">Avaliações Negativas</p>
+                        </div>
+                        <div class="col-sm-1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div style="background-color:white;margin:auto;width:70%;padding:10px;padding-bottom:3px;border-radius:5px">
+        <h6 style="margin-bottom:0;margin-top:20px;padding-bottom:0">Variação das Avaliações por período</h6>
+        <div class="row">
+            <div class="col-sm-9">
+                <div id="aval_abs" style="width: 700px; height: 400px; margin:auto; margin-top:-50px"></div>
+            </div>
+            <div class="col-sm-3">
+                <div style="heigth:auto;width:auto;margin:100px 0px">
+                    <div class="row">
+                        <div class="col-sm-1">
+                        </div>
+                        <div class="col-sm-1">
+                            <div style="background-color:navy;border: 1px solid navy;height:10px;width:10px;margin-bottom:-10px"></div>
+                        </div>
+                        <div class="col-sm-9">
+                            <p style="margin-top:-5px;text-align:left">Total de Avaliações</p>
+                        </div>
+                        <div class="col-sm-1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                        </div>
+                        <div class="col-sm-1">
+                            <div style="background-color:darkgreen;border: 1px solid darkgreen;height:10px;width:10px;margin-bottom:-10px"></div>
+                        </div>
+                        <div class="col-sm-9">
+                            <p style="margin-top:-5px;text-align:left">Avaliações Positivas</p>
+                        </div>
+                        <div class="col-sm-1">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                        </div>
+                        <div class="col-sm-1">
+                            <div style="background-color:darkred;border: 1px solid darkred;height:10px;width:10px;margin-bottom:-10px"></div>
+                        </div>
+                        <div class="col-sm-9">
+                            <p style="margin-top:-5px;text-align:left">Avaliações Negativas</p>
+                        </div>
+                        <div class="col-sm-1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div style="background-color:white;margin:auto;width:90%;padding-bottom:3px;padding-top:10px;border-radius:5px">
+        <h6 style="margin-bottom:0;margin-top:20px;padding-bottom:0">Aprovação Média x Aprovação do Período</h6>
+        <div id="evol_aprov" style="width: 1000px; height: 400px;margin:auto;margin-top:-50px"></div>
+    </div>
+    <br>
