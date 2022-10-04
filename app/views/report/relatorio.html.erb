@@ -1052,7 +1052,7 @@
                             <p style="text-align:center"><span><%=percent(g.participacao_media)%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.participacao_media - (@cronos_last.fotografia_geral[0].to_f/@orgaos.size))%></p>
+                            <p style="text-align:center"><%=percent(g.participacao_media - (1.to_f/@orgaos.size))%></p>
                         </div>
                     </div>
                 <%end%>
@@ -1090,7 +1090,7 @@
                             <p style="text-align:center"><span><%=percent(g.participacao_periodo)%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.participacao_periodo - (@cronos_last.fotografia_periodo[0].to_f/@orgaos.size))%></p>
+                            <p style="text-align:center"><%=percent(g.participacao_periodo - (1.to_f/@orgaos.size))%></p>
                         </div>
                     </div>
                 <%end%>

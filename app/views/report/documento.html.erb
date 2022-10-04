@@ -1,19 +1,370 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart'], 'language': 'pt'});
+    google.charts.setOnLoadCallback(evlApvTot);
+
+	function evlApvTot() {
+    	var data = google.visualization.arrayToDataTable([
+			["Data", "Aprovação Média", "Aprovação no Período"],
+			<%@comp_avals.each do |t|%>
+				["<%=date_mask(t[0])%>", <%=t[1]%>, <%=t[2]%>],
+			<%end%>
+			["<%=date_mask(@last[0])%>", <%=@last[1]%>, <%=@last[2]%>]
+    	]);
+
+    	var formatter = new google.visualization.NumberFormat({
+			pattern: '#.##%',
+			fractionDigits:4
+    	});
+		formatter.format(data, 1);
+		formatter.format(data, 2);
+
+		var view = new google.visualization.DataView(data);
+		view.setColumns([0, 1, {
+			calc: 'stringify',
+			sourceColumn: 1,
+			type: 'string',
+			role: 'annotation'
+		}, 2, {
+			calc: 'stringify',
+			sourceColumn: 2,
+			type: 'string',
+			role: 'annotation'
+		}]);
+
+        var options = {
+            backgroundColor: 'transparent',
+			legend: {
+				position: 'bottom'
+			},
+            vAxis: {
+				minValue: 0.2,
+				maxValue: 0.7,
+				format: '#%'
+            },
+            bars: 'vertical',
+            annotations: {
+                textStyle: {
+                    fontSize:10
+                },
+                stem: {
+                    color:'transparent'
+                }
+            },
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('evl-apv-tot'));
+        chart.draw(view, options);
+    }
+
+	google.charts.setOnLoadCallback(porcAval);
+
+	function porcAval() {
+        var data = google.visualization.arrayToDataTable([
+			['Órgão', 'Qtd. de Avaliações no Período'],
+			<%@pie_data.each do |p|%>
+				["<%=p[0]%>", <%=p[1]%>],
+			<%end%>
+			['Demais Órgãos', <%=@demais%>]
+        ]);
+
+        var options = {
+			pieHole: 0.4,
+			legend: 'none',
+			is3D: false,
+			backgroundColor: 'transparent',
+			pieSliceText: 'none',
+			//pieSliceTextStyle: {fontSize: 10},
+			enableInteractivity: false,
+  			selectionMode: 'multiple',
+			tooltip: {
+				showColorCode: true,
+				text: 'both',
+				trigger: 'selection',
+				ignoreBounds: true,
+				textStyle: {
+					fontSize: 10
+				}
+			}
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('porc-aval'));
+
+		google.visualization.events.addListener(chart, 'ready', function(e) {
+		var selected_rows = [];
+		for (var i = 0; i < <%=@pie_data.size + 1%>; i++) {
+			selected_rows.push({row: i, column: null});
+		}
+		chart.setSelection(selected_rows);
+		});
+        chart.draw(data, options);
+	}
+	</script>
+	<script type="text/javascript">
+    	google.charts.load('current', {'packages':['corechart'], 'language': 'pt'});
+	 	google.charts.setOnLoadCallback(evlMedias);
+
+	function evlMedias() {
+    	var data = google.visualization.arrayToDataTable([
+			["Órgão", "Aprovação Média", "Aprovação no Período"],
+			["<%=@org_outp.first.nome_fantasia%>", <%=@org_outp.first.aprovacao_media%>, <%=@org_outp.first.aprovacao_periodo%>],
+			["<%=@org_outp.second.nome_fantasia%>", <%=@org_outp.second.aprovacao_media%>, <%=@org_outp.second.aprovacao_periodo%>],
+			["<%=@org_outp.third.nome_fantasia%>", <%=@org_outp.third.aprovacao_media%>, <%=@org_outp.third.aprovacao_periodo%>],
+			["<%=@org_outp[-3].nome_fantasia%>", <%=@org_outp[-3].aprovacao_media%>, <%=@org_outp[-3].aprovacao_periodo%>],
+			["<%=@org_outp[-2].nome_fantasia%>", <%=@org_outp[-2].aprovacao_media%>, <%=@org_outp[-2].aprovacao_periodo%>],
+			["<%=@org_outp.last.nome_fantasia%>", <%=@org_outp.last.aprovacao_media%>, <%=@org_outp.last.aprovacao_periodo%>]
+    	]);
+
+    	var formatter = new google.visualization.NumberFormat({
+			pattern: '#.##%',
+			fractionDigits:4
+    	});
+		formatter.format(data, 1);
+		formatter.format(data, 2);
+
+		var view = new google.visualization.DataView(data);
+		view.setColumns([0, 1, {
+			calc: 'stringify',
+			sourceColumn: 1,
+			type: 'string',
+			role: 'annotation'
+		}, 2, {
+			calc: 'stringify',
+			sourceColumn: 2,
+			type: 'string',
+			role: 'annotation'
+		}]);
+
+        var options = {
+            backgroundColor: 'transparent',
+			legend: {
+				position: 'top',
+				alignment: 'center',
+				textStyle: {
+					fontSize:10
+				}
+			},
+			hAxis: {
+				textStyle: {
+					fontSize: 10
+				}
+			},
+            vAxis: {
+				minValue: 0.2,
+				maxValue: 1,
+				format: '#%'
+            },
+            bars: 'vertical',
+            annotations: {
+                textStyle: {
+                    fontSize:10
+                },
+                stem: {
+                    color:'transparent'
+                }
+            },
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('medias'));
+        chart.draw(view, options);
+    }
+</script>
+
 <div class="container">
 	<h4>Portal gov.br - Relatório da avaliação de informações das páginas de serviço: <%=bradate(@cronos[-2].data)%> a <%=bradate(@cronos_last.data)%></h4>
+	<br>
+	
+	<p>Durante o período <span><%=@novos.size == 1 ? "#{nmb_form(@novos.size)} nova página de serviço foi inclusa" : @novos.size == 0 ? "nenhuma página nova foi inclusa" : "#{nmb_form(@novos.size)} novas páginas de serviço foram inclusas"%></span> no Portal e <span><%=@retirados.size == 1 ? "#{nmb_form(@retirados.size)} página foi retirada" : @retirados.size == 0 ? "nenhuma página foi retirada" : "#{nmb_form(@retirados.size)} páginas foram retiradas"%></span>, resultando em <span><%=nmb_form(@atuais.size)%> serviços atualmente na API de serviços</span>.</p>
+
+	<%if @novos.size > 0%>
+		<%if @av_novos[0] > 0%>
+			<p><span><%=@novos.size == 1 ? "O serviço que entrou" : "Os serviços que entraram"%> no Portal</span> <%=@novos.size == 1 ? "teve" : "tiveram"%> <span><%=nmb_form(@av_novos[0])%> <%=@av_novos[0] == 1 ? "avaliação" : "avaliações"%> no período</span> (<%=@av_novos[1] != 0 ? (@av_novos[1] == 1 ? "#{nmb_form(@av_novos[1])} positiva" : "#{nmb_form(@av_novos[1])} positivas") : "" %> <%=@av_novos[1] == 0 || @av_novos[2] == 0 ? "" : "x" %> <%=@av_novos[2] != 0 ? (@av_novos[2] == 1 ? "#{nmb_form(@av_novos[2])} negativa" : "#{nmb_form(@av_novos[2])} negativas") : "" %>).
+		<%else%>
+			<%=@novos.size == 1 ? "O serviço que entrou não teve" : "Os serviços que entraram não tiveram"%> avaliações no período.
+		<%end%>
+	<%end%>
+	
+	<%if @retirados.size > 0%>
+		<%if @av_retirados[0] > 0%>
+			<%=@retirados.size == 1 ? "O serviço que saiu" : "Os serviços que saíram"%> <span><%=@retirados.size == 1 ? "retirou" : "retiraram"%></span> do Portal <span><%=@av_retirados[0] == 1 ? "#{nmb_form(@av_retirados[0])} avaliação" : "#{nmb_form(@av_retirados[0])} avaliações"%></span> (<%=@av_retirados[1] == 0 ? "" : @av_retirados[1] == 1 ? "#{nmb_form(@av_retirados[1])} positiva" : "#{nmb_form(@av_retirados[1])} positivas"%> <%=@av_retirados[1] == 0 || @av_retirados[2] == 0 ? "" : "x" %> <%=@av_retirados[2] == 0 ? "" : @av_retirados[2] == 1 ? "#{nmb_form(@av_retirados[~2])} negativa" : "#{nmb_form(@av_retirados[2])} negativas"%>
+		<%else%>
+			<%=@retirados.size == 1 ? "O serviço que saiu não tinha" : "Os serviços que saíram não tinham"%> nenhuma avaliação ainda.
+		<%end%>
+	<%end%>
 		
-	<p>Durante o período <%=nmb_form(@novos.size)%> novas páginas de serviço foram inclusas no Portal e <%=nmb_form(@retirados.size)%> páginas foram retiradas, resultando em <%=nmb_form(@atuais.size)%> serviços atualmente na API de serviços.</p>
+		Os restantes <span><%=nmb_form(@mantidos.size)%> serviços que permaneceram</span> no Portal receberam no período <span><%=nmb_form(@av_mantidos[0])%> avaliações</span> (<%=nmb_form(@av_mantidos[1])%> positivas x <%=nmb_form(@av_mantidos[2])%> negativas). Como resultado, o Portal hoje conta com <span><%=nmb_form(@cronos_fot_geral[0])%> avaliações</span>, sendo <span><%=nmb_form(@cronos_fot_geral[1])%> delas positivas</span> e os restantes <span><%=nmb_form(@cronos_fot_geral[2])%> negativas</span>. Neste período, como consequência, houve uma <span>variação de <%=percent(@varapvmedia)%> na aprovação média</span> das páginas de serviço do Portal.</p>
 
-	<p>Os serviços que entraram no Portal tiveram <%=nmb_form(@av_novos[0])%> avaliações no período (<%=nmb_form(@av_novos[1])%> positivas x <%=nmb_form(@av_novos[2])%> negativas). Os serviços que saíram retiraram do Portal <%=nmb_form(@av_retirados[0])%> avaliações (<%=nmb_form(@av_retirados[1])%> positivas x <%=nmb_form(@av_retirados[2])%> negativas). Os restantes <%=nmb_form(@mantidos.size)%> serviços que permaneceram no Portal receberam no período <%=nmb_form(@av_mantidos[0])%> avaliações (<%=nmb_form(@av_mantidos[1])%> positivas x <%=nmb_form(@av_mantidos[2])%> negativas). Como resultado, o Portal hoje conta com <%=nmb_form(@cronos_fot_geral[0])%> avaliações, sendo <%=nmb_form(@cronos_fot_geral[1])%> delas positivas e os restantes <%=nmb_form(@cronos_fot_geral[2])%> negativas. Neste período, como consequência, houve uma queda de <%=percent(@varapvmedia)%> na aprovação média das páginas de serviço do Portal.</p>
+	<div style="margin:auto">
+		<h6 style="text-align:center;margin:0">Evolução da Avaliação Média x Avaliação do Período</h6>
+		<div id="evl-apv-tot"></div>
+	</div>
 
-	<p>Os órgãos que mais acrescentaram serviços no período foram <%=@org_msn.first.artigo%> <%=@org_msn.first.nome_fantasia%>, que acrescentou <%=nmb_form(@org_msn.first.novos.size)%> serviços (<%=percent(@org_msn.first.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%> dos serviços novos), <%=@org_msn.second.artigo%> <%=@org_msn.second.nome_fantasia%> que cadastrou <%=nmb_form(@org_msn.second.novos.size)%> serviços (<%=percent(@org_msn.second.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%> dos serviços novos.) e <%=@org_msn.third.artigo%> <%=@org_msn.third.nome_fantasia%>, com <%=nmb_form(@org_msn.third.novos.size)%> serviços (<%=percent(@org_msn.third.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%> dos serviços novos.). Os órgãos que mais retiraram serviços foram <%=@org_msr.first.artigo%> <%=@org_msr.first.nome_fantasia%> com <%=nmb_form(@org_msr.first.retirados.size)%> serviços (<%=percent(@org_msr.first.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%> dos serviços retirados.), <%=@org_msr.second.artigo%> <%=@org_msr.second.nome_fantasia%>, que tirou <%=nmb_form(@org_msr.second.retirados.size)%> serviços (<%=percent(@org_msr.second.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%> dos serviços retirados.) e <%=@org_msr.third.artigo%> <%=@org_msr.third.nome_fantasia%> que eliminou <%=nmb_form(@org_msr.third.retirados.size)%> serviços (<%=percent(@org_msr.third.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%> dos serviços retirados.) Os órgãos com mais serviços no Portal no momento são <%=@org_msa.first.artigo%> <%=@org_msa.first.nome_fantasia%> (<%=nmb_form(@org_msa.first.atuais.size)%> serviços, <%=percent(@org_msa.first.atuais.size.to_f/@atuais.size)%> dos serviços hoje no Portal.), seguido pel<%=@org_msa.second.artigo%> <%=@org_msa.second.nome_fantasia%> (<%=nmb_form(@org_msa.second.atuais.size)%> serviços, <%=percent(@org_msa.second.atuais.size.to_f/@atuais.size)%> dos serviços hoje no Portal.) e <%=@org_msa.third.artigo%> <%=@org_msa.third.nome_fantasia%> (<%=nmb_form(@org_msa.third.atuais.size)%> serviços, <%=percent(@org_msa.third.atuais.size.to_f/@atuais.size)%> dos serviços hoje no Portal.).</p>
+	<%if  @org_msn.first.novos.size > 0%>
+		<%if @org_msn.first.novos.size == @org_msn.second.novos.size%>
+			<%if @org_msn.third.novos.size == @org_msn.first.novos.size%>
+				<p>Os órgãos que mais acrescentaram serviços no período foram <%=@org_msn.first.artigo%> <%=@org_msn.first.nome_fantasia%>, <%=@org_msn.second.artigo%> <%=@org_msn.second.nome_fantasia%> e <%=@org_msn.third.artigo%> <%=@org_msn.third.nome_fantasia%>, que acrescentaram <%=nmb_form(@org_msn.first.novos.size)%> <%=@org_msn.first.novos.size == 1 ? 'nova página de serviço' : 'novas páginas de serviço'%> cada um.
+			<%else%>
+				<p>Os órgãos que mais acrescentaram serviços no período foram <%=@org_msn.first.artigo%> <%=@org_msn.first.nome_fantasia%> e <%=@org_msn.second.artigo%> <%=@org_msn.second.nome_fantasia%>, com <%=nmb_form(@org_msn.first.novos.size)%> novas páginas de serviço cada (<%=percent(@org_msn.first.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%> dos serviços novos cada) e <%=@org_msn.third.artigo%> <%=@org_msn.third.nome_fantasia%>, que acrescentou <%=nmb_form(@org_msn.third.novos.size)%> <%=@org_msn.third.novos.size == 1 ? 'nova página de serviço' : 'novas páginas de serviço'%> (<%=percent(@org_msn.third.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%> dos serviços novos).
+			<%end%>
+		<%else%>
+			<%if @org_msn.third.novos.size == @org_msn.second.novos.size && @org_msn.second.novos.size > 0%>
+				<p>Os órgãos que mais acrescentaram serviços no período foram <%=@org_msn.first.artigo%> <%=@org_msn.first.nome_fantasia%>, que acrescentou <%=nmb_form(@org_msn.first.novos.size)%> <%=@org_msn.first.novos.size == 1 ? 'nova página de serviço' : 'novas páginas de serviço'%> <%=percent(@org_msn.first.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%> dos serviços novos), e <%=@org_msn.second.artigo%> <%=@org_msn.second.nome_fantasia%> e <%=@org_msn.third.artigo%> <%=@org_msn.third.nome_fantasia%>, que acrescentaram <%=nmb_form(@org_msn.second.novos.size)%> <%=@org_msn.second.novos.size == 1 ? 'nova página de serviço' : 'novas páginas de serviço'%> (<%=percent(@org_msn.first.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%> dos serviços novos cada).
+			<%else%>
+				<p><%=@org_msn.second.novos.size == 0 ? ("Somente #{@org_msn.first.artigo} #{@org_msn.first.nome_fantasia} acrescentou serviços no período, tendo cadastrado #{nmb_form(@org_msn.first.novos.size)} #{@org_msn.first.novos.size == 1 ? 'nova página de serviço' : 'novas páginas de serviço'}") : "Os órgãos que mais acrescentaram serviços no período foram #{@org_msn.first.artigo} #{@org_msn.first.nome_fantasia}, que acrescentou #{nmb_form(@org_msn.first.novos.size)} #{@org_msn.first.novos.size == 1 ? 'nova página de serviço' : 'novas páginas de serviço'} (#{percent(@org_msn.first.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))} dos serviços novos)"%> 
+				<%=@org_msn.third.novos.size == 0 ? "e #{@org_msn.second.artigo} #{@org_msn.second.nome_fantasia}, que cadastrou #{nmb_form(@org_msn.second.novos.size)} #{@org_msn.second.novos.size == 1 ? 'nova página de serviço' : 'novas páginas de serviço'} (#{percent(@org_msn.second.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))} dos serviços novos)" : ", #{@org_msn.second.artigo} #{@org_msn.second.nome_fantasia}, que cadastrou #{nmb_form(@org_msn.second.novos.size)} #{@org_msn.second.novos.size == 1 ? 'nova página de serviço' : 'novas páginas de serviço'} (#{percent(@org_msn.second.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))} dos serviços novos) e #{@org_msn.third.artigo} #{@org_msn.third.nome_fantasia} que cadastrou #{nmb_form(@org_msn.third.novos.size)} #{ @org_msn.third.novos.size == 1 ? 'nova página de serviço' : 'novas páginas de serviço'} (#{percent(@org_msn.second.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))} dos serviços novos)."%>
+			<%end%>
+		<%end%>
+	<%end%>
 
-	<p><%=@org_map.first.artigo%> <%=@org_map.first.nome_fantasia%> foi o órgão que mais recebeu avaliações no período (<%=nmb_form(@org_map.first.fotografia_periodo[0])%> avaliações, <%=percent(@org_map.first.fotografia_periodo[0].to_f/@cronos_fot_periodo[0])%> do total no período), seguid<%=@org_map.first.artigo%> pel<%=@org_map.second.artigo%> <%=@org_map.second.nome_fantasia%> (<%=nmb_form(@org_map.second.fotografia_periodo[0])%> avaliações, <%=percent(@org_map.second.fotografia_periodo[0].to_f/@cronos_fot_periodo[0])%> do total no período) e d<%=@org_map.third.artigo%> <%=@org_map.third.nome_fantasia%> (<%=nmb_form(@org_map.third.fotografia_periodo[0])%> avaliações, <%=percent(@org_map.third.fotografia_periodo[0].to_f/@cronos_fot_periodo[0])%> das avaliações feitas no período). Os órgãos que mais receberam avaliações positivas no período foram <%=@org_mpp.first.artigo%> <%=@org_mpp.first.nome_fantasia%> (<%=nmb_form(@org_mpp.first.fotografia_periodo[1])%> avaliações positivas, <%=percent(@org_mpp.first.fotografia_periodo[1].to_f/@cronos_fot_periodo[1])%> das avaliações positivas feitas no período), seguid<%=@org_mpp.first.artigo%> pel<%=@org_mpp.second.artigo%> <%=@org_mpp.second.nome_fantasia%> (<%=nmb_form(@org_mpp.second.fotografia_periodo[1])%> avaliações positivas, <%=percent(@org_mpp.second.fotografia_periodo[1].to_f/@cronos_fot_periodo[1])%> do total) e <%=@org_mpp.third.artigo%> <%=@org_mpp.third.nome_fantasia%> (<%=nmb_form(@org_mpp.third.fotografia_periodo[1])%> positivas, <%=percent(@org_mpp.third.fotografia_periodo[1].to_f/@cronos_fot_periodo[1])%> do total). Os três órgãos que mais receberam avaliações negativas no período, por sua vez, foram <%=@org_mnp.first.artigo%> <%=@org_mnp.first.nome_fantasia%> (<%=nmb_form(@org_mnp.first.fotografia_periodo[2])%> avaliações negativas, <%=percent(@org_mnp.first.fotografia_periodo[2].to_f/@cronos_fot_periodo[2])%> das avaliações negativas feitas no período), <%=@org_mnp.second.artigo%> <%=@org_mnp.second.nome_fantasia%> (<%=nmb_form(@org_mnp.second.fotografia_periodo[2])%> negativas, <%=percent(@org_mnp.second.fotografia_periodo[2].to_f/@cronos_fot_periodo[2])%> do total) e <%=@org_mnp.third.artigo%> <%=@org_mnp.third.nome_fantasia%> (<%=nmb_form(@org_mnp.third.fotografia_periodo[2])%> negativas <%=percent(@org_mnp.third.fotografia_periodo[2].to_f/@cronos_fot_periodo[2])%> do total).</p>
+	<%if @org_msr.first.retirados.size > 0%>
+		<%if @org_msr.first.retirados.size == @org_msr.second.retirados.size%>
+			<%if @org_msr.third.retirados.size == @org_msr.first.retirados.size%>
+				Os órgãos que mais retiraram serviços no período foram <%=@org_msr.first.artigo%> <%=@org_msr.first.nome_fantasia%>, <%=@org_msr.second.artigo%> <%=@org_msr.second.nome_fantasia%> e <%=@org_msr.third.artigo%> <%=@org_msr.third.nome_fantasia%>, que retiraram <%=nmb_form(@org_msr.first.retirados.size)%> <%=@org_msr.first.retirados.size == 1 ? 'página de serviço' : 'páginas de serviço'%> cada um.
+			<%else%>
+				Os órgãos que mais retiraram serviços no período foram <%=@org_msr.first.artigo%> <%=@org_msr.first.nome_fantasia%> e <%=@org_msr.second.artigo%> <%=@org_msr.second.nome_fantasia%>, com <%=nmb_form(@org_msr.first.retirados.size)%> páginas retiradas cada (<%=percent(@org_msr.first.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%> dos serviços retirados cada) e <%=@org_msr.third.artigo%> <%=@org_msr.third.nome_fantasia%>, que retirou <%=nmb_form(@org_msr.third.retirados.size)%> <%=@org_msr.third.retirados.size == 1 ? 'página de serviço' : 'páginas de serviço'%> (<%=percent(@org_msr.third.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%> dos serviços retirados).
+			<%end%>
+		<%else%>
+			<%if @org_msr.third.retirados.size == @org_msr.second.retirados.size && @org_msr.second.retirados.size > 0%>
+				Os órgãos que mais retiraram serviços no período foram <%=@org_msr.first.artigo%> <%=@org_msr.first.nome_fantasia%>, que retirou <%=nmb_form(@org_msr.first.retirados.size)%> <%=@org_msr.first.retirados.size == 1 ? 'página de serviço' : 'páginas de serviço'%> (<%=percent(@org_msr.first.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%> dos serviços retirados), e <%=@org_msr.second.artigo%> <%=@org_msr.second.nome_fantasia%> e <%=@org_msr.third.artigo%> <%=@org_msr.third.nome_fantasia%>, que retiraram <%=nmb_form(@org_msr.second.retirados.size)%> <%=@org_msr.second.retirados.size == 1 ? 'página de serviço' : 'páginas de serviço'%> (<%=percent(@org_msr.first.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%> dos serviços retirados cada).
+			<%else%>
+				<%=@org_msr.second.retirados.size == 0 ? ("Somente #{@org_msr.first.artigo} #{@org_msr.first.nome_fantasia} retirou serviços no período, tendo retirado #{nmb_form(@org_msr.first.retirados.size)} #{@org_msr.first.retirados.size == 1 ? 'página de serviço' : 'páginas de serviço'}") : "Os órgãos que mais retiraram serviços no período foram #{@org_msr.first.artigo} #{@org_msr.first.nome_fantasia}, que retirou #{nmb_form(@org_msr.first.retirados.size)} #{@org_msr.first.retirados.size == 1 ? 'página de serviço' : 'páginas de serviço'} (#{percent(@org_msr.first.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))} dos serviços retirados)"%> 
+				<%=@org_msr.third.retirados.size == 0 ? "e #{@org_msr.second.artigo} #{@org_msr.second.nome_fantasia}, que retirou #{nmb_form(@org_msr.second.retirados.size)} #{@org_msr.second.retirados.size == 1 ? 'página de serviço' : 'páginas de serviço'} (#{percent(@org_msr.second.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))} dos serviços retirados)" : ", #{@org_msr.second.artigo} #{@org_msr.second.nome_fantasia}, que retirou #{nmb_form(@org_msr.second.retirados.size)} #{@org_msr.second.retirados.size == 1 ? 'página de serviço' : 'pá@org_msr.retiginas de serviço'} (#{percent(@org_msr.second.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))} dos serviços retirados) e #{@org_msr.third.artigo} #{@org_msr.third.nome_fantasia} que retirou #{nmb_form(@org_msr.third.retirados.size)} #{ @org_msr.third.retirados.size == 1 ? 'página de serviço' : 'páginas de serviço'} (#{percent(@org_msr.second.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))} dos serviços retirados)."%>
+			<%end%>
+		<%end%>
+	<%end%>
 
-	<p>O maior impacto positivo nas avaliações do período foi d<%=@org_mimpp.first.artigo%> <%=@org_mimpp.first.nome_fantasia%> (<%=percent(@org_mimpp.first.impacto_periodo)%>). O maior impacto negativo foi d<%=@org_mimpp.reverse.first.artigo%> <%=@org_mimpp.reverse.first.nome_fantasia%> (<%=percent(@org_mimpp.reverse.first.impacto_periodo)%>)</p>
+	<%if @org_msa.first.atuais.size > 0%>
+		<%if @org_msa.first.atuais.size == @org_msa.second.atuais.size%>
+			<%if @org_msa.third.atuais.size == @org_msa.first.atuais.size%>
+				Os órgãos com mais serviços no Portal no momento são <%=@org_msa.first.artigo%> <%=@org_msa.first.nome_fantasia%>, <%=@org_msa.second.artigo%> <%=@org_msa.second.nome_fantasia%> e <%=@org_msa.third.artigo%> <%=@org_msa.third.nome_fantasia%>, que cada um com <%=nmb_form(@org_msa.first.atuais.size)%> <%=@org_msa.first.atuais.size == 1 ? 'página de serviço' : 'páginas de serviço'%> (<%=percent(@org_msa.third.atuais.size.to_f/(@atuais.size == 0 ? 1 : @atuais.size))%> dos serviços do Portal).
+			<%else%>
+				Os órgãos com mais serviços no Portal no momento são <%=@org_msa.first.artigo%> <%=@org_msa.first.nome_fantasia%> e <%=@org_msa.second.artigo%> <%=@org_msa.second.nome_fantasia%>, com <%=nmb_form(@org_msa.first.atuais.size)%> páginas de serviço no Portal cada (<%=percent(@org_msa.first.atuais.size.to_f/(@atuais.size == 0 ? 1 : @atuais.size))%> das páginas de serviço atuais) e <%=@org_msa.third.artigo%> <%=@org_msa.third.nome_fantasia%>, que tem no Portal hoje <%=nmb_form(@org_msa.third.atuais.size)%> <%=@org_msa.third.atuais.size == 1 ? 'página de serviço' : 'páginas de serviço'%> (<%=percent(@org_msa.third.atuais.size.to_f/(@atuais.size == 0 ? 1 : @atuais.size))%> das páginas de serviço no Portal).
+			<%end%>
+		<%else%>
+			<%if @org_msa.third.atuais.size == @org_msa.second.atuais.size && @org_msa.second.atuais.size > 0%>
+				Os órgãos com mais serviços no Portal no momento são <%=@org_msa.first.artigo%> <%=@org_msa.first.nome_fantasia%>, que é responsável por <%=nmb_form(@org_msa.first.atuais.size)%> <%=@org_msa.first.atuais.size == 1 ? 'página de serviço' : 'páginas de serviço'%> (<%=percent(@org_msa.first.atuais.size.to_f/(@atuais.size == 0 ? 1 : @atuais.size))%> dos serviços atuais), e <%=@org_msa.second.artigo%> <%=@org_msa.second.nome_fantasia%> e <%=@org_msa.third.artigo%> <%=@org_msa.third.nome_fantasia%>, que possuem <%=nmb_form(@org_msa.second.atuais.size)%> <%=@org_msa.second.atuais.size == 1 ? 'página de serviço' : 'páginas de serviço'%> (<%=percent(@org_msa.first.atuais.size.to_f/(@atuais.size == 0 ? 1 : @atuais.size))%> dos serviços hoje no Portal).
+			<%else%>
+				Os órgãos com mais serviços no Portal no momento são <%=@org_msa.first.artigo%> <%=@org_msa.first.nome_fantasia%>, que tem hoje <%=nmb_form(@org_msa.first.atuais.size)%> <%=@org_msa.first.atuais.size == 1 ? 'página de serviço' : 'páginas de serviço'%> (<%=percent(@org_msa.first.atuais.size.to_f/(@atuais.size == 0 ? 1 : @atuais.size))%> dos serviços no Portal), <%=@org_msa.second.artigo%> <%=@org_msa.second.nome_fantasia%>, com <%=nmb_form(@org_msa.second.atuais.size)%> <%=@org_msa.second.atuais.size == 1 ? 'página de serviço' : 'páginas de serviço'%> (<%=percent(@org_msa.second.atuais.size.to_f/(@atuais.size == 0 ? 1 : @atuais.size))%> dos serviços atuais) e <%=@org_msa.third.artigo%> <%=@org_msa.third.nome_fantasia%>, com <%=nmb_form(@org_msa.third.atuais.size)%> <%=@org_msa.third.atuais.size == 1 ? 'página de serviço' : 'páginas de serviço'%> (<%=percent(@org_msa.third.atuais.size.to_f/(@atuais.size == 0 ? 1 : @atuais.size))%> das páginas de serviço).
+			<%end%>
+		<%end%>
+	<%end%>
+	</p>
 
-	<p>Os órgãos que tiveram maior incremento na sua média de aprovação foram <%=@org_difap.first.artigo%> <%=@org_difap.first.nome_fantasia%>, com aumento de <%=percent(@org_difap.first.var_aprovacao_media)%>, seguid<%=@org_difap.first.artigo%> pel<%=@org_difap.second.artigo%> <%=@org_difap.second.nome_fantasia%>, com <%=percent(@org_difap.second.var_aprovacao_media)%> e pel<%=@org_difap.third.artigo%> <%=@org_difap.third.nome_fantasia%>, com <%=percent(@org_difap.third.var_aprovacao_media)%>. Os órgãos com maior diferença positiva entre o seu desempenho no período e o desempenho médio anterior (<i>outperformance</i>) foram <%=@org_outp.first.artigo%> <%=@org_outp.first.nome_fantasia%> (<%=percent(@org_outp.first.outperformance)%>), <%=@org_outp.second.artigo%> <%=@org_outp.second.nome_fantasia%> (<%=percent(@org_outp.second.outperformance)%>) e <%=@org_outp.third.artigo%> <%=@org_outp.third.nome_fantasia%> (<%=percent(@org_outp.third.outperformance)%>). Aqueles que tiveram a maior diferença negativa (<i>downperformance</i>) foram <%=@org_outp.reverse.first.artigo%> <%=@org_outp.reverse.first.nome%> (<%=percent(@org_outp.reverse.first.outperformance)%>), <%=@org_outp.reverse.second.artigo%> <%=@org_outp.reverse.second.nome%> (<%=percent(@org_outp.reverse.second.outperformance)%>) e <%=@org_outp.reverse.third.artigo%> <%=@org_outp.reverse.third.nome%> (<%=percent(@org_outp.reverse.third.outperformance)%>).</p>
+	<%if @org_map.first.fotografia_periodo[0] > 0%>
+		<%if @org_map.first.fotografia_periodo[0] == @org_map.second.fotografia_periodo[0]%>
+			<%if @org_map.third.fotografia_periodo[0] == @org_map.first.fotografia_periodo[0]%>
+				<p>Os órgãos que receberam mais avaliações em suas páginas de serviço no período foram <%=@org_map.first.artigo%> <%=@org_map.first.nome_fantasia%>, <%=@org_map.second.artigo%> <%=@org_map.second.nome_fantasia%> e <%=@org_map.third.artigo%> <%=@org_map.third.nome_fantasia%>, que receberam <%=nmb_form(@org_map.first.fotografia_periodo[0])%> <%=@org_map.first.fotografia_periodo[0] == 1 ? 'avaliação' : 'avaliações'%> cada um (<%=percent(@org_map.third.fotografia_periodo[0].to_f/(@cronos_fot_periodo[0] == 0 ? 1 : @cronos_fot_periodo[0]))%> das avaliações das páginas de serviço do Portal no período).
+			<%else%>
+				<p>Os órgãos que receberam mais avaliações em suas páginas de serviço no período foram  <%=@org_map.first.artigo%> <%=@org_map.first.nome_fantasia%> e <%=@org_map.second.artigo%> <%=@org_map.second.nome_fantasia%>, com <%=nmb_form(@org_map.first.fotografia_periodo[0])%> avaliações cada (<%=percent(@org_map.first.fotografia_periodo[0].to_f/(@cronos_fot_periodo[0] == 0 ? 1 : @cronos_fot_periodo[0]))%> das avaliações do Portal) e <%=@org_map.third.artigo%> <%=@org_map.third.nome_fantasia%>, que recebeu <%=nmb_form(@org_map.third.fotografia_periodo[0])%> <%=@org_map.third.fotografia_periodo[0] == 1 ? 'avaliação' : 'avaliações'%> (<%=percent(@org_map.third.fotografia_periodo[0].to_f/(@cronos_fot_periodo[0] == 0 ? 1 : @cronos_fot_periodo[0]))%> das avaliações das páginas de serviço do Portal no período).
+			<%end%>
+		<%else%>
+			<%if @org_map.third.fotografia_periodo[0] == @org_map.second.fotografia_periodo[0] && @org_map.second.fotografia_periodo[0] > 0%>
+				<p>Os órgãos que receberam mais avaliações em suas páginas de serviço no período foram <%=@org_map.first.artigo%> <%=@org_map.first.nome_fantasia%>, que recebeu <%=nmb_form(@org_map.first.fotografia_periodo[0])%> <%=@org_map.first.fotografia_periodo[0] == 1 ? 'avaliação' : 'avaliações'%> (<%=percent(@org_map.first.fotografia_periodo[0].to_f/(@cronos_fot_periodo[0] == 0 ? 1 : @cronos_fot_periodo[0]))%> das avaliações no período), seguid<%=@org_map.first.artigo%> pel<%=@org_map.second.artigo%> <%=@org_map.second.nome_fantasia%> e pel<%=@org_map.third.artigo%> <%=@org_map.third.nome_fantasia%>, que receberam <%=nmb_form(@org_map.second.fotografia_periodo[0])%> <%=@org_map.second.fotografia_periodo[0] == 1 ? 'avaliação' : 'avaliações'%> cada (<%=percent(@org_map.first.fotografia_periodo[0].to_f/(@cronos_fot_periodo[0] == 0 ? 1 : @cronos_fot_periodo[0]))%> das avaliações das páginas de serviço do Portal no período).
+			<%else%>
+				<p><%=@org_map.second.fotografia_periodo[0] == 0 ? ("Somente #{@org_map.first.artigo} #{@org_map.first.nome_fantasia} recebeu avaliações no período, tendo recebido #{nmb_form(@org_map.first.fotografia_periodo[0])} #{@org_map.first.fotografia_periodo[0] == 1 ? 'avaliação' : 'avaliações'}") : "Os órgãos que receberam mais avaliações em suas páginas de serviço no período foram #{@org_map.first.artigo} #{@org_map.first.nome_fantasia}, que recebeu #{nmb_form(@org_map.first.fotografia_periodo[0])} #{@org_map.first.fotografia_periodo[0] == 1 ? 'avaliação' : 'avaliações'} (#{percent(@org_map.first.fotografia_periodo[0].to_f/(@cronos_fot_periodo[0] == 0 ? 1 : @cronos_fot_periodo[0]))} das avaliações do período)"%> 
+				<%=@org_map.third.fotografia_periodo[0] == 0 ? "e #{@org_map.second.artigo} #{@org_map.second.nome_fantasia}, que recebeu #{nmb_form(@org_map.second.fotografia_periodo[0])} #{@org_map.second.fotografia_periodo[0] == 1 ? 'avaliação' : 'avaliações'} (#{percent(@org_map.second.fotografia_periodo[0].to_f/(@cronos_fot_periodo[0] == 0 ? 1 : @cronos_fot_periodo[0]))} das avaliações do período)." : "seguid#{@org_map.first.artigo} pel#{@org_map.second.artigo} #{@org_map.second.nome_fantasia}, que recebeu #{nmb_form(@org_map.second.fotografia_periodo[0])} #{@org_map.second.fotografia_periodo[0] == 1 ? 'avaliação' : 'avaliações'} (#{percent(@org_map.second.fotografia_periodo[0].to_f/(@cronos_fot_periodo[0] == 0 ? 1 : @cronos_fot_periodo[0]))} das avaliações recebidas no período) e pel#{@org_map.third.artigo} #{@org_map.third.nome_fantasia} que recebeu #{nmb_form(@org_map.third.fotografia_periodo[0])} #{ @org_map.third.fotografia_periodo[0] == 1 ? 'avaliação' : 'avaliações'} (#{percent(@org_map.second.fotografia_periodo[0].to_f/(@cronos_fot_periodo[0] == 0 ? 1 : @cronos_fot_periodo[0]))} das avaliações das páginas de serviço do Portal no período)."%>
+			<%end%>
+		<%end%>
+	<%end%>
 
-	<p>	O serviço que mais recebeu avaliações no período foi "<%=@serv_map.first.nome%>", d<%=@serv_map.first.orgao.artigo%> <%=@serv_map.first.orgao.nome_fantasia%>, com <%=nmb_form(@serv_map.first.qtd_avaliacoes_periodo)%> avaliações (<%=percent(@serv_map.first.qtd_avaliacoes_periodo.to_f/@cronos_fot_periodo[0])%> do total), seguido por “<%=@serv_map.second.nome%>”, d<%=@serv_map.second.orgao.artigo%> <%=@serv_map.second.orgao.nome_fantasia%>, com <%=nmb_form(@serv_map.second.qtd_avaliacoes_periodo)%> avaliações (<%=percent(@serv_map.second.qtd_avaliacoes_periodo.to_f/@cronos_fot_periodo[0])%> do total) e “<%=@serv_map.third.nome%>”, d<%=@serv_map.third.orgao.artigo%> <%=@serv_map.third.orgao.nome_fantasia%>, com <%=nmb_form(@serv_map.third.qtd_avaliacoes_periodo)%> avaliações (<%=percent(@serv_map.third.qtd_avaliacoes_periodo.to_f/@cronos_fot_periodo[0])%> das avaliações no período.). Receberam mais avaliações positivas no período, nesta ordem, "<%=@serv_mpp.first.nome%>", d<%=@serv_mpp.first.orgao.artigo%> <%=@serv_mpp.first.orgao.nome_fantasia%>, <%=nmb_form(@serv_mpp.first.qtd_positivas_periodo)%> avaliações positivas (<%=percent(@serv_mpp.first.qtd_positivas_periodo.to_f/@cronos_fot_periodo[1])%> das avaliações positivas no período), "<%=@serv_mpp.second.nome%>", d<%=@serv_mpp.second.orgao.artigo%> <%=@serv_mpp.second.orgao.nome_fantasia%>, com <%=nmb_form(@serv_mpp.second.qtd_positivas_periodo)%> positivas (<%=percent(@serv_mpp.second.qtd_positivas_periodo.to_f/@cronos_fot_periodo[1])%> do total) e "<%=@serv_mpp.third.nome%>", d<%=@serv_mpp.third.orgao.artigo%> <%=@serv_mpp.third.orgao.nome_fantasia%>, com <%=nmb_form(@serv_mpp.third.qtd_positivas_periodo)%> positivas (<%=percent(@serv_mpp.third.qtd_positivas_periodo.to_f/@cronos_fot_periodo[1])%> das avaliações positivas no período). "<%=@serv_mnp.first.nome%>", d<%=@serv_mnp.first.orgao.artigo%> <%=@serv_mnp.first.orgao.nome_fantasia%>, "<%=@serv_mnp.second.nome%>", d<%=@serv_mnp.second.orgao.artigo%> <%=@serv_mnp.second.orgao.nome_fantasia%> e "<%=@serv_mnp.third.nome%>", d<%=@serv_mnp.third.orgao.artigo%> <%=@serv_mnp.third.orgao.nome_fantasia%> foram os serviços com o maior número de avaliações negativas no período com <%=nmb_form(@serv_mnp.first.qtd_negativas_periodo)%> avaliações negativas (<%=percent(@serv_mnp.first.qtd_negativas_periodo.to_f/@cronos_fot_periodo[2])%> do total), <%=nmb_form(@serv_mnp.second.qtd_negativas_periodo)%> negativas (<%=percent(@serv_mnp.second.qtd_negativas_periodo.to_f/@cronos_fot_periodo[2])%> do total) e <%=nmb_form(@serv_mnp.third.qtd_negativas_periodo)%> negativas (<%=percent(@serv_mnp.third.qtd_negativas_periodo.to_f/@cronos_fot_periodo[2])%> do total) respectivamente.</p>
+	<%if @org_mpp.first.fotografia_periodo[1] > 0%>
+		<%if @org_mpp.first.fotografia_periodo[1] == @org_mpp.second.fotografia_periodo[1]%>
+			<%if @org_mpp.third.fotografia_periodo[1] == @org_mpp.first.fotografia_periodo[1]%>
+				Os órgãos que receberam mais avaliações positivas em suas páginas de serviço no período foram <%=@org_mpp.first.artigo%> <%=@org_mpp.first.nome_fantasia%>, <%=@org_mpp.second.artigo%> <%=@org_mpp.second.nome_fantasia%> e <%=@org_mpp.third.artigo%> <%=@org_mpp.third.nome_fantasia%>, que receberam <%=nmb_form(@org_mpp.first.fotografia_periodo[1])%> <%=@org_mpp.first.fotografia_periodo[1] == 1 ? 'avaliação positiva' : 'avaliações positivas'%> cada um (<%=percent(@org_mpp.third.fotografia_periodo[1].to_f/(@cronos_fot_periodo[1] == 0 ? 1 : @cronos_fot_periodo[1]))%> das avaliações positivas no período).
+			<%else%>
+				Os órgãos que receberam mais avaliações positivas em suas páginas de serviço no período foram  <%=@org_mpp.first.artigo%> <%=@org_mpp.first.nome_fantasia%> e <%=@org_mpp.second.artigo%> <%=@org_mpp.second.nome_fantasia%>, com <%=nmb_form(@org_mpp.first.fotografia_periodo[1])%> avaliações positivas cada (<%=percent(@org_mpp.first.fotografia_periodo[1].to_f/(@cronos_fot_periodo[1] == 0 ? 1 : @cronos_fot_periodo[1]))%> das avaliações positivas do período) e <%=@org_mpp.third.artigo%> <%=@org_mpp.third.nome_fantasia%>, que recebeu <%=nmb_form(@org_mpp.third.fotografia_periodo[1])%> <%=@org_mpp.third.fotografia_periodo[1] == 1 ? 'avaliação positiva' : 'avaliações positivas'%> (<%=percent(@org_mpp.third.fotografia_periodo[1].to_f/(@cronos_fot_periodo[1] == 0 ? 1 : @cronos_fot_periodo[1]))%> das avaliações positivas no período).
+			<%end%>
+		<%else%>
+			<%if @org_mpp.third.fotografia_periodo[1] == @org_mpp.second.fotografia_periodo[1] && @org_mpp.second.fotografia_periodo[1] > 0%>
+				Os órgãos que receberam mais avaliações em suas páginas de serviço no período foram <%=@org_mpp.first.artigo%> <%=@org_mpp.first.nome_fantasia%>, que recebeu <%=nmb_form(@org_mpp.first.fotografia_periodo[1])%> <%=@org_mpp.first.fotografia_periodo[1] == 1 ? 'avaliação positiva' : 'avaliações positivas'%> (<%=percent(@org_mpp.first.fotografia_periodo[1].to_f/(@cronos_fot_periodo[1] == 0 ? 1 : @cronos_fot_periodo[1]))%> das avaliações positivas no período), seguid<%=@org_mpp.first.artigo%> pel<%=@org_mpp.second.artigo%> <%=@org_mpp.second.nome_fantasia%> e pel<%=@org_mpp.third.artigo%> <%=@org_mpp.third.nome_fantasia%>, que receberam <%=nmb_form(@org_mpp.second.fotografia_periodo[1])%> <%=@org_mpp.second.fotografia_periodo[1] == 1 ? 'avaliação positiva' : 'avaliações positivas'%> cada (<%=percent(@org_mpp.first.fotografia_periodo[1].to_f/(@cronos_fot_periodo[1] == 0 ? 1 : @cronos_fot_periodo[1]))%> das avaliações positivas das páginas de serviço do Portal no período).
+			<%else%>
+				<%=@org_mpp.second.fotografia_periodo[1] == 0 ? ("Somente #{@org_mpp.first.artigo} #{@org_mpp.first.nome_fantasia} recebeu avaliações positivas no período, tendo recebido #{nmb_form(@org_mpp.first.fotografia_periodo[1])} #{@org_mpp.first.fotografia_periodo[1] == 1 ? 'avaliação positiva' : 'avaliações positivas'}") : "Os órgãos que receberam mais avaliações positivas em suas páginas de serviço no período foram #{@org_mpp.first.artigo} #{@org_mpp.first.nome_fantasia}, que recebeu #{nmb_form(@org_mpp.first.fotografia_periodo[1])} #{@org_mpp.first.fotografia_periodo[1] == 1 ? 'avaliação positiva' : 'avaliações positivas'} (#{percent(@org_mpp.first.fotografia_periodo[1].to_f/(@cronos_fot_periodo[1] == 0 ? 1 : @cronos_fot_periodo[1]))} das avaliações positivas do período)"%> 
+				<%=@org_mpp.third.fotografia_periodo[1] == 0 ? "e #{@org_mpp.second.artigo} #{@org_mpp.second.nome_fantasia}, que recebeu #{nmb_form(@org_mpp.second.fotografia_periodo[1])} #{@org_mpp.second.fotografia_periodo[1] == 1 ? 'avaliação positiva' : 'avaliações positivas'} (#{percent(@org_mpp.second.fotografia_periodo[1].to_f/(@cronos_fot_periodo[1] == 0 ? 1 : @cronos_fot_periodo[1]))} das avaliações positivas do período)." : "seguid#{@org_mpp.first.artigo} pel#{@org_mpp.second.artigo} #{@org_mpp.second.nome_fantasia}, que recebeu #{nmb_form(@org_mpp.second.fotografia_periodo[1])} #{@org_mpp.second.fotografia_periodo[1] == 1 ? 'avaliação positiva' : 'avaliações positivas'} (#{percent(@org_mpp.second.fotografia_periodo[1].to_f/(@cronos_fot_periodo[1] == 0 ? 1 : @cronos_fot_periodo[1]))} das avaliações positivas recebidas no período) e pel#{@org_mpp.third.artigo} #{@org_mpp.third.nome_fantasia} que recebeu #{nmb_form(@org_mpp.third.fotografia_periodo[1])} #{ @org_mpp.third.fotografia_periodo[1] == 1 ? 'avaliação positiva' : 'avaliações positivas'} (#{percent(@org_mpp.second.fotografia_periodo[1].to_f/(@cronos_fot_periodo[1] == 0 ? 1 : @cronos_fot_periodo[1]))} das avaliações positivas das páginas de serviço do Portal no período)."%>
+			<%end%>
+		<%end%>
+	<%end%>
 
-	<p> Entre os serviços com pelo menos 1.000 avaliações, o melhor avaliado hoje no Portal é "<%=@serv_mapvg.first.nome%>", d<%=@serv_mapvg.first.orgao.artigo%> <%=@serv_mapvg.first.orgao.nome_fantasia%>, com <%=percent(@serv_mapvg.first.aprovacao_geral)%> de aprovação (<%=percent(@serv_mapvg.first.aprovacao_geral - @cronos_last.aprovacao_media)%> acima da média), e o pior avaliado é "<%=@serv_mapvg.reverse.first.nome%>", d<%=@serv_mapvg.reverse.first.orgao.artigo%> <%=@serv_mapvg.reverse.first.orgao.nome_fantasia%>, com <%=percent(@serv_mapvg.reverse.first.aprovacao_geral)%> de aprovação (<%=percent(@serv_mapvg.reverse.first.aprovacao_geral - @cronos_last.aprovacao_media)%> abaixo da média).</p>
+
+    <%if @org_mnp.first.fotografia_periodo[2] > 0%>
+		<%if @org_mnp.first.fotografia_periodo[2] == @org_mnp.second.fotografia_periodo[2]%>
+			<%if @org_mnp.third.fotografia_periodo[2] == @org_mnp.first.fotografia_periodo[2]%>
+				Os órgãos que receberam mais avaliações negativas no período foram <%=@org_mnp.first.artigo%> <%=@org_mnp.first.nome_fantasia%>, <%=@org_mnp.second.artigo%> <%=@org_mnp.second.nome_fantasia%> e <%=@org_mnp.third.artigo%> <%=@org_mnp.third.nome_fantasia%>, que receberam <%=nmb_form(@org_mnp.first.fotografia_periodo[2])%> <%=@org_mnp.first.fotografia_periodo[2] == 1 ? 'avaliação negativa' : 'avaliações negativas'%> cada um (<%=percent(@org_mnp.third.fotografia_periodo[2].to_f/(@cronos_fot_periodo[2] == 0 ? 1 : @cronos_fot_periodo[2]))%> das avaliações negativas no período).
+			<%else%>
+				Os órgãos que receberam mais avaliações negativas no período foram <%=@org_mnp.first.artigo%> <%=@org_mnp.first.nome_fantasia%> e <%=@org_mnp.second.artigo%> <%=@org_mnp.second.nome_fantasia%>, com <%=nmb_form(@org_mnp.first.fotografia_periodo[2])%> avaliações negativas cada (<%=percent(@org_mnp.first.fotografia_periodo[2].to_f/(@cronos_fot_periodo[2] == 0 ? 1 : @cronos_fot_periodo[2]))%> das avaliações negativas do período) e <%=@org_mnp.third.artigo%> <%=@org_mnp.third.nome_fantasia%>, que recebeu <%=nmb_form(@org_mnp.third.fotografia_periodo[2])%> <%=@org_mnp.third.fotografia_periodo[2] == 1 ? 'avaliação negativa' : 'avaliações negativas'%> (<%=percent(@org_mnp.third.fotografia_periodo[2].to_f/(@cronos_fot_periodo[2] == 0 ? 1 : @cronos_fot_periodo[2]))%> das avaliações negativas no período).
+			<%end%>
+		<%else%>
+			<%if @org_mnp.third.fotografia_periodo[2] == @org_mnp.second.fotografia_periodo[2] && @org_mnp.second.fotografia_periodo[2] > 0%>
+				Os órgãos que receberam mais avaliações negativas no período foram <%=@org_mnp.first.artigo%> <%=@org_mnp.first.nome_fantasia%>, que recebeu <%=nmb_form(@org_mnp.first.fotografia_periodo[2])%> <%=@org_mnp.first.fotografia_periodo[2] == 1 ? 'avaliação negativa' : 'avaliações negativas'%> (<%=percent(@org_mnp.first.fotografia_periodo[2].to_f/(@cronos_fot_periodo[2] == 0 ? 1 : @cronos_fot_periodo[2]))%> das avaliações negativas no período), seguid<%=@org_mnp.first.artigo%> pel<%=@org_mnp.second.artigo%> <%=@org_mnp.second.nome_fantasia%> e pel<%=@org_mnp.third.artigo%> <%=@org_mnp.third.nome_fantasia%>, que receberam <%=nmb_form(@org_mnp.second.fotografia_periodo[2])%> <%=@org_mnp.second.fotografia_periodo[2] == 1 ? 'avaliação negativa' : 'avaliações negativas'%> cada (<%=percent(@org_mnp.first.fotografia_periodo[2].to_f/(@cronos_fot_periodo[2] == 0 ? 1 : @cronos_fot_periodo[2]))%> das avaliações negativas  no período).
+			<%else%>
+				<%=@org_mnp.second.fotografia_periodo[2] == 0 ? ("Somente #{@org_mnp.first.artigo} #{@org_mnp.first.nome_fantasia} recebeu avaliações negativas no período, tendo recebido #{nmb_form(@org_mnp.first.fotografia_periodo[2])} #{@org_mnp.first.fotografia_periodo[2] == 1 ? 'avaliação negativa' : 'avaliações negativas'}") : "Os órgãos que receberam mais avaliações negativas em suas páginas de serviço no período foram #{@org_mnp.first.artigo} #{@org_mnp.first.nome_fantasia}, que recebeu #{nmb_form(@org_mnp.first.fotografia_periodo[2])} #{@org_mnp.first.fotografia_periodo[2] == 1 ? 'avaliação negativa' : 'avaliações negativas'} (#{percent(@org_mnp.first.fotografia_periodo[2].to_f/(@cronos_fot_periodo[2] == 0 ? 1 : @cronos_fot_periodo[2]))} das avaliações negativas do período)"%> 
+				<%=@org_mnp.third.fotografia_periodo[2] == 0 ? "e #{@org_mnp.second.artigo} #{@org_mnp.second.nome_fantasia}, que recebeu #{nmb_form(@org_mnp.second.fotografia_periodo[2])} #{@org_mnp.second.fotografia_periodo[2] == 1 ? 'avaliação negativa' : 'avaliações negativas'} (#{percent(@org_mnp.second.fotografia_periodo[2].to_f/(@cronos_fot_periodo[2] == 0 ? 1 : @cronos_fot_periodo[2]))} das avaliações negativas do período)." : "seguid#{@org_mnp.first.artigo} pel#{@org_mnp.second.artigo} #{@org_mnp.second.nome_fantasia}, que recebeu #{nmb_form(@org_mnp.second.fotografia_periodo[2])} #{@org_mnp.second.fotografia_periodo[2] == 1 ? 'avaliação negativa' : 'avaliações negativas'} (#{percent(@org_mnp.second.fotografia_periodo[2].to_f/(@cronos_fot_periodo[2] == 0 ? 1 : @cronos_fot_periodo[2]))} das avaliações negativas recebidas no período) e pel#{@org_mnp.third.artigo} #{@org_mnp.third.nome_fantasia} que recebeu #{nmb_form(@org_mnp.third.fotografia_periodo[2])} #{ @org_mnp.third.fotografia_periodo[2] == 1 ? 'avaliação negativa' : 'avaliações negativas'} (#{percent(@org_mnp.second.fotografia_periodo[2].to_f/(@cronos_fot_periodo[2] == 0 ? 1 : @cronos_fot_periodo[2]))} das avaliações negativas no período)."%>
+			<%end%>
+		<%end%>
+	<%end%>
+    </p>
+
+	<div style="margin:0;margin-top:-100px;margin-bottom:-20px">
+		<div id="porc-aval" style="width:1000px;height:600px;margin:0;margin-top:-60px">
+		</div>
+	</div>
+
+	<p>O <span>maior impacto positivo</span> nas avaliações do período foi d<%=@orgaos.sort_by{|o| o.impacto_periodo*-1}.first.artigo%> <span><%=@orgaos.sort_by{|o| o.impacto_periodo*-1}.first.nome_fantasia%></span> (<span><%=percent(@orgaos.sort_by{|o| o.impacto_periodo*-1}.first.impacto_periodo)%></span>). O <span>maior impacto negativo</span> foi d<%=@orgaos.sort_by{|o| o.impacto_periodo*-1}.last.artigo%> <span><%=@orgaos.sort_by{|o| o.impacto_periodo*-1}.last.nome_fantasia%></span> (<span><%=percent(@orgaos.sort_by{|o| o.impacto_periodo*-1}.last.impacto_periodo)%></span>)</p>
+
+	<p>
+    <%if @org_difap.first.var_aprovacao_media > 0%>
+		<%if @org_difap.first.var_aprovacao_media == @org_difap.second.var_aprovacao_media%>
+			<%if @org_difap.third.var_aprovacao_media == @org_difap.first.var_aprovacao_media%>
+				Os órgãos que tiveram maior incremento na sua média de aprovação foram <%=@org_difap.first.artigo%> <%=@org_difap.first.nome_fantasia%>, <%=@org_difap.second.artigo%> <%=@org_difap.second.nome_fantasia%> e <%=@org_difap.third.artigo%> <%=@org_difap.third.nome_fantasia%>, que tiveram um acréscimo de <%=percent(@org_difap.first.var_aprovacao_media)%> em sua aprovação média.
+			<%else%>
+				Os órgãos que tiveram maior incremento na sua média de aprovação foram <%=@org_difap.first.artigo%> <%=@org_difap.first.nome_fantasia%> e <%=@org_difap.second.artigo%> <%=@org_difap.second.nome_fantasia%>, com o incremento de <%=percent(@org_difap.first.var_aprovacao_media)%> em suas respectivas médias e <%=@org_difap.third.artigo%> <%=@org_difap.third.nome_fantasia%>, que por sua vez teve um incremento de <%=percent(@org_difap.third.var_aprovacao_media)%> em sua aprovação média.
+			<%end%>
+		<%else%>
+			<%if @org_difap.third.var_aprovacao_media == @org_difap.second.var_aprovacao_media && @org_difap.second.var_aprovacao_media > 0%>
+				Os órgãos que tiveram maior incremento na sua média de aprovação foram <%=@org_difap.first.artigo%> <%=@org_difap.first.nome_fantasia%>, que obteve um incremento de <%=percent(@org_difap.first.var_aprovacao_media)%> em sua aprovação média, seguid<%=@org_difap.first.artigo%> pel<%=@org_difap.second.artigo%> <%=@org_difap.second.nome_fantasia%> e pel<%=@org_difap.third.artigo%> <%=@org_difap.third.nome_fantasia%>, que tiveram ambos um incremento de <%=percent(@org_difap.second.var_aprovacao_media)%> em suas respectivas aprovações médias.
+			<%else%>
+				<%=@org_difap.second.var_aprovacao_media == 0 ? ("Somente #{@org_difap.first.artigo} #{@org_difap.first.nome_fantasia} teve incremento em sua aprovação média, com #{percent(@org_difap.first.var_aprovacao_media)} de variação positiva") : "Os órgãos que tiveram maior incremento na sua média de aprovação foram #{@org_difap.first.artigo} #{@org_difap.first.nome_fantasia}, que teve um aumento de #{percent(@org_difap.first.var_aprovacao_media)} em sua aprovação média"%> 
+				<%=@org_difap.third.var_aprovacao_media == 0 ? "e #{@org_difap.second.artigo} #{@org_difap.second.nome_fantasia}, que teve um aumento em sua aprovação média de #{percent(@org_difap.second.var_aprovacao_media)}." : "seguid#{@org_difap.first.artigo} pel#{@org_difap.second.artigo} #{@org_difap.second.nome_fantasia}, que teve um aumento em sua aprovação média de #{percent(@org_difap.second.var_aprovacao_media)} e pel#{@org_difap.third.artigo} #{@org_difap.third.nome_fantasia} que teve um incremento de  #{percent(@org_difap.third.var_aprovacao_media)}."%>
+			<%end%>
+		<%end%>
+	<%end%>
+
+    <p>
+    <%if @org_outp.first.outperformance > 0%>
+		<%if @org_outp.first.outperformance == @org_outp.second.outperformance%>
+			<%if @org_outp.third.outperformance == @org_outp.first.outperformance%>
+				Os órgãos que tiveram maior diferença positiva entre seu desempenho no período e sua aprovação média foram <%=@org_outp.first.artigo%> <%=@org_outp.first.nome_fantasia%>, <%=@org_outp.second.artigo%> <%=@org_outp.second.nome_fantasia%> e <%=@org_outp.third.artigo%> <%=@org_outp.third.nome_fantasia%>, que tiveram uma performance superior em <%=percent(@org_outp.first.outperformance)%> cada.
+			<%else%>
+				Os órgãos que tiveram maior diferença positiva entre seu desempenho no período e sua aprovação média foram <%=@org_outp.first.artigo%> <%=@org_outp.first.nome_fantasia%> e <%=@org_outp.second.artigo%> <%=@org_outp.second.nome_fantasia%>, com uma performance superior em <%=percent(@org_outp.first.outperformance)%> em relação às suas respectivas aprovações médias e <%=@org_outp.third.artigo%> <%=@org_outp.third.nome_fantasia%>, que por sua vez teve uma performance <%=percent(@org_outp.third.outperformance)%> superior.
+			<%end%>
+		<%else%>
+			<%if @org_outp.third.outperformance == @org_outp.second.outperformance && @org_outp.second.outperformance > 0%>
+				Os órgãos que tiveram maior diferença positiva entre seu desempenho no período e sua aprovação média foram <%=@org_outp.first.artigo%> <%=@org_outp.first.nome_fantasia%>, que foi <%=percent(@org_outp.first.outperformance)%> melhor avaliado do que em média, seguid<%=@org_outp.first.artigo%> pel<%=@org_outp.second.artigo%> <%=@org_outp.second.nome_fantasia%> e pel<%=@org_outp.third.artigo%> <%=@org_outp.third.nome_fantasia%>, que tiveram ambos uma performance <%=percent(@org_outp.second.outperformance)%> superior.
+			<%else%>
+				<%=@org_outp.second.outperformance == 0 ? ("Somente #{@org_outp.first.artigo} #{@org_outp.first.nome_fantasia} teve um desempenho no período superior à sua aprovação média, com uma performance#{percent(@org_outp.first.outperformance)} superior") : "Os órgãos que tiveram maior diferença positiva entre seu desempenho no período e sua aprovação média foram #{@org_outp.first.artigo} #{@org_outp.first.nome_fantasia}, que teve uma aprovação no período #{percent(@org_outp.first.outperformance)} superior à tendência anterior,"%> 
+				<%=@org_outp.third.outperformance == 0 ? "e #{@org_outp.second.artigo} #{@org_outp.second.nome_fantasia}, que por sua vez teve uma aprovação no período #{percent(@org_outp.second.outperformance)} superior à sua média anterior" : "seguid#{@org_outp.first.artigo} pel#{@org_outp.second.artigo} #{@org_outp.second.nome_fantasia}, com um desempenho #{percent(@org_outp.second.outperformance)} acima e pel#{@org_outp.third.artigo} #{@org_outp.third.nome_fantasia} que teve, por sua vez, uma performance #{percent(@org_outp.third.outperformance)} superior nas avaliações."%>
+			<%end%>
+		<%end%>
+	<%end%>
+
+    <%if @org_outp.reverse.first.outperformance < 0%>
+		<%if @org_outp.reverse.first.outperformance == @org_outp.reverse.second.outperformance%>
+			<%if @org_outp.reverse.third.outperformance == @org_outp.reverse.first.outperformance%>
+				Os órgãos que tiveram maior diferença negativa entre seu desempenho no período e sua aprovação média foram <%=@org_outp.reverse.first.artigo%> <%=@org_outp.reverse.first.nome_fantasia%>, <%=@org_outp.reverse.second.artigo%> <%=@org_outp.reverse.second.nome_fantasia%> e <%=@org_outp.reverse.third.artigo%> <%=@org_outp.reverse.third.nome_fantasia%>, que tiveram uma performance inferior em <%=percent(@org_outp.reverse.first.outperformance)%> cada.
+			<%else%>
+				Os órgãos que tiveram maior diferença negativa entre seu desempenho no período e sua aprovação média foram <%=@org_outp.reverse.first.artigo%> <%=@org_outp.reverse.first.nome_fantasia%> e <%=@org_outp.reverse.second.artigo%> <%=@org_outp.reverse.second.nome_fantasia%>, com uma performance <%=percent(@org_outp.reverse.first.outperformance)%> abaixo de seus respectivos padrões e <%=@org_outp.reverse.third.artigo%> <%=@org_outp.reverse.third.nome_fantasia%>, que por sua vez teve um desempenho <%=percent(@org_outp.reverse.third.outperformance)%> inferior à tendência dos períodos anteriores.
+			<%end%>
+		<%else%>
+			<%if @org_outp.reverse.third.outperformance == @org_outp.reverse.second.outperformance && @org_outp.reverse.second.outperformance < 0%>
+				Os órgãos que tiveram maior diferença negativa entre seu desempenho no período e sua aprovação média foram <%=@org_outp.reverse.first.artigo%> <%=@org_outp.reverse.first.nome_fantasia%>, que teve uma performance <%=percent(@org_outp.reverse.first.outperformance)%> inferior ao padrão dos períodos anteriores, seguid<%=@org_outp.reverse.first.artigo%> pel<%=@org_outp.reverse.second.artigo%> <%=@org_outp.reverse.second.nome_fantasia%> e pel<%=@org_outp.reverse.third.artigo%> <%=@org_outp.reverse.third.nome_fantasia%>, que tiveram ambos um desempenho<%=percent(@org_outp.reverse.second.outperformance)%> inferior em relação à tendência dos períodos anteriores.
+			<%else%>
+				<%=@org_outp.reverse.second.outperformance == 0 ? ("Somente #{@org_outp.reverse.first.artigo} #{@org_outp.reverse.first.nome_fantasia} teve um desempenho no período inferior à sua aprovação média, com uma performance#{percent(@org_outp.reverse.first.outperformance)} inferior") : "Os órgãos que tiveram maior diferença negativa entre seu desempenho no período e sua aprovação média foram #{@org_outp.reverse.first.artigo} #{@org_outp.reverse.first.nome_fantasia}, que teve uma performance #{percent(@org_outp.reverse.first.outperformance)} inferior ao seu padrão anterior"%> 
+				<%=@org_outp.reverse.third.outperformance == 0 ? "e #{@org_outp.reverse.second.artigo} #{@org_outp.reverse.second.nome_fantasia}, que por sua vez teve uma aprovação no período #{percent(@org_outp.reverse.second.outperformance)} abaixo da tendência que vinha seguindo" : "seguid#{@org_outp.reverse.first.artigo} pel#{@org_outp.reverse.second.artigo} #{@org_outp.reverse.second.nome_fantasia}, que teve um desempenho #{percent(@org_outp.reverse.second.outperformance)} abaixo do padrão que vinha seguindo e pel#{@org_outp.reverse.third.artigo} #{@org_outp.reverse.third.nome_fantasia} que teve, por sua vez, uma performance #{percent(@org_outp.reverse.third.outperformance)} inferior à média anterior."%>
+			<%end%>
+		<%end%>
+	<%end%>
+    </p>
+
+	<div id="medias"></div>
+
+	<p>	O <span>serviço que mais recebeu avaliações no período</span> foi "<span><%=@serv_map.first.nome%></span>", d<%=@serv_map.first.orgao.artigo%> <%=@serv_map.first.orgao.nome_fantasia%>, com <span><%=nmb_form(@serv_map.first.qtd_avaliacoes_periodo)%> avaliações</span> (<%=percent(@serv_map.first.qtd_avaliacoes_periodo.to_f/@cronos_fot_periodo[0])%> do total), seguido por “<span><%=@serv_map.second.nome%></span>”, d<%=@serv_map.second.orgao.artigo%> <%=@serv_map.second.orgao.nome_fantasia%>, com <span><%=nmb_form(@serv_map.second.qtd_avaliacoes_periodo)%> avaliações</span> (<%=percent(@serv_map.second.qtd_avaliacoes_periodo.to_f/@cronos_fot_periodo[0])%> do total) e “<span><%=@serv_map.third.nome%></span>”, d<%=@serv_map.third.orgao.artigo%> <%=@serv_map.third.orgao.nome_fantasia%>, com <span><%=nmb_form(@serv_map.third.qtd_avaliacoes_periodo)%> avaliações</span> (<%=percent(@serv_map.third.qtd_avaliacoes_periodo.to_f/@cronos_fot_periodo[0])%> das avaliações no período). Receberam <span>mais avaliações positivas</span> no período, nesta ordem, "<span><%=@serv_mpp.first.nome%></span>", d<%=@serv_mpp.first.orgao.artigo%> <%=@serv_mpp.first.orgao.nome_fantasia%>, <span><%=nmb_form(@serv_mpp.first.qtd_positivas_periodo)%> avaliações positivas</span> (<%=percent(@serv_mpp.first.qtd_positivas_periodo.to_f/@cronos_fot_periodo[1])%> das avaliações positivas no período), "<span><%=@serv_mpp.second.nome%></span>", d<%=@serv_mpp.second.orgao.artigo%> <%=@serv_mpp.second.orgao.nome_fantasia%>, com <span><%=nmb_form(@serv_mpp.second.qtd_positivas_periodo)%> positivas</span> (<%=percent(@serv_mpp.second.qtd_positivas_periodo.to_f/@cronos_fot_periodo[1])%> do total) e "<span><%=@serv_mpp.third.nome%></span>", d<%=@serv_mpp.third.orgao.artigo%> <%=@serv_mpp.third.orgao.nome_fantasia%>, com <span><%=nmb_form(@serv_mpp.third.qtd_positivas_periodo)%> positivas</span> (<%=percent(@serv_mpp.third.qtd_positivas_periodo.to_f/@cronos_fot_periodo[1])%> das avaliações positivas no período). "<span><%=@serv_mnp.first.nome%></span>", d<%=@serv_mnp.first.orgao.artigo%> <%=@serv_mnp.first.orgao.nome_fantasia%>, "<span><%=@serv_mnp.second.nome%></span>", d<%=@serv_mnp.second.orgao.artigo%> <%=@serv_mnp.second.orgao.nome_fantasia%> e "<span><%=@serv_mnp.third.nome%></span>", d<%=@serv_mnp.third.orgao.artigo%> <%=@serv_mnp.third.orgao.nome_fantasia%> foram os <span>serviços com o maior número de avaliações negativas</span> no período com <span><%=nmb_form(@serv_mnp.first.qtd_negativas_periodo)%> avaliações negativas</span> (<%=percent(@serv_mnp.first.qtd_negativas_periodo.to_f/@cronos_fot_periodo[2])%> do total), <span><%=nmb_form(@serv_mnp.second.qtd_negativas_periodo)%> negativas</span> (<%=percent(@serv_mnp.second.qtd_negativas_periodo.to_f/@cronos_fot_periodo[2])%> do total) e <span><%=nmb_form(@serv_mnp.third.qtd_negativas_periodo)%> negativas</span> (<%=percent(@serv_mnp.third.qtd_negativas_periodo.to_f/@cronos_fot_periodo[2])%> do total) respectivamente.</p>
+
+	<p> Entre os <span>serviços com pelo menos 1.000 avaliações</span>, o <span>melhor avaliado</span> hoje no Portal é "<span><%=@serv_mapvg.first.nome%></span>", d<%=@serv_mapvg.first.orgao.artigo%> <%=@serv_mapvg.first.orgao.nome_fantasia%>, com <span><%=percent(@serv_mapvg.first.aprovacao_geral)%> de aprovação</span> (<%=percent(@serv_mapvg.first.aprovacao_geral - @cronos_last.aprovacao_media)%> acima da média), e o <span>pior avaliado</span> é "<span><%=@serv_mapvg.reverse.first.nome%></span>", d<%=@serv_mapvg.reverse.first.orgao.artigo%> <%=@serv_mapvg.reverse.first.orgao.nome_fantasia%>, com <span><%=percent(@serv_mapvg.reverse.first.aprovacao_geral)%> de aprovação</span> (<%=percent(@serv_mapvg.reverse.first.aprovacao_geral - @cronos_last.aprovacao_media)%> abaixo da média).</p>
 </div>

@@ -1,0 +1,38 @@
+<div class="container">
+    <p>
+    <%if @org_outp.first.outperformance > 0%>
+		<%if @org_outp.first.outperformance == @org_outp.second.outperformance%>
+			<%if @org_outp.third.outperformance == @org_outp.first.outperformance%>
+				Os órgãos que tiveram maior diferença positiva entre seu desempenho no período e sua aprovação média foram <%=@org_outp.first.artigo%> <%=@org_outp.first.nome_fantasia%>, <%=@org_outp.second.artigo%> <%=@org_outp.second.nome_fantasia%> e <%=@org_outp.third.artigo%> <%=@org_outp.third.nome_fantasia%>, que tiveram uma performance superior em <%=percent(@org_outp.first.outperformance)%> cada.
+			<%else%>
+				Os órgãos que tiveram maior diferença positiva entre seu desempenho no período e sua aprovação média foram <%=@org_outp.first.artigo%> <%=@org_outp.first.nome_fantasia%> e <%=@org_outp.second.artigo%> <%=@org_outp.second.nome_fantasia%>, com uma performance superior em <%=percent(@org_outp.first.outperformance)%> em relação às suas respectivas aprovações médias e <%=@org_outp.third.artigo%> <%=@org_outp.third.nome_fantasia%>, que por sua vez teve uma performance <%=percent(@org_outp.third.outperformance)%> superior.
+			<%end%>
+		<%else%>
+			<%if @org_outp.third.outperformance == @org_outp.second.outperformance && @org_outp.second.outperformance > 0%>
+				Os órgãos que tiveram maior diferença positiva entre seu desempenho no período e sua aprovação média foram <%=@org_outp.first.artigo%> <%=@org_outp.first.nome_fantasia%>, que foi <%=percent(@org_outp.first.outperformance)%> melhor avaliado do que em média, seguid<%=@org_outp.first.artigo%> pel<%=@org_outp.second.artigo%> <%=@org_outp.second.nome_fantasia%> e pel<%=@org_outp.third.artigo%> <%=@org_outp.third.nome_fantasia%>, que tiveram ambos uma performance <%=percent(@org_outp.second.outperformance)%> superior.
+			<%else%>
+				<%=@org_outp.second.outperformance == 0 ? ("Somente #{@org_outp.first.artigo} #{@org_outp.first.nome_fantasia} teve um desempenho no período superior à sua aprovação média, com uma performance#{percent(@org_outp.first.outperformance)} superior") : "Os órgãos que tiveram maior diferença positiva entre seu desempenho no período e sua aprovação média foram #{@org_outp.first.artigo} #{@org_outp.first.nome_fantasia}, que teve uma aprovação no período #{percent(@org_outp.first.outperformance)} superior à tendência anterior,"%> 
+				<%=@org_outp.third.outperformance == 0 ? "e #{@org_outp.second.artigo} #{@org_outp.second.nome_fantasia}, que por sua vez teve uma aprovação no período #{percent(@org_outp.second.outperformance)} superior à sua média anterior" : "seguid#{@org_outp.first.artigo} pel#{@org_outp.second.artigo} #{@org_outp.second.nome_fantasia}, com um desempenho #{percent(@org_outp.second.outperformance)} acima e pel#{@org_outp.third.artigo} #{@org_outp.third.nome_fantasia} que teve, por sua vez, uma performance #{percent(@org_outp.third.outperformance)} superior nas avaliações."%>
+			<%end%>
+		<%end%>
+	<%end%>
+
+    <%if @org_outp.reverse.first.outperformance < 0%>
+		<%if @org_outp.reverse.first.outperformance == @org_outp.reverse.second.outperformance%>
+			<%if @org_outp.reverse.third.outperformance == @org_outp.reverse.first.outperformance%>
+				Os órgãos que tiveram maior diferença negativa entre seu desempenho no período e sua aprovação média foram <%=@org_outp.reverse.first.artigo%> <%=@org_outp.reverse.first.nome_fantasia%>, <%=@org_outp.reverse.second.artigo%> <%=@org_outp.reverse.second.nome_fantasia%> e <%=@org_outp.reverse.third.artigo%> <%=@org_outp.reverse.third.nome_fantasia%>, que tiveram uma performance inferior em <%=percent(@org_outp.reverse.first.outperformance)%> cada.
+			<%else%>
+				Os órgãos que tiveram maior diferença negativa entre seu desempenho no período e sua aprovação média foram <%=@org_outp.reverse.first.artigo%> <%=@org_outp.reverse.first.nome_fantasia%> e <%=@org_outp.reverse.second.artigo%> <%=@org_outp.reverse.second.nome_fantasia%>, com uma performance <%=percent(@org_outp.reverse.first.outperformance)%> abaixo de seus respectivos padrões e <%=@org_outp.reverse.third.artigo%> <%=@org_outp.reverse.third.nome_fantasia%>, que por sua vez teve um desempenho <%=percent(@org_outp.reverse.third.outperformance)%> inferior à tendência dos períodos anteriores.
+			<%end%>
+		<%else%>
+			<%if @org_outp.reverse.third.outperformance == @org_outp.reverse.second.outperformance && @org_outp.reverse.second.outperformance < 0%>
+				Os órgãos que tiveram maior diferença negativa entre seu desempenho no período e sua aprovação média foram <%=@org_outp.reverse.first.artigo%> <%=@org_outp.reverse.first.nome_fantasia%>, que teve uma performance <%=percent(@org_outp.reverse.first.outperformance)%> inferior ao padrão dos períodos anteriores, seguid<%=@org_outp.reverse.first.artigo%> pel<%=@org_outp.reverse.second.artigo%> <%=@org_outp.reverse.second.nome_fantasia%> e pel<%=@org_outp.reverse.third.artigo%> <%=@org_outp.reverse.third.nome_fantasia%>, que tiveram ambos um desempenho<%=percent(@org_outp.reverse.second.outperformance)%> inferior em relação à tendência dos períodos anteriores.
+			<%else%>
+				<%=@org_outp.reverse.second.outperformance == 0 ? ("Somente #{@org_outp.reverse.first.artigo} #{@org_outp.reverse.first.nome_fantasia} teve um desempenho no período inferior à sua aprovação média, com uma performance#{percent(@org_outp.reverse.first.outperformance)} inferior") : "Os órgãos que tiveram maior diferença negativa entre seu desempenho no período e sua aprovação média foram #{@org_outp.reverse.first.artigo} #{@org_outp.reverse.first.nome_fantasia}, que teve uma performance #{percent(@org_outp.reverse.first.outperformance)} inferior ao seu padrão anterior"%> 
+				<%=@org_outp.reverse.third.outperformance == 0 ? "e #{@org_outp.reverse.second.artigo} #{@org_outp.reverse.second.nome_fantasia}, que por sua vez teve uma aprovação no período #{percent(@org_outp.reverse.second.outperformance)} abaixo da tendência que vinha seguindo" : "seguid#{@org_outp.reverse.first.artigo} pel#{@org_outp.reverse.second.artigo} #{@org_outp.reverse.second.nome_fantasia}, que teve um desempenho #{percent(@org_outp.reverse.second.outperformance)} abaixo do padrão que vinha seguindo e pel#{@org_outp.reverse.third.artigo} #{@org_outp.reverse.third.nome_fantasia} que teve, por sua vez, uma performance #{percent(@org_outp.reverse.third.outperformance)} inferior à média anterior."%>
+			<%end%>
+		<%end%>
+	<%end%>
+    </p>
+
+</div>

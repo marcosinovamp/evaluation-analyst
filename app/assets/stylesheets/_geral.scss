@@ -1,9 +1,11 @@
 body{
     font-size: 0.8rem;
     background-color:#EFEBE9;
+    text-indent:50px;
 }
 h1, h2, h3, h4, h5, h6 {
     text-align:center;
+    margin-top: 20px;
 }
 h1{
     text-shadow: 0.5px 0.5px 2px;
@@ -11,6 +13,22 @@ h1{
 h5, h6{
     margin-bottom: 10px;
 }
+
+span{
+    font-weight: 700;
+    font-size: 101%;
+    color: #5D6D7E;
+}
+
+cite{
+    font-size: 90%;
+}
+
+p{
+    text-align:justify;
+}
+
+
 .indice{
     text-align:justify;
     color: #212F3C;
@@ -189,16 +207,6 @@ h5, h6{
     font-size:230%;
 }
 
-span{
-    font-weight: 700;
-    font-size: 101%;
-    color: #5D6D7E;
-}
-
-cite{
-    font-size: 90%;
-}
-
 .little-box{
     text-align:center;
     font-size:1.1rem;
@@ -269,4 +277,25 @@ cite{
     p{
         font-size:105% !important;
     }
+}
+
+#evl-apv-tot{
+    height: 400px;
+    width: 1400px;
+    margin-right:0;
+    margin-left: -150px;
+    margin-top:-50px;
+    margin-bottom:30px;
+
+}
+
+#medias{
+    height: 500px;
+    width: 1100px;
+    margin:0;
+    margin-bottom: 10px;
+    margin-top:10px;
+    padding:0;
+    padding-top:10px;
+    padding-bottom:10px;
 }

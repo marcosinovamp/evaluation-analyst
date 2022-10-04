@@ -6,6 +6,24 @@ class ReportController < ApplicationController
   
   def documento
     data
+    @comp_avals = []
+    @cronos.each do |c|
+      @comp_avals << [c.data, c.aprovacao_media, c.aprovacao_periodo]
+    end
+    @last = @comp_avals.pop
+    @pie_data = []
+    @click = 0
+    @demais = 0
+    @deadline = @org_map.first.fotografia_periodo[0]
+    @org_map.each do |o|
+      if (@cronos_last.fotografia_periodo[0] - @click) > @deadline
+        @click += o.fotografia_periodo[0]
+        @pie_data << [o.nome_fantasia, o.fotografia_periodo[0]]
+      end
+      if @pie_data.include?([o.nome_fantasia, o.fotografia_periodo[0]]) == false
+        @demais += o.fotografia_periodo[0]
+      end
+    end
   end
 
   def relatorio
@@ -41,6 +59,20 @@ class ReportController < ApplicationController
     @servico = Servico.find(params[:id])
   end
 
+  def rascunho
+    @cronos = Tempo.cronos # r d
+    @cronos_last = @cronos.last # r d
+    @cronos_fot_geral = @cronos_last.fotografia_geral # r d
+    @cronos_fot_periodo = @cronos_last.fotografia_periodo # r d
+    @orgaos = Orgao.all.includes(:servicos, :avaliacos, :derivados) # r d
+    @orgaos100 = Orgao.mais100 # r d 
+    @org_mpp = @orgaos.sort_by{|o| o.fotografia_periodo[1]*-1} # r d
+    @org_mnp = @orgaos.sort_by{|o| o.fotografia_periodo[2]*-1} # r d
+    @org_mimpp =  @orgaos.sort_by{|o| o.impacto_periodo.abs*-1} # r d
+    @org_difap =@orgaos100.sort_by{|o| o.var_aprovacao_media*-1} # r d
+    @org_outp = @orgaos100.sort_by{|o| o.outperformance*-1} # r d
+  end
+
 
   private
 
@@ -70,8 +102,8 @@ class ReportController < ApplicationController
     @org_mpp = @orgaos.sort_by{|o| o.fotografia_periodo[1]*-1} # r d
     @org_mnp = @orgaos.sort_by{|o| o.fotografia_periodo[2]*-1} # r d
     @org_mimpp =  @orgaos.sort_by{|o| o.impacto_periodo.abs*-1} # r d
-    @org_difap = @orgaos1000.sort_by{|o| o.var_aprovacao_media*-1} # r d
-    @org_outp = @orgaos1000.sort_by{|o| o.outperformance*-1} # r d
+    @org_difap = Orgao.mais100.sort_by{|o| o.var_aprovacao_media*-1} # r d
+    @org_outp = Orgao.mais100.sort_by{|o| o.outperformance*-1} # r d
   end
 
   def data_comp

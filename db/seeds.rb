@@ -42,24 +42,10 @@ if Avaliaco.all.size == 0
     end
 end
 
-filepath4 = "db/avaliacoes.csv"
-@tmpsper = {}
-@tmps = {}
-CSV.foreach(filepath4, headers: :first_row) do |row|
-    @tmps[row[6]] += row[2]
-    @tmpsper[row[6]] += row[5]
-end
-
 if Derivado.all.size == 0
 
     Avaliaco.all.each do |a|
-        Derivado.create(participacao: a.total.to_f/@tmps[a.tempo_id], aprovacao: a.positivas.to_f/(a.total == 0 ? 1 : a.total), part_periodo: a.tot_periodo.to_f/@tmpsper[a.tempo_id], aprov_periodo: a.pos_periodo.to_f/(a.tot_periodo == 0 ? 1 : a.tot_periodo),  avaliaco_id: a.id, servico_id: a.servico_id, tempo_id: a.tempo_id, orgao_id: a.orgao.id)
-    end
-    @incomp = Derivado.all.select{|d| d.impacto.nil?}
-    @incomp.each do |i|
-        i.impacto = i.aprovacao*i.participacao - ((1-i.aprovacao)*i.participacao)
-        i.imp_periodo = i.aprov_periodo*i.part_periodo - ((1-i.aprov_periodo)*i.part_periodo)
-        i.save
+        Derivado.create(aprovacao: a.positivas.to_f/(a.total == 0 ? 1 : a.total), aprov_periodo: a.pos_periodo.to_f/(a.tot_periodo == 0 ? 1 : a.tot_periodo),  avaliaco_id: a.id, servico_id: a.servico_id, tempo_id: a.tempo_id, orgao_id: a.orgao.id)
     end
 end
 
@@ -83,7 +69,7 @@ servicos["resposta"].each do |s|
         @org.save
     end
     if Servico.find_by(api_id:s["id"].gsub("https://servicos.gov.br/api/v1/servicos/", "")).nil?
-        @serv = Servico.new(nome:s["nome"], api_id:s["id"].gsub("https://servicos.gov.br/api/v1/servicos/", ""), orgao_id:Orgao.find_by(nome:s["orgao"]["nomeOrgao"]).id, status:"Novo")
+        @serv = Servico.new(nome:s["nome"], api_id:s["id"].gsub("https://servicos.gov.br/api/v1/servicos/", ""), orgao_id:Orgao.find_by(siorg: s["orgao"]["id"].gsub("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/", "")).id, status:"Novo")
         @serv.save
     else
         @serv = Servico.find_by(api_id:s["id"].gsub("https://servicos.gov.br/api/v1/servicos/", ""))
@@ -110,14 +96,10 @@ servicos["resposta"].each do |s|
         end
     end
     ids << s["id"].gsub("https://servicos.gov.br/api/v1/servicos/", "").to_i
-    @dev = Derivado.new(tempo_id:@data.id, orgao_id:Orgao.find_by(nome:s["orgao"]["nomeOrgao"]).id, servico_id:@serv.id, avaliaco_id:@aval.id)
+    @dev = Derivado.new(tempo_id:@data.id, orgao_id: Orgao.find_by(siorg:s["orgao"]["id"].gsub("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/", "")).id, servico_id:@serv.id, avaliaco_id:@aval.id)
     @dev.save
-    @dev.participacao = @aval.total.to_f/@tmps[@dev.tempo_id]
     @dev.aprovacao = @aval.positivas.to_f/(@aval.total == 0 ? 1 : @aval.total)
-    @dev.impacto = (@dev.participacao*@dev.aprovacao) - ((1-@dev.aprovacao)*@dev.participacao)
-    @dev.part_periodo = @aval.tot_periodo.to_f/@tmpsper[@dev.tempo_id]
     @dev.aprov_periodo = @aval.pos_periodo.to_f/(@aval.tot_periodo == 0 ? 1 : @aval.tot_periodo)
-    @dev.imp_periodo = (@dev.part_periodo*@dev.aprov_periodo) - ((1-@dev.aprov_periodo)*@dev.part_periodo)
     @dev.save
 end
 
@@ -151,4 +133,16 @@ Derivado.all.each do |d|
         d.atual = true
         d.save
     end
+end
+
+Derivado.all.select{|d| d.tempo_id == Tempo.cronos.last.id}.each do |deriv|
+    deriv.participacao = deriv.avaliaco.total.to_f/Tempo.cronos.last.fotografia_geral[0]
+    deriv.part_periodo = deriv.avaliaco.tot_periodo.to_f/Tempo.cronos.last.fotografia_periodo[0]
+    deriv.save
+end
+
+Derivado.all.select{|d| d.tempo_id == Tempo.cronos.last.id}.each do |deriv|
+    deriv.impacto = (deriv.aprovacao*deriv.participacao) - ((1 - deriv.aprovacao)*deriv.participacao)
+    deriv.imp_periodo = (deriv.aprov_periodo*deriv.part_periodo) - ((1 - deriv.aprov_periodo)*deriv.part_periodo)
+    deriv.save
 end

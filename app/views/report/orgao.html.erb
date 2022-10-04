@@ -1,4 +1,3 @@
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load('current', {'packages':['corechart'], 'language': 'pt'});
     google.charts.setOnLoadCallback(avalCumul);
@@ -142,7 +141,7 @@
 
     function evolAprovs() {
     var data = google.visualization.arrayToDataTable([
-        ["Medida", "Aprovação Média", "Aprovação no Período"],
+        ["Data", "Aprovação Média", "Aprovação no Período"],
         <%@aprov.each do |t|%>
             ["<%=date_mask(t[0])%>", <%=t[1]%>, <%=t[2]%>],
         <%end%>
@@ -172,6 +171,9 @@
 
         var options = {
             backgroundColor: 'transparent',
+            legend: {
+                position: 'bottom'
+            },
             vAxis: {
             minValue: 0,
             maxValue: 0.43,
