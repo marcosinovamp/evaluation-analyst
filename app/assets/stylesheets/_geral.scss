@@ -28,6 +28,31 @@ p{
     text-align:justify;
 }
 
+table{
+    text-align:center;
+    margin: auto;
+    margin-top:50px;
+    margin-bottom:30px;
+    font-size:110%;
+    border: none;
+    tr{
+        border: none;
+    }
+    th{
+        text-align:center;
+        padding:3px 3px;
+        border: 1px solid navy;
+        background-color:navy;
+        color:white;
+    }
+    td{
+        text-align:center;
+        padding:3px 3px;
+        border: 1px solid navy;
+        color:navy;
+    }
+}
+
 
 .indice{
     text-align:justify;
@@ -279,6 +304,19 @@ p{
     }
 }
 
+.serv-box{
+    background-color:navy;
+    text-shadow: 0.5px 0.5px 2px lightgrey;
+    color:white;
+    padding:5px;
+    padding-top:0px;
+    padding-bottom:15px;
+    margin:auto;
+    width:20%;
+    border-radius:5px;
+    box-shadow: 2px 2px 4px darkgrey;
+}
+
 #evl-apv-tot{
     height: 400px;
     width: 1400px;
@@ -299,3 +337,4 @@ p{
     padding-top:10px;
     padding-bottom:10px;
 }
+

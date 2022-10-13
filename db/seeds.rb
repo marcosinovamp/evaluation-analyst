@@ -18,6 +18,7 @@ if Tempo.all.size == 0
         Tempo.create({data:row[1].to_date, order:row[2] })
     end
 end
+
 if Orgao.all.size == 0
 
     filepath2 = "db/orgaos.csv"
@@ -26,6 +27,7 @@ if Orgao.all.size == 0
         Orgao.create({nome:row[1].gsub("1w1", ","), nome_fantasia:row[2].gsub("1w1", ","), artigo:row[3], siorg:row[4] })
     end
 end
+
 if Servico.all.size == 0
 
     filepath3 = "db/servicos.csv"
@@ -34,6 +36,7 @@ if Servico.all.size == 0
         Servico.create(api_id:row[0], nome:row[1].gsub('$§', ','), status:row[2], orgao_id:row[3])
     end
 end
+
 if Avaliaco.all.size == 0
     
     filepath4 = "db/avaliacoes.csv"
@@ -98,8 +101,8 @@ servicos["resposta"].each do |s|
     ids << s["id"].gsub("https://servicos.gov.br/api/v1/servicos/", "").to_i
     @dev = Derivado.new(tempo_id:@data.id, orgao_id: Orgao.find_by(siorg:s["orgao"]["id"].gsub("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/", "")).id, servico_id:@serv.id, avaliaco_id:@aval.id)
     @dev.save
-    @dev.aprovacao = @aval.positivas.to_f/(@aval.total == 0 ? 1 : @aval.total)
-    @dev.aprov_periodo = @aval.pos_periodo.to_f/(@aval.tot_periodo == 0 ? 1 : @aval.tot_periodo)
+    @dev.aprovacao = (@aval.positivas.nil? ? 0 : @aval.positivas.to_f)/(@aval.total == 0 ? 1 : @aval.total)
+    @dev.aprov_periodo = (@aval.pos_periodo.nil? ? 0 : @aval.pos_periodo.to_f)/(@aval.tot_periodo == 0 ? 1 : @aval.tot_periodo)
     @dev.save
 end
 

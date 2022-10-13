@@ -57,20 +57,16 @@ class ReportController < ApplicationController
 
   def servico
     @servico = Servico.find(params[:id])
+    @cronos = Tempo.cronos
+    @cronos_per = @cronos[1..1000]
+    @avaliacoes = @servico.avaliacos[1..1000]
+    @derivados = @servico.derivados[1..1000]
+    @aval = @servico.avaliacos[0..-1]
+    @avlast = @servico.avaliacos.last
   end
 
   def rascunho
-    @cronos = Tempo.cronos # r d
-    @cronos_last = @cronos.last # r d
-    @cronos_fot_geral = @cronos_last.fotografia_geral # r d
-    @cronos_fot_periodo = @cronos_last.fotografia_periodo # r d
-    @orgaos = Orgao.all.includes(:servicos, :avaliacos, :derivados) # r d
-    @orgaos100 = Orgao.mais100 # r d 
-    @org_mpp = @orgaos.sort_by{|o| o.fotografia_periodo[1]*-1} # r d
-    @org_mnp = @orgaos.sort_by{|o| o.fotografia_periodo[2]*-1} # r d
-    @org_mimpp =  @orgaos.sort_by{|o| o.impacto_periodo.abs*-1} # r d
-    @org_difap =@orgaos100.sort_by{|o| o.var_aprovacao_media*-1} # r d
-    @org_outp = @orgaos100.sort_by{|o| o.outperformance*-1} # r d
+    
   end
 
 

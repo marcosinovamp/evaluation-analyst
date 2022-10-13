@@ -1,0 +1,284 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart'], 'language': 'pt'});
+    google.charts.setOnLoadCallback(servAvalCumul);
+
+    function servAvalCumul() {
+        var data = google.visualization.arrayToDataTable([
+            ['Data', 'Total de Avaliações', 'Avaliações Positivas', 'Avaliações Negativas'],
+        <%@aval.each do |s|%>
+            [new Date(<%=s.tempo.data.to_s[0..3].to_i%>, <%=s.tempo.data.to_s[5..6].to_i-1%>, <%=s.tempo.data.to_s[8..9].to_i%>), <%=s.total.to_i%>, <%=s.positivas.to_i%>, <%=s.negativas.to_i%>],
+        <%end%>
+        [new Date(<%=@avlast.tempo.data.to_s[0..3].to_i%>, <%=@avlast.tempo.data.to_s[5..6].to_i-1%>, <%=@avlast.tempo.data.to_s[8..9].to_i%>), <%=@avlast.total.to_i%>, <%=@avlast.positivas.to_i%>, <%=@avlast.negativas.to_i%>]
+    ]);
+
+    var view = new google.visualization.DataView(data);
+
+    var options = {
+        titlePosition:'none',
+        backgroundColor: 'transparent',
+        curveType: 'none',
+        legend: {
+            position: 'bottom',
+            alignment: 'center',
+            textStyle: {
+                fontSize:8
+            }
+        },
+        point: {visibility: true},
+        pointSize: 5,
+        colors: ['navy', 'darkgreen', 'darkred'],
+        annotations: {
+            textStyle: {
+                fontSize: 12,
+                bold: true,
+                auraColor: 'white'
+            },
+            stem: {
+                color:'transparent'
+            }
+        },
+        vAxis: {
+            gridlines: {
+                color: 'lightgrey'
+            }
+        },
+        hAxis: {
+            gridlines: {
+                color:'lightgrey',
+            }
+        }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('serv_aval_cumul'));
+
+    chart.draw(view, options);
+    }
+</script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"], 'language': 'pt'});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['data', 'Total de Avaliações', 'Aprovação'],
+         <%@aval.each do |a|%>
+                [new Date(<%=a.tempo.data.to_s[0..3].to_i%>, <%=a.tempo.data.to_s[5..6].to_i-1%>, <%=a.tempo.data.to_s[8..9].to_i%>), <%=a.total.to_i%>, <%=a.derivado.aprovacao*100%>],
+            <%end%>
+            [new Date(<%=@avlast.tempo.data.to_s[0..3].to_i%>, <%=@avlast.tempo.data.to_s[5..6].to_i-1%>, <%=@avlast.tempo.data.to_s[8..9].to_i%>), <%=@avlast.total.to_i%>, <%=@avlast.derivado.aprovacao*100%>] 
+        ]);
+        var options = {
+            backgroundColor: 'transparent',
+            legend: {
+                position: 'bottom',
+                textStyle: {
+                    fontSize:10
+                }
+                },
+            //hAxis: {showTextEvery: },
+            vAxes: {0: {viewWindowMode:'explicit',
+                        gridlines: {color: 'lightgrey'},
+                        title: 'Total de Avaliações',
+            },
+                    1: {viewWindowMode:'explicit',
+                        gridlines: {color: 'transparent'},
+                        title: 'Aprovação (%)'
+                        },
+                    },
+            series: {0: {targetAxisIndex:0},
+                    1:{targetAxisIndex:1},
+                    },
+            colors: ["navy", "brown"],
+            //chartArea:{left:200,top:200, width:1000, height:500},
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_id'));
+        chart.draw(data, options);
+      }
+</script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"], 'language': 'pt'});
+      google.setOnLoadCallback(drawChart2);
+      function drawChart2() {
+        var data = google.visualization.arrayToDataTable([
+        ['data', 'Total de Avaliações', 'Aprovação'],
+         <%@aval[2..1000].each do |a|%>
+                [new Date(<%=a.tempo.data.to_s[0..3].to_i%>, <%=a.tempo.data.to_s[5..6].to_i-1%>, <%=a.tempo.data.to_s[8..9].to_i%>), <%=a.tot_periodo.to_i%>, <%=a.derivado.aprov_periodo*100%>],
+            <%end%>
+            [new Date(<%=@avlast.tempo.data.to_s[0..3].to_i%>, <%=@avlast.tempo.data.to_s[5..6].to_i-1%>, <%=@avlast.tempo.data.to_s[8..9].to_i%>), <%=@avlast.tot_periodo.to_i%>, <%=@avlast.derivado.aprov_periodo*100%>] 
+        ]);
+        var options = {
+            backgroundColor: 'transparent',
+            legend: {
+                position: 'bottom',
+                textStyle: {
+                    fontSize:10
+                }
+                },
+            //hAxis: {showTextEvery: },
+            vAxes: {0: {viewWindowMode:'explicit',
+                        gridlines: {color: 'lightgrey'},
+                        title: 'Total de Avaliações',
+            },
+                    1: {viewWindowMode:'explicit',
+                        gridlines: {color: 'transparent'},
+                        title: 'Aprovação (%)'
+                        },
+                    },
+            series: {0: {targetAxisIndex:0},
+                    1:{targetAxisIndex:1},
+                    },
+            colors: ["navy", "brown"],
+            //chartArea:{left:200,top:200, width:1000, height:500},
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_id2'));
+        chart.draw(data, options);
+      }
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart'], 'language': 'pt'});
+    google.charts.setOnLoadCallback(servAvalCumul2);
+
+    function servAvalCumul2() {
+        var data = google.visualization.arrayToDataTable([
+            ['Data', 'Total de Avaliações', 'Avaliações Positivas', 'Avaliações Negativas'],
+        <%@aval[2..1000].each do |s|%>
+            [new Date(<%=s.tempo.data.to_s[0..3].to_i%>, <%=s.tempo.data.to_s[5..6].to_i-1%>, <%=s.tempo.data.to_s[8..9].to_i%>), <%=s.tot_periodo.to_i%>, <%=s.pos_periodo.to_i%>, <%=s.neg_periodo.to_i%>],
+        <%end%>
+        [new Date(<%=@avlast.tempo.data.to_s[0..3].to_i%>, <%=@avlast.tempo.data.to_s[5..6].to_i-1%>, <%=@avlast.tempo.data.to_s[8..9].to_i%>), <%=@avlast.tot_periodo.to_i%>, <%=@avlast.pos_periodo.to_i%>, <%=@avlast.neg_periodo.to_i%>]
+    ]);
+
+    var view = new google.visualization.DataView(data);
+
+    var options = {
+        titlePosition:'none',
+        backgroundColor: 'transparent',
+        curveType: 'none',
+        legend: {
+            position: 'bottom',
+            alignment: 'center',
+            textStyle: {
+                fontSize:8
+            }
+        },
+        point: {visibility: true},
+        pointSize: 5,
+        colors: ['navy', 'darkgreen', 'darkred'],
+        annotations: {
+            textStyle: {
+                fontSize: 12,
+                bold: true,
+                auraColor: 'white'
+            },
+            stem: {
+                color:'transparent'
+            }
+        },
+        vAxis: {
+            gridlines: {
+                color: 'lightgrey'
+            }
+        },
+        hAxis: {
+            gridlines: {
+                color:'lightgrey',
+            }
+        }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('serv_aval_cumul2'));
+
+    chart.draw(view, options);
+    }
+</script>
+
+<div class="container">
+    <h3 style="color:navy;text-shadow:2px 2px 2px lightgrey"><%=@servico.nome%></h3>
+    <h5 style="color:navy;text-shadow:2px 2px 2px lightgrey"><cite>Prestador: <%=@servico.orgao.nome%></h5>
+    <br>
+    <div class="row" style="margin-left:80px">
+        <div class="col-sm-4 serv-box">
+            <h5 style="margin-left:-35px">Aprovação:</h5>
+            <h6 style="margin-left:-35px"><%=percent(@servico.derivados.last.aprovacao)%></h6>
+        </div>
+        <div class="col-sm-4 serv-box">
+            <h5 style="margin-left:-35px">Participação:</h5>
+            <h6 style="margin-left:-35px"><%=percent(@servico.derivados.last.participacao)%></h6>
+        </div>
+        <div class="col-sm-4 serv-box">
+            <h5 style="margin-left:-35px">Impacto:</h5>
+            <h6 style="margin-left:-35px"><%=percent(@servico.derivados.last.impacto)%></h6>
+        </div>
+    </div>
+    <table>
+        <tr>
+            <th></th>
+            <%@cronos.each do |c|%>
+                <th><%=bradate(c.data).to_s.gsub("/2022","")%></th>
+            <%end%>
+        </tr>
+        <tr>
+            <td>Total de Avaliações</td>
+            <%@servico.avaliacos.sort_by{|av| av.tempo.data}.each do |a|%>
+                <td><%=nmb_form(a.total)%></td>
+            <%end%>
+        </tr>
+        <tr>
+            <td>Aprovação</td>
+            <%@servico.derivados.sort_by{|dv| dv.tempo.data}.each do |d|%>
+                <td><%=percent(d.aprovacao)%></td>
+            <%end%>
+        </tr>
+    </table>
+    <div class="row">
+        <div class="col-sm-6">
+            <h6 style="text-align:center;margin-bottom:-50px;margin-left:-100px">Cumulativa</h6>
+            <div id="chart_id" style="width:600px;height:300px;margin-left:-100px"></div>
+        </div>
+        <div class="col-sm-6">
+            <h6 style="text-align:center;margin-bottom:-50px">Não-Cumulativa</h6>
+            <div id="chart_id2" style="width:600px;height:300px;margin-left:-50px"></div>
+        </div>
+    </div>
+    <br>
+    <table>
+        <tr>
+            <th>Avaliações</th>
+            <%@cronos.each do |c|%>
+                <th><%=bradate(c.data).to_s.gsub("/2022","")%></th>
+            <%end%>
+        </tr>
+        <tr>
+            <td>Positivas</td>
+            <%@servico.avaliacos.sort_by{|av| av.tempo.data}.each do |a|%>
+                <td><%=nmb_form(a.positivas)%></td>
+            <%end%>
+        </tr>
+        <tr>
+            <td>Negativas</td>
+            <%@servico.avaliacos.sort_by{|av| av.tempo.data}.each do |a|%>
+                <td><%=nmb_form(a.negativas)%></td>
+            <%end%>
+        </tr>
+        <tr>
+            <td>Total</td>
+            <%@servico.avaliacos.sort_by{|av| av.tempo.data}.each do |a|%>
+                <td><%=nmb_form(a.total)%></td>
+            <%end%>
+        </tr>
+    </table>
+    <div class="row">
+        <div class="col-sm-6">
+            <h6 style="text-align:center;margin-bottom:-50px;margin-left:-100px">Cumulativa</h6>
+            <div id="serv_aval_cumul" style="width:700px;height:300px;margin-left:-100px"></div>
+        </div>
+        <div class="col-sm-6">
+            <h6 style="text-align:center;margin-bottom:-50px">Não-Cumulativa</h6>
+            <div id="serv_aval_cumul2" style="width:600px;height:300px;margin-left:-50px"></div>
+        </div>
+    </div>
+</div>
+<br>

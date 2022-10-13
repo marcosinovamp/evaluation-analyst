@@ -3,7 +3,7 @@ module ReportHelper
     def percent(number)
         @porc = number*100
         @porc = @porc.round(2)
-        return "#{(sprintf "%.2f", @porc).gsub(".", ",").gsub(",00", "")}%"
+        return "#{(sprintf "%.2f", @porc).gsub(".", ",").gsub(",000", "")}%"
     end
 
     def nmb_form(number)
