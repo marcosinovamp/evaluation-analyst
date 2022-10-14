@@ -1,3 +1,5 @@
+require 'faker'
+
 class ReportController < ApplicationController
   
   def home
@@ -32,6 +34,7 @@ class ReportController < ApplicationController
   end
 
   def orgao
+    @atuais = Servico.atuais # r d
     @orgao = Orgao.find(params[:id])
     @servicos = @orgao.servicos
     @avaliacos = @orgao.avaliacos.includes(:derivados, :tempo)
@@ -66,7 +69,16 @@ class ReportController < ApplicationController
   end
 
   def rascunho
-    
+    @orgaos = Orgao.all.includes(:servicos, :avaliacos, :derivados) # r d
+    @orgaos1000 = Orgao.mais1000 # r d 
+    @cronos = Tempo.cronos # r d
+    @cronos_last = @cronos.last # r d
+    @novos = Servico.novos # r d
+    @retirados = Servico.retirados # r d
+    @atuais = Servico.atuais # r d
+    @org_msn = @orgaos.sort_by{|o| o.novos.size*-1} # r d
+    @org_msr = @orgaos.sort_by{|o| o.retirados.size*-1} # r d
+    @org_msa = @orgaos.sort_by{|o| o.atuais.size*-1} # r d
   end
 
 

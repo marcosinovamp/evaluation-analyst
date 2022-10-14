@@ -196,23 +196,31 @@
 </script>
 
 <div class="container">
-    <h3 style="color:navy;text-shadow:2px 2px 2px lightgrey"><%=@servico.nome%></h3>
-    <h5 style="color:navy;text-shadow:2px 2px 2px lightgrey"><cite>Prestador: <%=@servico.orgao.nome%></h5>
+    <h3><%=@servico.nome%></h3>
+    <h5><cite>Prestador: <%=@servico.orgao.nome%></h5>
     <br>
-    <div class="row" style="margin-left:80px">
-        <div class="col-sm-4 serv-box">
-            <h5 style="margin-left:-35px">Aprovação:</h5>
-            <h6 style="margin-left:-35px"><%=percent(@servico.derivados.last.aprovacao)%></h6>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="caixa pqn-caixa petit">
+                <h5>Aprovação:</h5>
+                <h6><%=percent(@servico.derivados.last.aprovacao)%></h6>
+            </div>
         </div>
-        <div class="col-sm-4 serv-box">
-            <h5 style="margin-left:-35px">Participação:</h5>
-            <h6 style="margin-left:-35px"><%=percent(@servico.derivados.last.participacao)%></h6>
+        <div class="col-sm-4">
+            <div class="caixa pqn-caixa petit">
+                <h5>Participação:</h5>
+                <h6><%=percent(@servico.derivados.last.participacao)%></h6>
+            </div>
         </div>
-        <div class="col-sm-4 serv-box">
-            <h5 style="margin-left:-35px">Impacto:</h5>
-            <h6 style="margin-left:-35px"><%=percent(@servico.derivados.last.impacto)%></h6>
+        <div class="col-sm-4">
+            <div class="caixa pqn-caixa petit">
+                <h5>Impacto:</h5>
+                <h6><%=percent(@servico.derivados.last.impacto)%></h6>
+            </div>
         </div>
     </div>
+    <br>
+    <br>
     <table>
         <tr>
             <th></th>
@@ -233,14 +241,15 @@
             <%end%>
         </tr>
     </table>
+    <br>
     <div class="row">
         <div class="col-sm-6">
-            <h6 style="text-align:center;margin-bottom:-50px;margin-left:-100px">Cumulativa</h6>
-            <div id="chart_id" style="width:600px;height:300px;margin-left:-100px"></div>
+            <h6>Cumulativa</h6>
+            <div id="chart_id"></div>
         </div>
         <div class="col-sm-6">
-            <h6 style="text-align:center;margin-bottom:-50px">Não-Cumulativa</h6>
-            <div id="chart_id2" style="width:600px;height:300px;margin-left:-50px"></div>
+            <h6>Não-Cumulativa</h6>
+            <div id="chart_id2"></div>
         </div>
     </div>
     <br>
@@ -272,12 +281,12 @@
     </table>
     <div class="row">
         <div class="col-sm-6">
-            <h6 style="text-align:center;margin-bottom:-50px;margin-left:-100px">Cumulativa</h6>
-            <div id="serv_aval_cumul" style="width:700px;height:300px;margin-left:-100px"></div>
+            <h6>Cumulativa</h6>
+            <div id="serv_aval_cumul"></div>
         </div>
         <div class="col-sm-6">
-            <h6 style="text-align:center;margin-bottom:-50px">Não-Cumulativa</h6>
-            <div id="serv_aval_cumul2" style="width:600px;height:300px;margin-left:-50px"></div>
+            <h6>Não-Cumulativa</h6>
+            <div id="serv_aval_cumul2"></div>
         </div>
     </div>
 </div>

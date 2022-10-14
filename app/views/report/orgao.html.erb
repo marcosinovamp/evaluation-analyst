@@ -196,126 +196,131 @@
       }
 </script>
 
-
 <div class="container">
     <h1><%=@orgao.nome%></h1>
     <br>
-    <h3 class="org-title">Situação Atual</h3>
+    <h3>Situação Atual</h3>
     <div class="row">
         <div class="col-sm-4">
-            <div class="placa numbers">
+            <div class="caixa pqn-caixa petit">
                 <h6>Nº de avaliações:</h6> 
                 <p><%=nmb_form(@orgao.fotografia_geral[0])%></p>
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="placa posit">
+            <div class="caixa pqn-caixa petit">
                 <h6>Positivas:</h6> 
                 <p><%=nmb_form(@orgao.fotografia_geral[1])%></p>
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="placa negat">
+            <div class="caixa pqn-caixa petit">
                 <h6>Negativas:</h6> 
                 <p><%=nmb_form(@orgao.fotografia_geral[2])%></p>
             </div>
         </div>
          <div class="col-sm-4">
-            <div class="placa numbers">
+            <div class="caixa pqn-caixa petit">
                 <h6>Aprovação média:</h6> 
                 <p><%=percent(@orgao.aprovacao_media)%></p>
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="placa numbers">
+            <div class="caixa pqn-caixa petit">
                 <h6>Participação no total de avaliações:</h6> 
                 <p><%=percent(@orgao.participacao_media)%></p>
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="placa numbers">
+            <div class="caixa pqn-caixa petit">
                 <h6>Impacto na Aprovação Geral do Portal:</h6> 
                 <p><%=percent(@orgao.impacto_medio > -0.00009999999 && @orgao.impacto_medio < 0.00009999999 ? 0 : @orgao.impacto_medio.to_f)%></p>
             </div>
         </div>
     </div>
-    <h2>Serviços</h2>
+    <br>
+    <h2>Serviços:</h2>
     <br>
     <div class="row">
         <div class="col-sm-4">
-            <div class="placa numbers">
+            <div class="caixa pqn-caixa petit">
                 <h6>Nº de serviços:</h6> 
                 <p><%=nmb_form(@orgao.servicos.size)%></p>
+                <p>(<%=percent(@orgao.servicos.size.to_f/@atuais.size)%>)</p>
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="placa numbers">
+            <div class="caixa pqn-caixa petit">
                 <h6>Nº de serviços avaliados:</h6> 
-                <p><%=@avaliados.size%> (<%=percent(@avaliados.size.to_f/@servicos.size)%>)</p>
+                <p><%=@avaliados.size%></p>
+                <p>(<%=percent(@avaliados.size.to_f/@servicos.size)%>)</p>
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="placa negat">
+            <div class="caixa pqn-caixa petit">
                 <h6>Nº de serviços atualmente reprovados:</h6> 
-                <p><%=@avaliados.select{|s| s.aprovacao_geral < 0.5}.size%> (<%=percent(@avaliados.select{|s| s.aprovacao_geral < 0.5}.size.to_f/@servicos.size)%>)</p>
+                <p><%=@avaliados.select{|s| s.aprovacao_geral < 0.5}.size%></p>
+                <p>(<%=percent(@avaliados.select{|s| s.aprovacao_geral < 0.5}.size.to_f/@servicos.size)%>)</p>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <div class="placa serv-card numbers">
+            <div class="caixa pqn-caixa petit">
                 <h6>Serviço com mais avaliações:</h6> 
-                <p><%=@mais_aval.first.nome%></p>
+                <p class="nm-serv"><%=@mais_aval.first.nome%></p>
                 <p><%=nmb_form(@mais_aval.first.qtd_avaliacoes)%> avaliações</p>
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="placa serv-card posit">
+            <div class="caixa pqn-caixa petit">
                 <h6>Serviço com mais avaliações positivas:</h6> 
-                <p><%=@mais_posit.first.nome%></p>
+                <p class="nm-serv"><%=@mais_posit.first.nome%></p>
                 <p><%=nmb_form(@mais_posit.first.qtd_positivas)%> avaliações positivas</p>
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="placa serv-card negat">
+            <div class="caixa pqn-caixa petit">
                 <h6>Serviço com mais avaliações negativas:</h6> 
-                <p><%=@mais_negat.first.nome%></p>
+                <p class="nm-serv"><%=@mais_negat.first.nome%></p>
                 <p><%=nmb_form(@mais_negat.first.qtd_negativas)%> avaliações negativas</p>
             </div>
         </div>
 
         <div class="col-sm-4">
-            <div class="placa serv-card posit">
+            <div class="caixa pqn-caixa petit">
                 <h6>Serviço com maior aprovação:</h6> 
-                <p><%=@mais_aprov.first.nome%></p>
+                <p class="nm-serv"><%=@mais_aprov.first.nome%></p>
                 <p><%=percent(@mais_aprov.first.aprovacao_geral)%> de aprovação</p>
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="placa serv-card negat">
+            <div class="caixa pqn-caixa petit">
                 <h6>Serviço com menor aprovação:</h6> 
-                <p><%=@menos_aprov.first.nome%></p>
+                <p class="nm-serv"><%=@menos_aprov.first.nome%></p>
                 <p><%=percent(@menos_aprov.first.aprovacao_geral)%> de aprovação</p>
             </div>
         </div>
     </div>
     <br>
-        <div style="background-color:white;margin:auto;width:70%;padding:10px;padding-bottom:3px;border-radius:5px">
-        <h6 style="margin-bottom:0;margin-top:20px;padding-bottom:0">Evolução Cumulativa das Avaliações</h6>
+    <br>
+    <br>
+        <div>
+        <h4>Evolução Cumulativa das Avaliações</h4>
         <div class="row">
             <div class="col-sm-9">
-                <div id="aval_cumul" style="width: 700px; height: 400px; margin:auto; margin-top:-50px"></div>
+                <div id="aval_cumul"></div>
             </div>
             <div class="col-sm-3">
-                <div style="heigth:auto;width:auto;margin:100px 0px">
+                <div>
                     <div class="row">
                         <div class="col-sm-1">
                         </div>
                         <div class="col-sm-1">
-                            <div style="background-color:navy;border: 1px solid navy;height:10px;width:10px;margin-bottom:-10px"></div>
+                            <div></div>
                         </div>
                         <div class="col-sm-9">
-                            <p style="margin-top:-5px;text-align:left">Total de Avaliações</p>
+                            <p style="color:navy;font-size:70%">&#9632 Total de Avaliações</p>
                         </div>
                         <div class="col-sm-1">
                         </div>
@@ -324,10 +329,10 @@
                         <div class="col-sm-1">
                         </div>
                         <div class="col-sm-1">
-                            <div style="background-color:darkgreen;border: 1px solid darkgreen;height:10px;width:10px;margin-bottom:-10px"></div>
+                            <div></div>
                         </div>
                         <div class="col-sm-9">
-                            <p style="margin-top:-5px;text-align:left">Avaliações Positivas</p>
+                            <p style="color:darkgreen;font-size:70%">&#9632 Avaliações Positivas</p>
                         </div>
                         <div class="col-sm-1">
                         </div>
@@ -336,10 +341,10 @@
                         <div class="col-sm-1">
                         </div>
                         <div class="col-sm-1">
-                            <div style="background-color:darkred;border: 1px solid darkred;height:10px;width:10px;margin-bottom:-10px"></div>
+                            <div></div>
                         </div>
                         <div class="col-sm-9">
-                            <p style="margin-top:-5px;text-align:left">Avaliações Negativas</p>
+                            <p style="color:darkred;font-size:70%">&#9632 Avaliações Negativas</p>
                         </div>
                         <div class="col-sm-1">
                         </div>
@@ -349,22 +354,22 @@
         </div>
     </div>
     <br>
-    <div style="background-color:white;margin:auto;width:70%;padding:10px;padding-bottom:3px;border-radius:5px">
-        <h6 style="margin-bottom:0;margin-top:20px;padding-bottom:0">Variação das Avaliações por período</h6>
+    <div>
+        <h4>Variação das Avaliações por período</h4>
         <div class="row">
             <div class="col-sm-9">
-                <div id="aval_abs" style="width: 700px; height: 400px; margin:auto; margin-top:-50px"></div>
+                <div id="aval_abs"></div>
             </div>
             <div class="col-sm-3">
-                <div style="heigth:auto;width:auto;margin:100px 0px">
+                <div>
                     <div class="row">
                         <div class="col-sm-1">
                         </div>
                         <div class="col-sm-1">
-                            <div style="background-color:navy;border: 1px solid navy;height:10px;width:10px;margin-bottom:-10px"></div>
+                            <div></div>
                         </div>
                         <div class="col-sm-9">
-                            <p style="margin-top:-5px;text-align:left">Total de Avaliações</p>
+                            <p style="color:navy;font-size:70%">&#9632 Total de Avaliações</p>
                         </div>
                         <div class="col-sm-1">
                         </div>
@@ -373,10 +378,10 @@
                         <div class="col-sm-1">
                         </div>
                         <div class="col-sm-1">
-                            <div style="background-color:darkgreen;border: 1px solid darkgreen;height:10px;width:10px;margin-bottom:-10px"></div>
+                            <div></div>
                         </div>
                         <div class="col-sm-9">
-                            <p style="margin-top:-5px;text-align:left">Avaliações Positivas</p>
+                            <p style="color:darkgreen;font-size:70%">&#9632 Avaliações Positivas</p>
                         </div>
                         <div class="col-sm-1">
                         </div>
@@ -385,10 +390,10 @@
                         <div class="col-sm-1">
                         </div>
                         <div class="col-sm-1">
-                            <div style="background-color:darkred;border: 1px solid darkred;height:10px;width:10px;margin-bottom:-10px"></div>
+                            <div></div>
                         </div>
                         <div class="col-sm-9">
-                            <p style="margin-top:-5px;text-align:left">Avaliações Negativas</p>
+                            <p style="color:darkred;font-size:70%">&#9632 Avaliações Negativas</p>
                         </div>
                         <div class="col-sm-1">
                         </div>
@@ -398,8 +403,8 @@
         </div>
     </div>
     <br>
-    <div style="background-color:white;margin:auto;width:90%;padding-bottom:3px;padding-top:10px;border-radius:5px">
-        <h6 style="margin-bottom:0;margin-top:20px;padding-bottom:0">Aprovação Média x Aprovação do Período</h6>
-        <div id="evol_aprov" style="width: 1000px; height: 400px;margin:auto;margin-top:-50px"></div>
+    <div>
+        <h4>Aprovação Média x Aprovação do Período</h4>
+        <div id="evol_aprov"></div>
     </div>
     <br>

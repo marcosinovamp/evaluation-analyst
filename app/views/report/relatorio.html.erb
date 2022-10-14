@@ -1,63 +1,65 @@
 <div class="container">
-    <h4 class="title">Data: <%=bradate(@cronos.last.data)%></h4>
+   <h3>Data: <%=bradate(@cronos.last.data)%></h3>
     <br>
-    <h5 class="subtitle">Situação Geral Atual:</h5>
+    <h4>Situação Geral Atual:</h4>
+    <br>
     <div class="row">
         <div class ="col-sm-2">
-            <div class="two-column-card little-box">
+            <div class="caixa pqn-caixa">
                 <h6>Serviços:</h6>
-                <div class="gran-num"><span><%=nmb_form(@atuais.size)%></span></div>
+                <div><span><%=nmb_form(@atuais.size)%></span></div>
             </div>
         </div>
         <div class ="col-sm-2">
-            <div class="two-column-card little-box">
+            <div class="caixa pqn-caixa">
                 <h6>Órgãos:</h6>
-                <div class="gran-num"><span><%=nmb_form(@orgaos.size)%></span></div>
+                <div><span><%=nmb_form(@orgaos.size)%></span></div>
             </div>
         </div>
         <div class ="col-sm-6">
-            <div class="two-column-card little-box">
+            <div class="caixa pqn-caixa">
                 <h6>Avaliações:</h6>
-                <div class="gran-num"><span><%=nmb_form(@cronos_fot_geral[0])%></span> avaliações (<span><%=nmb_form(@cronos_fot_geral[1])%></span> positivas x <span><%=nmb_form(@cronos_fot_geral[2])%></span> negativas)</div>
+                <div><p><span><%=nmb_form(@cronos_fot_geral[0])%></span> avaliações</p> <p>(<span><%=nmb_form(@cronos_fot_geral[1])%></span> positivas x <span><%=nmb_form(@cronos_fot_geral[2])%></span> negativas)</p></div>
             </div>
         </div>
         <div class ="col-sm-2">
-            <div class="two-column-card little-box">
+            <div class="caixa pqn-caixa">
                 <h6>Aprovação Média:</h6>
-                <div class="gran-num"><span><%=percent(@cronos_last.aprovacao_media)%></span></div>
+                <div><span><%=percent(@cronos_last.aprovacao_media)%></span></div>
             </div>
         </div>
     </div>
     <br>
-    <div class="card one-column-card">
+     <div class="caixa pqn-caixa">
         <h5>Modificações Gerais no Último Período:</h5>
-        <div class="single">
-            <ul style="margin:0">
-                <li>Foram acrescentados <span><%=nmb_form(@novos.size)%></span> serviços, que receberam <span><%=nmb_form(@av_novos[0])%></span> avaliações no período (<span><%=nmb_form(@av_novos[1])%></span> positivas x <span><%=nmb_form(@av_novos[2])%></span> negativas).</li>
-                <li>Foram retirados <span><%=nmb_form(@retirados.size)%></span> serviços, que tiraram do Portal <span><%=nmb_form(@av_retirados[0])%></span> avaliações (<span><%=nmb_form(@av_retirados[1])%></span> positivas x <span><%=nmb_form(@av_retirados[2])%></span> negativas).</li>
-                <li>Os restantes <span><%=nmb_form(@mantidos.size)%></span> serviços foram mantidos, e tiveram no período <span><%=nmb_form(@av_mantidos[0])%></span> avaliações (<span><%=nmb_form(@av_mantidos[1])%></span> positivas x <span><%=nmb_form(@av_mantidos[2])%> negativas</span>).</li>
-                <li>A aprovação no período foi de <span><%=percent(@cronos_last.aprovacao_periodo)%></span> (<cite>Abaixo <%=percent(@cronos_last.aprovacao_periodo - @cronos[-2].aprovacao_media)%> em relação à aprovação média anterior</cite>).</li>
-                <li>Houve uma variação de <span><%=percent(@varapvmedia)%></span> na aprovação média como consequência do período.</li>
+        <div>
+            <ul>
+                <li><span style="color:green;font-size:120%">&#10010</span> Foram acrescentados <span><%=nmb_form(@novos.size)%></span> serviços, que receberam <span><%=nmb_form(@av_novos[0])%></span> avaliações no período (<span><%=nmb_form(@av_novos[1])%></span> positivas x <span><%=nmb_form(@av_novos[2])%></span> negativas).</li>
+                <li><span style="color:red;font-size:120%">&#8722</span> Foram retirados <span><%=nmb_form(@retirados.size)%></span> serviços, que tiraram do Portal <span><%=nmb_form(@av_retirados[0])%></span> avaliações (<span><%=nmb_form(@av_retirados[1])%></span> positivas x <span><%=nmb_form(@av_retirados[2])%></span> negativas).</li>
+                <li><span style="color:navy;font-size:120%">&#8759</span> Os restantes <span><%=nmb_form(@mantidos.size)%></span> serviços foram mantidos, e tiveram no período <span><%=nmb_form(@av_mantidos[0])%></span> avaliações (<span><%=nmb_form(@av_mantidos[1])%></span> positivas x <span><%=nmb_form(@av_mantidos[2])%></span> negativas).</li>
+                <li><span style="color:gold;font-size:120%">&#9733</span> A aprovação no período foi de <span><%=percent(@cronos_last.aprovacao_periodo)%></span> (<cite>Abaixo <%=percent(@cronos_last.aprovacao_periodo - @cronos[-2].aprovacao_media)%> em relação à aprovação média anterior</cite>).</li>
+                <li><span style="color:orange;font-size:120%">&#8645</span> Houve uma variação de <span><%=percent(@varapvmedia)%></span> na aprovação média como consequência do período.</li>
             </ul>
         </div>
     </div>
     <br>
-    <h5 class="subtitle">Serviços:</h5>
+   <h4>Serviços:</h4>
+    <br>
     <div class="row">
-        <div class="col-sm-6 margined">
-            <div class="two-column-card">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Maior quantidade de Avaliações (Geral):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-7">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>% do total</p>
+                    <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -67,35 +69,35 @@
                     <%n += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n%>º</p>
+                            <p><%=n%>º</p>
                         </div>
                         <div class="col-sm-7">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                         <div class="col-sm-2">
-                            <p style="text-align:center"><span><%=nmb_form(g.qtd_avaliacoes)%></span></p>
+                            <p><span><%=nmb_form(g.qtd_avaliacoes)%></span></p>
                         </div>
                         <div class="col-sm-2">
-                            <p style="text-align:center"><%=percent(g.qtd_avaliacoes.to_f/@cronos_fot_geral[0])%></p>
+                            <p><%=percent(g.qtd_avaliacoes.to_f/@cronos_fot_geral[0])%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Maior quantidade de Avaliações (Período):</h6>
-               <div class="row tab-head">
+               <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-7">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>% do total</p>
+                    <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -105,35 +107,35 @@
                     <%n2 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n2%>º</p>
+                            <p><%=n2%>º</p>
                         </div>
                         <div class="col-sm-7">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                         <div class="col-sm-2">
-                            <p style="text-align:center"><span><%=nmb_form(g.qtd_avaliacoes_periodo)%></span></p>
+                            <p><span><%=nmb_form(g.qtd_avaliacoes_periodo)%></span></p>
                         </div>
                         <div class="col-sm-2">
-                            <p style="text-align:center"><%=percent(g.qtd_avaliacoes_periodo.to_f/@cronos_fot_periodo[0])%></p>
+                            <p><%=percent(g.qtd_avaliacoes_periodo.to_f/@cronos_fot_periodo[0])%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-pos">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Maior quantidade de Avaliações Positivas (Geral):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-7">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>% do total</p>
+                    <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -143,35 +145,35 @@
                     <%n3 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n3%>º</p>
+                            <p><%=n3%>º</p>
                         </div>
                         <div class="col-sm-7">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                          <div class="col-sm-2">
-                            <p style="text-align:center"><span><%=nmb_form(g.qtd_positivas)%></span></p>
+                            <p><span><%=nmb_form(g.qtd_positivas)%></span></p>
                         </div>
                         <div class="col-sm-2">
-                            <p style="text-align:center"><%=percent(g.qtd_positivas.to_f/@cronos_fot_geral[1])%></p>
+                            <p><%=percent(g.qtd_positivas.to_f/@cronos_fot_geral[1])%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-pos">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Maior quantidade de Avaliações Positivas(Período):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-7">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>% do total</p>
+                    <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -181,35 +183,35 @@
                     <%n4 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n4%>º</p>
+                            <p><%=n4%>º</p>
                         </div>
                         <div class="col-sm-7">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                          <div class="col-sm-2">
-                            <p style="text-align:center"><span><%=nmb_form(g.qtd_positivas_periodo)%></span></p>
+                            <p><span><%=nmb_form(g.qtd_positivas_periodo)%></span></p>
                         </div>
                         <div class="col-sm-2">
-                            <p style="text-align:center"><%=percent(g.qtd_positivas_periodo.to_f/@cronos_fot_periodo[1])%></p>
+                            <p><%=percent(g.qtd_positivas_periodo.to_f/@cronos_fot_periodo[1])%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-neg">
+        <div class="col-sm-6">
+           <div class="caixa grd-caixa">
                 <h6>Maior quantidade de Avaliações Negativas (Geral):</h6>
-                 <div class="row tab-head">
+                 <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-7">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>% do total</p>
+                        <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -219,35 +221,35 @@
                     <%n5 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n5%>º</p>
+                            <p><%=n5%>º</p>
                         </div>
                         <div class="col-sm-7">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                          <div class="col-sm-2">
-                            <p style="text-align:center"><span><%=nmb_form(g.qtd_negativas)%></span></p>
+                            <p><span><%=nmb_form(g.qtd_negativas)%></span></p>
                         </div>
                         <div class="col-sm-2">
-                            <p style="text-align:center"><%=percent(g.qtd_negativas.to_f/@cronos_fot_geral[2])%></p>
+                            <p><%=percent(g.qtd_negativas.to_f/@cronos_fot_geral[2])%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-neg">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Maior quantidade de Avaliações Negativas (Período):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-7">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>% do total</p>
+                        <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -257,35 +259,35 @@
                     <%n6 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n6%>º</p>
+                            <p><%=n6%>º</p>
                         </div>
                         <div class="col-sm-7">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                          <div class="col-sm-2">
-                            <p style="text-align:center"><span><%=nmb_form(g.qtd_negativas_periodo)%></span></p>
+                            <p><span><%=nmb_form(g.qtd_negativas_periodo)%></span></p>
                         </div>
                         <div class="col-sm-2">
-                            <p style="text-align:center"><%=percent(g.qtd_negativas_periodo.to_f/@cronos_fot_periodo[2])%></p>
+                            <p><%=percent(g.qtd_negativas_periodo.to_f/@cronos_fot_periodo[2])%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-           <div class="two-column-card-pos">
+        <div class="col-sm-6">
+           <div class="caixa grd-caixa">
                 <h6>Melhor avaliados (Geral):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-7">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Apv.</p>
+                        <p class="tab-head">Apv.</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Dif. média</p>
+                        <p class="tab-head">Dif. média</p>
                     </div>
                 </div>
                 <br>
@@ -295,35 +297,35 @@
                     <%n7 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n7%>º</p>
+                            <p><%=n7%>º</p>
                         </div>
                         <div class="col-sm-7">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                          <div class="col-sm-2">
-                            <p style="text-align:center"><span><%=percent(g.aprovacao_geral)%></span></p>
+                            <p><span><%=percent(g.aprovacao_geral)%></span></p>
                         </div>
                         <div class="col-sm-2">
-                            <p style="text-align:center"><%=percent(g.aprovacao_geral - @cronos_last.aprovacao_media)%></p>
+                            <p><%=percent(g.aprovacao_geral - @cronos_last.aprovacao_media)%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-pos">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Melhor avaliados (Periodo):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-7">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Apv.</p>
+                        <p class="tab-head">Apv.</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Dif. média</p>
+                        <p class="tab-head">Dif. média</p>
                     </div>
                 </div>
                 <br>
@@ -333,35 +335,35 @@
                     <%n8 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n8%>º</p>
+                            <p><%=n8%>º</p>
                         </div>
                         <div class="col-sm-7">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                          <div class="col-sm-2">
-                            <p style="text-align:center"><span><%=percent(g.aprovacao_periodo)%></span></p>
+                            <p><span><%=percent(g.aprovacao_periodo)%></span></p>
                         </div>
                         <div class="col-sm-2">
-                            <p style="text-align:center"><%=percent(g.aprovacao_periodo - @cronos_last.aprovacao_periodo)%></p>
+                            <p><%=percent(g.aprovacao_periodo - @cronos_last.aprovacao_periodo)%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-neg">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Pior avaliados (Geral):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-7">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Apv.</p>
+                        <p class="tab-head">Apv.</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Dif. média</p>
+                        <p class="tab-head">Dif. média</p>
                     </div>
                 </div>
                 <br>
@@ -371,35 +373,35 @@
                     <%n9 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n9%>º</p>
+                            <p><%=n9%>º</p>
                         </div>
                         <div class="col-sm-7">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                          <div class="col-sm-2">
-                            <p style="text-align:center"><span><%=percent(g.aprovacao_geral)%></span></p>
+                            <p><span><%=percent(g.aprovacao_geral)%></span></p>
                         </div>
                         <div class="col-sm-2">
-                            <p style="text-align:center"><%=percent(g.aprovacao_geral - @cronos_last.aprovacao_media)%></p>
+                            <p><%=percent(g.aprovacao_geral - @cronos_last.aprovacao_media)%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-neg">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Pior avaliados (Periodo):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-7">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Apv.</p>
+                        <p class="tab-head">Apv.</p>
                     </div>
                     <div class="col-sm-2">
-                        <p>Dif. média</p>
+                        <p class="tab-head">Dif. média</p>
                     </div>
                 </div>
                 <br>
@@ -409,32 +411,32 @@
                     <%n10 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n10%>º</p>
+                            <p><%=n10%>º</p>
                         </div>
                         <div class="col-sm-7">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                          <div class="col-sm-2">
-                            <p style="text-align:center"><span><%=percent(g.aprovacao_periodo)%></span></p>
+                            <p><span><%=percent(g.aprovacao_periodo)%></span></p>
                         </div>
                         <div class="col-sm-2">
-                            <p style="text-align:center"><%=percent(g.aprovacao_periodo - @cronos_last.aprovacao_periodo)%></p>
+                            <p><%=percent(g.aprovacao_periodo - @cronos_last.aprovacao_periodo)%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-           <div class="two-column-card-pos">
+        <div class="col-sm-6">
+           <div class="caixa grd-caixa">
                 <h6>Maior Impacto Positivo (Geral):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-8">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Impacto</p>
+                        <p class="tab-head">Impacto</p>
                     </div>
                 </div>
                 <br>
@@ -444,29 +446,29 @@
                     <%n11 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n11%>º</p>
+                            <p><%=n11%>º</p>
                         </div>
                         <div class="col-sm-8">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                          <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=percent(g.impacto_geral)%></span></p>
+                            <p><span><%=percent(g.impacto_geral)%></span></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-pos">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Maior Impacto Positivo (Período):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-8">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Impacto</p>
+                        <p class="tab-head">Impacto</p>
                     </div>
                 </div>
                 <br>
@@ -476,29 +478,29 @@
                     <%n12 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n12%>º</p>
+                            <p><%=n12%>º</p>
                         </div>
                         <div class="col-sm-8">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                          <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=percent(g.impacto_periodo)%></span></p>
+                            <p><span><%=percent(g.impacto_periodo)%></span></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-neg">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Maior Impacto Negativo (Geral):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-8">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Impacto</p>
+                        <p class="tab-head">Impacto</p>
                     </div>
                 </div>
                 <br>
@@ -508,29 +510,29 @@
                     <%n13 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n13%>º</p>
+                            <p><%=n13%>º</p>
                         </div>
                         <div class="col-sm-8">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                          <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=percent(g.impacto_geral)%></span></p>
+                            <p><span><%=percent(g.impacto_geral)%></span></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-           <div class="two-column-card-neg">
+        <div class="col-sm-6">
+           <div class="caixa grd-caixa">
                 <h6>Maior Impacto Negativo (Período):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-8">
-                        <p>Serviço(<cite>Órgão</cite>)</p>
+                        <p class="tab-head">Serviço(<cite>Órgão</cite>)</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Impacto</p>
+                        <p class="tab-head">Impacto</p>
                     </div>
                 </div>
                 <br>
@@ -540,13 +542,13 @@
                     <%n14 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n14%>º</p>
+                            <p><%=n14%>º</p>
                         </div>
                         <div class="col-sm-8">
-                            <p style="text-align:justify"><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
+                            <p><%=g.nome%> (<cite><%=g.orgao.nome_fantasia%></cite>)</p>
                         </div>
                          <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=percent(g.impacto_periodo)%></span></p>
+                            <p><span><%=percent(g.impacto_periodo)%></span></p>
                         </div>
                     </div>
                 <%end%>
@@ -554,8 +556,8 @@
         </div>
     </div>
     <br>
-    <h5 class="subtitle">Orgãos:</h5>
-    <div class="card one-column-card">  
+    <h4>Orgãos:</h4>
+    <div class="caixa solo-caixa">  
         <h6>Orgãos com mais serviços no Portal no momento:</h6>
         <ol>
             <li><%=@org_msa.first.nome_fantasia%> - <span><%=nmb_form(@org_msa.first.atuais.size)%></span> (<cite><%=percent(@org_msa.first.atuais.size.to_f/@atuais.size)%> dos serviços hoje no Portal</cite>)</li>
@@ -564,20 +566,20 @@
         </ol>
     </div>
     <div class="row">
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-pos">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos que mais acrescentaram serviços no período:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>% do total</p>
+                        <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -587,35 +589,35 @@
                     <%n15 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n15%>º</p>
+                            <p><%=n15%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=nmb_form(g.novos.size)%></span></p>
+                            <p><span><%=nmb_form(g.novos.size)%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%></p>
+                            <p><%=percent(g.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-neg">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos que mais retiraram serviços no período:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>% do total</p>
+                        <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -625,35 +627,35 @@
                     <%n16 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n16%>º</p>
+                            <p><%=n16%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=nmb_form(g.retirados.size)%></span></p>
+                            <p><span><%=nmb_form(g.retirados.size)%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%></p>
+                            <p><%=percent(g.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card">
+        <div class="col-sm-6">
+           <div class="caixa grd-caixa">
                 <h6>Orgãos com mais avaliações no Portal hoje:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>% do total</p>
+                        <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -663,35 +665,35 @@
                     <%n17 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n17%>º</p>
+                            <p><%=n17%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=nmb_form(g.fotografia_geral[0])%></span></p>
+                            <p><span><%=nmb_form(g.fotografia_geral[0])%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.fotografia_geral[0].to_f/@cronos_fot_geral[0])%></p>
+                            <p><%=percent(g.fotografia_geral[0].to_f/@cronos_fot_geral[0])%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com mais avaliações no período:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>% do total</p>
+                        <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -701,35 +703,35 @@
                     <%n18 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n18%>º</p>
+                            <p><%=n18%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=nmb_form(g.fotografia_periodo[0])%></span></p>
+                            <p><span><%=nmb_form(g.fotografia_periodo[0])%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.fotografia_periodo[0].to_f/@cronos_fot_periodo[0])%></p>
+                            <p><%=percent(g.fotografia_periodo[0].to_f/@cronos_fot_periodo[0])%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-pos">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com mais avaliações positivas hoje:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>% do total</p>
+                        <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -739,35 +741,35 @@
                     <%n19 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n19%>º</p>
+                            <p><%=n19%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=nmb_form(g.fotografia_geral[1])%></span></p>
+                            <p><span><%=nmb_form(g.fotografia_geral[1])%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.fotografia_geral[1].to_f/@cronos_fot_geral[1])%></p>
+                            <p><%=percent(g.fotografia_geral[1].to_f/@cronos_fot_geral[1])%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-pos">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com mais avaliações positivas no período:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>% do total</p>
+                        <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -777,35 +779,35 @@
                     <%n20+= 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n20%>º</p>
+                            <p><%=n20%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=nmb_form(g.fotografia_periodo[1])%></span></p>
+                            <p><span><%=nmb_form(g.fotografia_periodo[1])%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.fotografia_periodo[1].to_f/@cronos_fot_periodo[1])%></p>
+                            <p><%=percent(g.fotografia_periodo[1].to_f/@cronos_fot_periodo[1])%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-neg">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com mais avaliações negativas hoje:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>% do total</p>
+                        <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -815,35 +817,35 @@
                     <%n21+= 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n21%>º</p>
+                            <p><%=n21%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=nmb_form(g.fotografia_geral[2])%></span></p>
+                            <p><span><%=nmb_form(g.fotografia_geral[2])%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.fotografia_geral[2].to_f/@cronos_fot_geral[2])%></p>
+                            <p><%=percent(g.fotografia_geral[2].to_f/@cronos_fot_geral[2])%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-neg">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com mais avaliações negativas no período:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Qtd.</p>
+                        <p class="tab-head">Qtd.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>% do total</p>
+                        <p class="tab-head">% do total</p>
                     </div>
                 </div>
                 <br>
@@ -853,35 +855,35 @@
                     <%n22+= 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n22%>º</p>
+                            <p><%=n22%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=nmb_form(g.fotografia_periodo[2])%></span></p>
+                            <p><span><%=nmb_form(g.fotografia_periodo[2])%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.fotografia_periodo[2].to_f/@cronos_fot_periodo[2])%></p>
+                            <p><%=percent(g.fotografia_periodo[2].to_f/@cronos_fot_periodo[2])%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-pos">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com maior aprovação no Portal:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Apv.</p>
+                        <p class="tab-head">Apv.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Dif. média</p>
+                        <p class="tab-head">Dif. média</p>
                     </div>
                 </div>
                 <br>
@@ -891,35 +893,35 @@
                     <%n23+= 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n23%>º</p>
+                            <p><%=n23%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=percent(g.aprovacao_media)%></span></p>
+                            <p><span><%=percent(g.aprovacao_media)%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.aprovacao_media - @cronos_last.aprovacao_media)%></p>
+                            <p><%=percent(g.aprovacao_media - @cronos_last.aprovacao_media)%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-pos">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com maior aprovação no período:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Apv.</p>
+                        <p class="tab-head">Apv.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Dif. média</p>
+                        <p class="tab-head">Dif. média</p>
                     </div>
                 </div>
                 <br>
@@ -929,35 +931,35 @@
                     <%n24 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n24%>º</p>
+                            <p><%=n24%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=percent(g.aprovacao_periodo)%></span></p>
+                            <p><span><%=percent(g.aprovacao_periodo)%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.aprovacao_periodo - @cronos_last.aprovacao_periodo)%></p>
+                            <p><%=percent(g.aprovacao_periodo - @cronos_last.aprovacao_periodo)%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-neg">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com menor aprovação no Portal:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Apv.</p>
+                        <p class="tab-head">Apv.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Dif. média</p>
+                        <p class="tab-head">Dif. média</p>
                     </div>
                 </div>
                 <br>
@@ -967,35 +969,35 @@
                     <%n25 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n25%>º</p>
+                            <p><%=n25%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=percent(g.aprovacao_media)%></span></p>
+                            <p><span><%=percent(g.aprovacao_media)%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.aprovacao_media - @cronos_last.aprovacao_media)%></p>
+                            <p><%=percent(g.aprovacao_media - @cronos_last.aprovacao_media)%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-neg">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com menor aprovação no período:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Apv.</p>
+                        <p class="tab-head">Apv.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Dif. média</p>
+                        <p class="tab-head">Dif. média</p>
                     </div>
                 </div>
                 <br>
@@ -1005,35 +1007,35 @@
                     <%n26 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n26%>º</p>
+                            <p><%=n26%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=percent(g.aprovacao_periodo)%></span></p>
+                            <p><span><%=percent(g.aprovacao_periodo)%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.aprovacao_periodo - @cronos_last.aprovacao_periodo)%></p>
+                            <p><%=percent(g.aprovacao_periodo - @cronos_last.aprovacao_periodo)%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com maior participação nas avaliações do Portal:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Part.</p>
+                        <p class="tab-head">Part.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Dif. média</p>
+                        <p class="tab-head">Dif. média</p>
                     </div>
                 </div>
                 <br>
@@ -1043,35 +1045,35 @@
                     <%n27 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n27%>º</p>
+                            <p><%=n27%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=percent(g.participacao_media)%></span></p>
+                            <p><span><%=percent(g.participacao_media)%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.participacao_media - (1.to_f/@orgaos.size))%></p>
+                            <p><%=percent(g.participacao_media - (1.to_f/@orgaos.size))%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com maior participação nas avaliações do período:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Part.</p>
+                        <p class="tab-head">Part.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Dif. média</p>
+                        <p class="tab-head">Dif. média</p>
                     </div>
                 </div>
                 <br>
@@ -1081,35 +1083,35 @@
                     <%n28 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n28%>º</p>
+                            <p><%=n28%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=percent(g.participacao_periodo)%></span></p>
+                            <p><span><%=percent(g.participacao_periodo)%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.participacao_periodo - (1.to_f/@orgaos.size))%></p>
+                            <p><%=percent(g.participacao_periodo - (1.to_f/@orgaos.size))%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com maior impacto nas avaliações do Portal:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Imp.</p>
+                        <p class="tab-head">Imp.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Dif. média</p>
+                        <p class="tab-head">Dif. média</p>
                     </div>
                 </div>
                 <br>
@@ -1119,35 +1121,35 @@
                     <%n29 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n29%>º</p>
+                            <p><%=n29%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=percent(g.impacto_medio)%></span></p>
+                            <p><span><%=percent(g.impacto_medio)%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.impacto_medio - (1.to_f/@orgaos.size))%></p>
+                            <p><%=percent(g.impacto_medio - (1.to_f/@orgaos.size))%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com maior impacto nas avaliações do período:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-1">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Imp.</p>
+                        <p class="tab-head">Imp.</p>
                     </div>
                     <div class="col-sm-3">
-                        <p>Dif. média</p>
+                        <p class="tab-head">Dif. média</p>
                     </div>
                 </div>
                 <br>
@@ -1157,32 +1159,32 @@
                     <%n30 += 1%>
                     <div class="row">
                         <div class="col-sm-1">
-                            <p style="text-align:right"><%=n30%>º</p>
+                            <p><%=n30%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><span><%=percent(g.impacto_periodo)%></span></p>
+                            <p><span><%=percent(g.impacto_periodo)%></span></p>
                         </div>
                         <div class="col-sm-3">
-                            <p style="text-align:center"><%=percent(g.impacto_periodo - (1.to_f/@orgaos.size))%></p>
+                            <p><%=percent(g.impacto_periodo - (1.to_f/@orgaos.size))%></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-pos">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com maior variação positiva da aprovação média no período:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-2">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-5">
-                        <p>Variação</p>
+                        <p class="tab-head">Variação</p>
                     </div>
                 </div>
                 <br>
@@ -1192,29 +1194,29 @@
                     <%n31 += 1%>
                     <div class="row">
                         <div class="col-sm-2">
-                            <p style="text-align:right"><%=n31%>º</p>
+                            <p><%=n31%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:center"><span><%=percent(g.var_aprovacao_media)%></span></p>
+                            <p><span><%=percent(g.var_aprovacao_media)%></span></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-            <div class="col-sm-6 margined">
-            <div class="two-column-card-neg">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com maior variação negativa da aprovação média no período:</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-2">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-5">
-                        <p>Variação</p>
+                        <p class="tab-head">Variação</p>
                     </div>
                 </div>
                 <br>
@@ -1224,29 +1226,29 @@
                     <%n32 += 1%>
                     <div class="row">
                         <div class="col-sm-2">
-                            <p style="text-align:right"><%=n32%>º</p>
+                            <p><%=n32%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:center"><span><%=percent(g.var_aprovacao_media)%></span></p>
+                            <p><span><%=percent(g.var_aprovacao_media)%></span></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-pos">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com maior diferença positiva entre a aprovação no período e a aprovação média anterior (outperformance):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-2">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-5">
-                        <p>Outperformance</p>
+                        <p class="tab-head">Outperformance</p>
                     </div>
                 </div>
                 <br>
@@ -1256,29 +1258,29 @@
                     <%n33 += 1%>
                     <div class="row">
                         <div class="col-sm-2">
-                            <p style="text-align:right"><%=n33%>º</p>
+                            <p><%=n33%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:center"><span><%=percent(g.outperformance)%></span></p>
+                            <p><span><%=percent(g.outperformance)%></span></p>
                         </div>
                     </div>
                 <%end%>
             </div>
         </div>
-        <div class="col-sm-6 margined">
-            <div class="two-column-card-neg">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
                 <h6>Orgãos com maior diferença negativa entre a aprovação no período e a aprovação média anterior (outperformance):</h6>
-                <div class="row tab-head">
+                <div class="row">
                     <div class="col-sm-2">
                     </div>
                     <div class="col-sm-5">
-                        <p class="text-align:left !important">Órgão</p>
+                        <p class="tab-head">Órgão</p>
                     </div>
                     <div class="col-sm-5">
-                        <p>Outperformance</p>
+                        <p class="tab-head">Outperformance</p>
                     </div>
                 </div>
                 <br>
@@ -1288,13 +1290,13 @@
                     <%n34 += 1%>
                     <div class="row">
                         <div class="col-sm-2">
-                            <p style="text-align:right"><%=n34%>º</p>
+                            <p><%=n34%>º</p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:justify"><%=g.nome_fantasia%></p>
+                            <p><%=g.nome_fantasia%></p>
                         </div>
                         <div class="col-sm-5">
-                            <p style="text-align:center"><span><%=percent(g.outperformance)%></span></p>
+                            <p><span><%=percent(g.outperformance)%></span></p>
                         </div>
                     </div>
                 <%end%>

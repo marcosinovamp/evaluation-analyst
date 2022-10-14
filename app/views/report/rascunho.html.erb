@@ -1,3 +1,89 @@
 <div class="container">
-
+    <h4>Orgãos:</h4>
+    <div class="caixa solo-caixa">  
+        <h6>Orgãos com mais serviços no Portal no momento:</h6>
+        <ol>
+            <li><%=@org_msa.first.nome_fantasia%> - <span><%=nmb_form(@org_msa.first.atuais.size)%></span> (<cite><%=percent(@org_msa.first.atuais.size.to_f/@atuais.size)%> dos serviços hoje no Portal</cite>)</li>
+            <li><%=@org_msa.second.nome_fantasia%> - <span><%=nmb_form(@org_msa.second.atuais.size)%></span> (<cite><%=percent(@org_msa.second.atuais.size.to_f/@atuais.size)%> dos serviços hoje no Portal</cite>)</li>
+            <li><%=@org_msa.third.nome_fantasia%> - <span><%=nmb_form(@org_msa.third.atuais.size)%></span> (<cite><%=percent(@org_msa.third.atuais.size.to_f/@atuais.size)%> dos serviços hoje no Portal</cite>)</li>
+        </ol>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
+                <h6>Orgãos que mais acrescentaram serviços no período:</h6>
+                <div class="row">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="tab-head">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p class="tab-head">Qtd.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p class="tab-head">% do total</p>
+                    </div>
+                </div>
+                <br>
+                <%@group15 = @org_msn[0..2]%>
+                <%n15 = 0%>
+                <%@group15.each do |g|%>
+                    <%n15 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p><%=n15%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p><span><%=nmb_form(g.novos.size)%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p><%=percent(g.novos.size.to_f/(@novos.size == 0 ? 1 : @novos.size))%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="caixa grd-caixa">
+                <h6>Orgãos que mais retiraram serviços no período:</h6>
+                <div class="row">
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-5">
+                        <p class="tab-head">Órgão</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p class="tab-head">Qtd.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <p class="tab-head">% do total</p>
+                    </div>
+                </div>
+                <br>
+                <%@group16 = @org_msr[0..2]%>
+                <%n16 = 0%>
+                <%@group16.each do |g|%>
+                    <%n16 += 1%>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p><%=n16%>º</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p><%=g.nome_fantasia%></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p><span><%=nmb_form(g.retirados.size)%></span></p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p><%=percent(g.retirados.size.to_f/(@retirados.size == 0 ? 1 : @retirados.size))%></p>
+                        </div>
+                    </div>
+                <%end%>
+            </div>
+        </div>
+    </div>
 </div>
