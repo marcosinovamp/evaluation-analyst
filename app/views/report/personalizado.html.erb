@@ -1,0 +1,22 @@
+<div class="container">
+    <h3>Dados de <%=bradate(@data_inicial.data)%> a <%=bradate(@data_final.data)%></h3>
+    <div class="caixa pqn-caixa petit">
+        <h6>Avaliações no Período:</h6>
+         <p><%=nmb_form(@fot_ger_final[0] - @fot_ger_inicial[0])%></p>
+    </div>
+    <br>
+    <div class="caixa pqn-caixa petit">
+        <h6>Avaliações positivas no Período:</h6>
+         <p><%=nmb_form(@fot_ger_final[1] - @fot_ger_inicial[1])%></p>
+    </div>
+    <br>
+    <div class="caixa pqn-caixa petit">
+        <h6>Avaliações negativas no Período:</h6>
+        <p><%=nmb_form(@fot_ger_final[2] - @fot_ger_inicial[2])%></p>
+    </div>
+    <br>
+    <div class="caixa pqn-caixa petit">
+        <h6>Aprovação no período:</h6>
+        <p><%=percent((@fot_ger_final[1] - @fot_ger_inicial[1]).to_f/((@fot_ger_final[0] - @fot_ger_inicial[0]) == 0 ? 1 : (@fot_ger_final[0] - @fot_ger_inicial[0])))%></p>
+    </div>
+</div>

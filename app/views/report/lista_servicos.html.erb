@@ -1,0 +1,23 @@
+<div class="container">
+    <h3 style="margin-bottom:50px">Serviços d<%=@orgao.artigo%> <%=@orgao.nome_fantasia%><h3>
+    <%@servicos.sort_by{|serv| serv.nome}.each do |s|%>
+        <h5><a href="../../servico/<%=s.id%>"><%=s.nome%></a></h5>
+    <%end%>
+    <%if @excluidos.size > 0%>
+        <h4>Serviços Extintos:</h4>
+        <br>
+        <%@excluidos.each do |e|%>
+            <h6 class="excluidos"><a href="../../servico/<%=e.id%>"><%=e.nome%></a></h6>
+        <%end%>
+    <%end%>
+    <%if (@servicos.size + (@excluidos.size.nil? ? 0 : @excluidos.size)) < 8%>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    <%end%>
+</div>

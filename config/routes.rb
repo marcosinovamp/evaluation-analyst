@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   get 'documento', to: 'report#documento'
   get 'orgao/:id', to: 'report#orgao'
   get 'servico/:id', to: 'report#servico'
+  get 'orgao/:id/lista_servicos', to: 'report#lista_servicos'
+  get 'personalizado', to: 'report#personalizado'
   get 'rascunho', to: 'report#rascunho'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

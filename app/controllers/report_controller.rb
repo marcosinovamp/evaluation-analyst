@@ -58,6 +58,12 @@ class ReportController < ApplicationController
     @lst_apv = @aprov.pop
   end
 
+  def lista_servicos
+    @orgao = Orgao.find(params[:id])
+    @servicos = @orgao.servicos
+    @excluidos = Servico.all.select{|s| (s.status == "Retirado" || s.status == "Extinto") && s.orgao_id == @orgao.id}
+  end
+
   def servico
     @servico = Servico.find(params[:id])
     @cronos = Tempo.cronos
@@ -68,17 +74,14 @@ class ReportController < ApplicationController
     @avlast = @servico.avaliacos.last
   end
 
+  def personalizado
+    @data_inicial = Tempo.find(params[:data_inicial])
+    @data_final = Tempo.find(params[:data_final])
+    @fot_ger_inicial = @data_inicial.fotografia_geral
+    @fot_ger_final = @data_final.fotografia_geral
+  end
+
   def rascunho
-    @orgaos = Orgao.all.includes(:servicos, :avaliacos, :derivados) # r d
-    @orgaos1000 = Orgao.mais1000 # r d 
-    @cronos = Tempo.cronos # r d
-    @cronos_last = @cronos.last # r d
-    @novos = Servico.novos # r d
-    @retirados = Servico.retirados # r d
-    @atuais = Servico.atuais # r d
-    @org_msn = @orgaos.sort_by{|o| o.novos.size*-1} # r d
-    @org_msr = @orgaos.sort_by{|o| o.retirados.size*-1} # r d
-    @org_msa = @orgaos.sort_by{|o| o.atuais.size*-1} # r d
   end
 
 

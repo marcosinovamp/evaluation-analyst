@@ -13,6 +13,54 @@
   </head>
 
   <body>
+    <nav>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-3">
+            <a href="/">Home</a>
+          </div>
+          <div class="col-sm-3">
+            <a href="/relatorio">Grandes Números</a>
+          </div>
+          <div class="col-sm-3">
+            <a href="/documento">Relatório Semanal</a>
+          </div>
+          <div class="col-sm-3">
+            <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+              Personalizado
+            </a>
+            <div class="collapse" id="collapseExample">
+              <form action="/personalizado">
+                <div class="card navform">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label for="data_inicial">Escolha a data inicial:</label>
+                      <select id="data_inicial" name="data_inicial">
+                        <%Tempo.cronos.each do |t|%>
+                          <option value="<%=t.id%>"><%=bradate(t.data)%></option>
+                        <%end%>
+                      </select>
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="data_final">Escolha a data final:</label>
+                      <select id="data_final" name="data_final">
+                        <%Tempo.cronos.each do |t|%>
+                          <option value="<%=t.id%>"><%=bradate(t.data)%></option>
+                        <%end%>
+                      </select>
+                    </div>
+                  </div>
+                  <br>
+                  <input type="submit" value="Submit">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
     <%= yield %>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
 </html>
